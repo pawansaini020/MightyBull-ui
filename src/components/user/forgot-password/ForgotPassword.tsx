@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ForgotPassword.css";
 
-const API_BASE = "http://localhost:8083/mightybull/v1/api/auth";
-
 function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -13,7 +11,7 @@ function ForgotPassword() {
 
     // Step 1: Request password reset
     const handleResetPassword = async () => {
-        const response = await fetch(`${API_BASE}/reset-password?username=${encodeURIComponent(email)}&newPassword=${encodeURIComponent(newPassword)}`, {
+        const response = await fetch(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/auth/reset-password?username=${encodeURIComponent(email)}&newPassword=${encodeURIComponent(newPassword)}`, {
             method: "POST",
         });
 
@@ -27,7 +25,7 @@ function ForgotPassword() {
 
     // Step 2: Verify OTP
     const handleVerifyOtp = async () => {
-        const response = await fetch(`${API_BASE}/verify-otp?username=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&password=${encodeURIComponent(newPassword)}`, {
+        const response = await fetch(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/auth/verify-otp?username=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}&password=${encodeURIComponent(newPassword)}`, {
             method: "POST",
         });
 

@@ -24,7 +24,7 @@ function Login() {
         e.preventDefault();
         setLoading(true);
 
-        const response = await fetch(`http://localhost:8083/mightybull/v1/api/auth/login?` +
+        const response = await fetch(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/auth/login?` +
             new URLSearchParams({ username: formData.email, password: formData.password }),
             { method: "POST" }
         );

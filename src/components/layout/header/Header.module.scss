@@ -1,0 +1,82 @@
+.main-div {
+
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+  height: 6rem;
+  padding: 0 2.4rem;
+  border-bottom: 1px solid var(--primary-border);
+  background-color: var(--text-white);
+  z-index: 999;
+}
+
+// Logo Block
+.logo-options {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem; // Adjusted for better spacing
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+.logo-img {
+  height: 45px; // Adjust height as needed
+  width: auto;  // Maintain aspect ratio
+  max-width: 50px; // Prevent logo from being too large
+  object-fit: contain; // Ensures logo scales properly
+}
+
+.logo-heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-text);
+}
+
+// Search Block
+.search-options {
+  top: 0;
+  right: 50%;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  justify-content: space-between;
+  width: 100vw;
+  height: 6rem;
+  padding: 0 2.4rem;
+}
+
+// profile Block
+.profile-options{
+  top: 0;
+  right: 0;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+  justify-content: space-between;
+  width: 100vw;
+  height: 6rem;
+  padding: 0 2.4rem;
+}
+
+.profile-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  background: var(--primary-bubble-background);
+  color: var(--primary-bubble-text);
+  font-size: 1.4rem;
+  font-weight: 600;
+  border-radius: 50%;
+  cursor: pointer;
+}

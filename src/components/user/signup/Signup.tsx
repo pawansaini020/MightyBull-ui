@@ -2,8 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 
-const API_BASE = "http://localhost:8083/mightybull/v1/api/auth";
-
 const Signup = () => {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
     const [otpSent, setOtpSent] = useState(false);
@@ -22,7 +20,7 @@ const Signup = () => {
         }
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE}/signup`, {
+            const response = await fetch(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/auth/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
@@ -44,7 +42,7 @@ const Signup = () => {
         setLoading(true);
         try {
             const response = await fetch(
-                `${API_BASE}/verify-otp?username=${formData.email}&otp=${otp}&password=${formData.password}`,
+                `${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/auth/verify-otp?username=${formData.email}&otp=${otp}&password=${formData.password}`,
                 { method: "POST" }
             );
             if (!response.ok) throw new Error("OTP verification failed!");
