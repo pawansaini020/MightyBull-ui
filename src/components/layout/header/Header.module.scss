@@ -1,26 +1,31 @@
 .main-div {
-
-}
-
-.header {
+  width: 100%;
   position: fixed;
   top: 0;
   left: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100vw;
   height: 6rem;
-  padding: 0 2.4rem;
   border-bottom: 1px solid var(--primary-border);
   background-color: var(--text-white);
   z-index: 999;
 }
 
-// Logo Block
-.logo-options {
+.header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+// Logo Block
+.logo-options {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  padding: 0 2.4rem;
   gap: 1.2rem; // Adjusted for better spacing
   font-size: 2rem;
   font-weight: 100;
@@ -29,7 +34,7 @@
 .logo-img {
   height: 45px; // Adjust height as needed
   width: auto;  // Maintain aspect ratio
-  max-width: 50px; // Prevent logo from being too large
+  max-width: 30%; // Prevent logo from being too large
   object-fit: contain; // Ensures logo scales properly
 }
 
@@ -39,35 +44,36 @@
   color: var(--primary-text);
 }
 
-// Search Block
+/* Search - Center */
 .search-options {
-  top: 0;
-  right: 50%;
-  position: fixed;
+  width: 42%;
   display: flex;
+  justify-content: flex-end; // Moves the icon to the right
   align-items: center;
-  gap: 2.4rem;
-  justify-content: space-between;
-  width: 100vw;
-  height: 6rem;
-  padding: 0 2.4rem;
 }
+
+.search-box {
+  width: 60%;
+  max-width: 500px;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  font-size: 1.0rem;
+  background-color: #f9f9f9;
+  color: #000; // Sets the input text color to black
+}
+
 
 // profile Block
-.profile-options{
-  top: 0;
-  right: 0;
-  position: fixed;
+.profile-options {
+  width: 7%;
   display: flex;
+  justify-content: flex-end; // Moves the icon to the right
   align-items: center;
-  gap: 2.4rem;
-  justify-content: space-between;
-  width: 100vw;
-  height: 6rem;
-  padding: 0 2.4rem;
+  padding-right: 2.4rem; // Optional: add some padding if needed
 }
 
-.profile-icon{
+.profile-icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,3 +86,4 @@
   border-radius: 50%;
   cursor: pointer;
 }
+

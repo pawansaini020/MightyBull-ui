@@ -19,7 +19,6 @@ function Header() {
                     <input className={styles['search-box']} type="text" placeholder="Search Stock..."/>
                 </div>
                 <div className={styles['profile-options']}>
-                    <div></div>
                     <span className={styles["profile-icon"]}>
                         {getTwoCapitalChars(loggedInUser)}
                     </span>
