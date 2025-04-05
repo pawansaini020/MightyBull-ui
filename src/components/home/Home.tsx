@@ -1,5 +1,5 @@
 import Header from '../layout/header/Header.tsx';
-import styles from './Header.module.scss';
+import styles from './Home.module.scss';
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom"
 

@@ -1,126 +1,112 @@
-.container {
+.main-div {
   width: 100%;
-  max-width: 800px;
+  position: absolute;
+  top: 6rem;
+  left: 0;
+  display: flex;
+  background: var(--background-grey);
+}
+
+.stock-table-container {
+  width: 100%;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 1.2rem 1.6rem;
+  padding: 0 2.4rem;
   font-family: 'Inter', sans-serif;
 }
 
-.header {
+.stock-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
+  color: var(--primary-text);
 
   h3 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 600;
   }
 
   .seeMore {
-    font-size: 1.3rem;
+    font-size: 1.0rem;
     color: #00a976;
     text-decoration: none;
     font-weight: 500;
   }
 }
 
-.table {
+.stock-table {
   width: 100%;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  border-radius: 10px;
+  overflow: hidden; /* Ensures rounded corners apply properly */
+  border: 1px solid #ccc; /* Optional outer border */
 }
 
-.tableHead {
+.stock-table-head {
   display: flex;
   justify-content: space-between;
-  font-weight: 600;
-  font-size: 1.2rem;
+  font-weight: 800;
+  font-size: 0.9rem;
   color: #666;
-  padding: 0.6rem 0;
+  padding: 1.0rem 2.5rem;
   border-bottom: 1px solid #eee;
 
   span {
     flex: 1;
     text-align: left;
-
-    &:nth-child(2) {
-      text-align: center;
-    }
-    &:nth-child(3) {
-      text-align: right;
-    }
   }
 }
 
-.tableRow {
+.stock-table-row {
   display: flex;
-  align-items: center;
-  padding: 1.2rem 0;
+  text-align: left;
+  padding: 1.0rem 2.5rem;
+  font-size: 0.9rem;
   border-bottom: 1px solid #eee;
 }
 
-.company {
+.stock-company {
   flex: 1;
   display: flex;
   flex-direction: column;
   font-weight: 500;
-
-  .chartPlaceholder {
-    margin-top: 0.4rem;
-    width: 100px;
-    height: 30px;
-
-    .greenChart {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to right, #00c853, #b2ff59);
-    }
-
-    .redChart {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to right, #d50000, #ff8a80);
-    }
-  }
+  color: var(--primary-text);
 }
 
-.price {
+.stock-price {
   flex: 1;
-  text-align: center;
-  font-size: 1.3rem;
+  font-size: 0.9rem;
+  color: var(--primary-text);
 
   .positive {
     color: #00a976;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
   }
 
   .negative {
     color: #ff3d00;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
   }
 }
 
-.watchlist {
+.stock-score {
   flex: 1;
   display: flex;
-  justify-content: flex-end;
-
-  .watchlistBtn {
-    background: none;
-    border: 1px solid #00a976;
-    color: #00a976;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
 }
 
-.pagination {
+.stock-marketCap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
+}
+
+.stock-pagination {
   display: flex;
   justify-content: center;
   gap: 1rem;
@@ -129,7 +115,7 @@
   button {
     background: none;
     border: none;
-    font-size: 1.3rem;
+    font-size: 0.9rem;
     padding: 0.3rem 0.6rem;
     cursor: pointer;
     color: #333;
