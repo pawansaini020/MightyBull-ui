@@ -1,25 +1,26 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
+import styles from "./Login.module.scss";
+import Headers from '../../layout/header/Header.tsx';
 
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // ✅ Redirect to dashboard if already logged in
+    // Redirect to dashboard if already logged in
     useEffect(() => {
         if (localStorage.getItem("token")) {
             navigate("/dashboard");
         }
     }, [navigate]);
 
-    // ✅ Handle input changes dynamically
+    // Handle input changes dynamically
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // ✅ Handle form submission
+    // Handle form submission
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -32,8 +33,10 @@ function Login() {
         setLoading(false);
 
         if (response.ok) {
-            const data = await response.json();
+            const data = (await response.json()).data;
             localStorage.setItem("token", data.token);
+            localStorage.setItem("name", data.name);
+            console.log(data);
             navigate("/dashboard");
         } else {
             alert("Invalid credentials! Please try again.");
@@ -41,38 +44,41 @@ function Login() {
     };
 
     return (
-        <div className="auth-container">
-            <h2 className="auth-title">Login</h2>
-            <form onSubmit={handleLogin} className="auth-form">
-                <input
-                    type="email"
-                    name="email"
-                    className="auth-input"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
-                <input
-                    type="password"
-                    name="password"
-                    className="auth-input"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-                <button type="submit" className="auth-button" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-            </form>
-            <Link to="/forgot-password" className="auth-link">
-                Forgot Password?
-            </Link>
-            <Link to="/signup" className="auth-link">
-                Don't have an account? Sign Up
-            </Link>
-        </div>
+        <>
+            <Headers/>
+            <div className={styles['auth-container']}>
+                <h2 className={styles['auth-title']}>Login</h2>
+                <form onSubmit={handleLogin} className={styles['auth-form']}>
+                    <input
+                        type="email"
+                        name="email"
+                        className={styles['auth-input']}
+                        placeholder="Email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        className={styles['auth-input']}
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <button type="submit" className={styles['auth-button']} disabled={loading}>
+                        {loading ? "Logging in..." : "Login"}
+                    </button>
+                </form>
+                <Link to="/forgot-password" className={styles['auth-link']}>
+                    Forgot Password?
+                </Link>
+                <Link to="/signup" className={styles['auth-link']}>
+                    Don't have an account? Sign Up
+                </Link>
+            </div>
+        </>
     );
 }
 

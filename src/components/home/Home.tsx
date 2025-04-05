@@ -1,16 +1,28 @@
-import { useNavigate } from "react-router-dom";
-
-import "./Home.css";
+import Header from '../layout/header/Header.tsx';
+import styles from './Header.module.scss';
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom"
 
 function Home() {
-    const navigate = useNavigate()
+
+    const  navigate = useNavigate();
+
+    // Redirect to dashboard if already logged in
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/dashboard");
+        }
+    }, [navigate]);
 
     return (
-        <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
-            <h1 className="text-3xl font-bold mb-5">Welcome to MightyBull</h1>
-            <button className="btn" onClick={() => navigate("/signup")}>Signup</button>
-            <button className="btn" onClick={() => navigate("/login")}>Login</button>
-        </div>
+        <>
+            <Header/>
+            <div className={styles['main-div']}>
+                <div>
+                    <h1>Welcome to MightyBull</h1>
+                </div>
+            </div>
+        </>
     )
 }
 

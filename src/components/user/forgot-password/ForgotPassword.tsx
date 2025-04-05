@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ForgotPassword.css";
+import styles from "./ForgotPassword.module.scss";
+import Header from '../../layout/header/Header.tsx';
 
 function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -8,6 +9,13 @@ function ForgotPassword() {
     const [otp, setOtp] = useState("");
     const [step, setStep] = useState(1);
     const navigate = useNavigate();
+
+    // Redirect to dashboard if already logged in
+    useEffect(() => {
+        if(localStorage.getItem('token')) {
+            navigate("/dashboard");
+        }
+    }, [navigate]);
 
     // Step 1: Request password reset
     const handleResetPassword = async () => {
@@ -38,45 +46,48 @@ function ForgotPassword() {
     };
 
     return (
-        <div className="container">
-            <h2>{step === 1 ? "Forgot Password" : "Verify OTP"}</h2>
+        <>
+            <Header/>
+            <div className={styles['container']}>
+                <h2>{step === 1 ? "Forgot Password" : "Verify OTP"}</h2>
 
-            {step === 1 ? (
-                <>
-                    <input
-                        className="input"
-                        type="email"
-                        placeholder="Enter your Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <input
-                        className="input"
-                        type="password"
-                        placeholder="Enter New Password"
-                        onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <button onClick={handleResetPassword} className="btn">
-                        Send OTP
-                    </button>
-                </>
-            ) : (
-                <>
-                    <input
-                        className="input"
-                        type="text"
-                        placeholder="Enter OTP"
-                        onChange={(e) => setOtp(e.target.value)}
-                    />
-                    <button onClick={handleVerifyOtp} className="btn btn-green">
-                        Verify OTP & Reset Password
-                    </button>
-                </>
-            )}
+                {step === 1 ? (
+                    <>
+                        <input
+                            className={styles['input']}
+                            type="email"
+                            placeholder="Enter your Email"
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <input
+                            className={styles['input']}
+                            type="password"
+                            placeholder="Enter New Password"
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <button onClick={handleResetPassword} className={styles['btn']}>
+                            Send OTP
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <input
+                            className={styles['input']}
+                            type="text"
+                            placeholder="Enter OTP"
+                            onChange={(e) => setOtp(e.target.value)}
+                        />
+                        <button onClick={handleVerifyOtp} className={styles['btn btn-green']}>
+                            Verify OTP & Reset Password
+                        </button>
+                    </>
+                )}
 
-            <p className="text-link" onClick={() => navigate("/login")}>
-                Back to Login
-            </p>
-        </div>
+                <p className={styles['text-link']} onClick={() => navigate("/login")}>
+                    Back to Login
+                </p>
+            </div>
+        </>
     );
 }
 

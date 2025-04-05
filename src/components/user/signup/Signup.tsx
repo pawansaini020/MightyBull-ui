@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Signup.css";
+import "./Signup.module.scss";
+import Header from '../../layout/header/Header.tsx';
+import styles from "../forgot-password/ForgotPassword.module.scss";
 
 const Signup = () => {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
@@ -8,6 +10,13 @@ const Signup = () => {
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    // Redirect to dashboard if already logged in
+    useEffect(() => {
+        if (localStorage.getItem("token")) {
+            navigate("/dashboard");
+        }
+    }, [navigate]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,30 +65,33 @@ const Signup = () => {
     };
 
     return (
-        <div className="container">
-            <h2>{otpSent ? "Verify OTP" : "Signup"}</h2>
-            {!otpSent ? (
-                <>
-                    <input name="name" type="text" className="input" placeholder="Full Name" onChange={handleChange} />
-                    <input name="email" type="email" className="input" placeholder="Email" onChange={handleChange} />
-                    <input name="phone" type="tel" className="input" placeholder="Phone" onChange={handleChange} />
-                    <input name="password" type="password" className="input" placeholder="Password" onChange={handleChange} />
-                    <button onClick={handleSignup} className="btn" disabled={loading}>
-                        {loading ? "Signing Up..." : "Sign Up"}
-                    </button>
-                </>
-            ) : (
-                <>
-                    <input type="text" className="input" placeholder="Enter OTP" onChange={(e) => setOtp(e.target.value)} />
-                    <button onClick={handleVerifyOtp} className="btn" disabled={loading}>
-                        {loading ? "Verifying OTP..." : "Verify OTP"}
-                    </button>
-                </>
-            )}
-            <p className="text-link" onClick={() => navigate("/login")}>
-                Already have an account? Login
-            </p>
-        </div>
+        <>
+            <Header/>
+            <div className={styles['container']}>
+                <h2>{otpSent ? "Verify OTP" : "Signup"}</h2>
+                {!otpSent ? (
+                    <>
+                        <input name="name" type="text" className={styles['input']} placeholder="Full Name" onChange={handleChange} />
+                        <input name="email" type="email" className={styles['input']} placeholder="Email" onChange={handleChange} />
+                        <input name="phone" type="tel" className={styles['input']} placeholder="Phone" onChange={handleChange} />
+                        <input name="password" type="password" className={styles['input']} placeholder="Password" onChange={handleChange} />
+                        <button onClick={handleSignup} className={styles['btn']} disabled={loading}>
+                            {loading ? "Signing Up..." : "Sign Up"}
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <input type="text" className={styles['input']} placeholder="Enter OTP" onChange={(e) => setOtp(e.target.value)} />
+                        <button onClick={handleVerifyOtp} className={styles['btn']} disabled={loading}>
+                            {loading ? "Verifying OTP..." : "Verify OTP"}
+                        </button>
+                    </>
+                )}
+                <p className={styles['text-link']} onClick={() => navigate("/login")}>
+                    Already have an account? Login
+                </p>
+            </div>
+        </>
     );
 };
 
