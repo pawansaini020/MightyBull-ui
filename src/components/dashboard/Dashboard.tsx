@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Headers from "../layout/header/Header.tsx";
 import styles from './Dashboard.module.scss';
 import axios from "axios";
@@ -17,6 +18,20 @@ function Dashboard() {
     const [stockList, setStockList] = useState<StockItem[]>([])
     const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
     const [pageData, setPageData] = useState<any>({})
+    const navigate = useNavigate();
+
+    const [isRotating, setIsRotating] = useState(false);
+
+    const handleRefreshClick = () => {
+        setIsRotating(true);
+        fetchStocks(currentPage);
+
+        // Reset rotation after animation ends (400ms matches the CSS duration)
+        setTimeout(() => {
+            setIsRotating(false);
+        }, 400);
+    };
+
 
     const fetchStocks = async (page: number) => {
         try {
@@ -25,6 +40,8 @@ function Dashboard() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 }
             });
+
+            console.log("Stock widget: " + response.data);
 
             const data = response.data.data;
 
@@ -41,6 +58,9 @@ function Dashboard() {
             setPageData(data.pagination);
         } catch (error) {
             console.error("Error fetching stocks", error);
+            if(error == 'Access token expired. Please login again.') {
+                navigate("/dashboard");
+            }
         }
     };
 
@@ -55,7 +75,12 @@ function Dashboard() {
                 <div className={styles['stock-table-container']}>
                     <div className={styles['stock-header']}>
                         <h3>Top by Market Cap</h3>
-                        <a href="#" className={styles.seeMore}>See more</a>
+                        <div>
+                            <a href="#" className={styles.seeMore}>See more</a>
+                            <button className={`${styles.refreshBtn} ${isRotating ? styles.rotated : ''}`}  onClick={handleRefreshClick}  aria-label="Refresh stocks">
+                                🔄
+                            </button>
+                        </div>
                     </div>
 
                     <div className={styles['stock-table']}>
