@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
 import './App.css'
 import './styles/variables.scss';
-import Home from "./components/Home/Home"
+import Home from "./components/home/Home"
 import Signup from "./components/user/signup/Signup";
 import Login from "./components/user/login/Login";
 import ForgotPassword from "./components/user/forgot-password/ForgotPassword";
