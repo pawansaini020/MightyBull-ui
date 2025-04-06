@@ -2,6 +2,7 @@ import Header from '../layout/header/Header.tsx';
 import styles from './Home.module.scss';
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom"
+import {Routers} from "../../constants/AppConstants.ts"
 
 function Home() {
 
@@ -10,7 +11,7 @@ function Home() {
     // Redirect to dashboard if already logged in
     useEffect(() => {
         if (localStorage.getItem("token")) {
-            navigate("/dashboard");
+            navigate(Routers.Dashboard);
         }
     }, [navigate]);
 

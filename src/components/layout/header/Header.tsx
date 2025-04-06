@@ -2,9 +2,8 @@ import { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss'
 import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
-import {
-    getTwoCapitalChars,
-} from '../../../helpers/StringTransform.ts'
+import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts'
+import {Routers} from "../../../constants/AppConstants.ts";
 
 const loggedInUser = localStorage.getItem('name') ? localStorage.getItem('name') : '';
 
@@ -17,16 +16,16 @@ function Header() {
         setDropdownOpen(!dropdownOpen);
     };
 
-    const handleLogin = () => navigate('/login');
-    const handleSignup = () => navigate('/signup');
+    const handleLogin = () => navigate(Routers.Login);
+    const handleSignup = () => navigate(Routers.Signup);
 
     const handleLogout = () => {
         localStorage.clear() // Clear token
-        navigate("/login"); // Redirect to login page
+        navigate(Routers.Login); // Redirect to login page
     };
 
     const handleDashboardClick = () => {
-        navigate('/dashboard');
+        navigate(Routers.Dashboard);
     }
 
     return (

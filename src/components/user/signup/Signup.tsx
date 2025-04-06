@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Signup.module.scss";
 import Header from '../../layout/header/Header.tsx';
 import styles from "../forgot-password/ForgotPassword.module.scss";
+import {Routers} from "../../../constants/AppConstants.ts"
 
 const Signup = () => {
     const [formData, setFormData] = useState({ name: "", email: "", phone: "", password: "" });
@@ -14,7 +15,7 @@ const Signup = () => {
     // Redirect to dashboard if already logged in
     useEffect(() => {
         if (localStorage.getItem("token")) {
-            navigate("/dashboard");
+            navigate(Routers.Dashboard);
         }
     }, [navigate]);
 
@@ -56,7 +57,7 @@ const Signup = () => {
             );
             if (!response.ok) throw new Error("OTP verification failed!");
             alert("Signup successful!");
-            navigate("/login");
+            navigate(Routers.Login);
         } catch (error) {
             alert(error);
         } finally {

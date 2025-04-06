@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 import Headers from '../../layout/header/Header.tsx';
+import {Routers} from "../../../constants/AppConstants.ts"
 
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
@@ -11,7 +12,7 @@ function Login() {
     // Redirect to dashboard if already logged in
     useEffect(() => {
         if (localStorage.getItem("token")) {
-            navigate("/dashboard");
+            navigate(Routers.Dashboard);
         }
     }, [navigate]);
 
@@ -37,7 +38,7 @@ function Login() {
             localStorage.setItem("token", data.token);
             localStorage.setItem("name", data.name);
             console.log(data);
-            navigate("/dashboard");
+            navigate(Routers.Dashboard);
         } else {
             alert("Invalid credentials! Please try again.");
         }

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ForgotPassword.module.scss";
 import Header from '../../layout/header/Header.tsx';
+import {Routers} from "../../../constants/AppConstants.ts"
 
 function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ function ForgotPassword() {
     // Redirect to dashboard if already logged in
     useEffect(() => {
         if(localStorage.getItem('token')) {
-            navigate("/dashboard");
+            navigate(Routers.Dashboard);
         }
     }, [navigate]);
 
@@ -39,7 +40,7 @@ function ForgotPassword() {
 
         if (response.ok) {
             alert("Password reset successful. You can now login.");
-            navigate("/login");
+            navigate(Routers.Login);
         } else {
             alert("Failed to verify OTP. Check OTP & try again.");
         }

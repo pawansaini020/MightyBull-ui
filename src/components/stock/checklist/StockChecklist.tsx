@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Headers from "../layout/header/Header.tsx";
-import styles from './Dashboard.module.scss';
-import Pagination from '../global/pagination/Pagination.tsx';
-import axiosInstance from "../../helpers/axiosInstance.ts";
-import {Page} from '../../constants/AppConstants.ts'
-import {Routers} from '../../constants/AppConstants.ts'
+import Headers from "../../layout/header/Header.tsx";
+import styles from './StockChecklist.module.scss';
+import {useEffect, useState, useRef} from "react";
+import axiosInstance from "../../../helpers/axiosInstance.ts";
+import Pagination from "../../global/pagination/Pagination.tsx";
+import {Page} from '../../../constants/AppConstants.ts'
 
-function Dashboard() {
+function StockChecklist() {
+
     interface StockItem {
         name: string;
         sector: string;
@@ -22,34 +21,49 @@ function Dashboard() {
     const [stockList, setStockList] = useState<StockItem[]>([])
     const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
     const [pageData, setPageData] = useState<any>({})
-    const navigate = useNavigate();
 
-    const [isRotating, setIsRotating] = useState(false);
+    const [scoreFilters, setScoreFilters] = useState<string[]>([]);
+    const [scoreOpen, setScoreOpen] = useState(false);
 
-    const handleRefreshClick = () => {
-        setIsRotating(true);
-        fetchStocks(currentPage);
+    const scoreRef = useRef<HTMLDivElement>(null);
 
-        // Reset rotation after animation ends (400ms matches the CSS duration)
-        setTimeout(() => {
-            setIsRotating(false);
-        }, 400);
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (scoreRef.current && !scoreRef.current.contains(event.target as Node)) {
+                setScoreOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+
+    const handleScoreFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setScoreFilters(prev =>
+            e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
+        );
     };
 
-    const handleSeeMoreButtonClick = () => {
-        navigate(Routers.StockChecklist)
-    }
+    const applyFilters = () => {
+        fetchFilteredStocks(currentPage, scoreFilters);
+    };
 
-
-    const fetchStocks = async (page: number) => {
+    const fetchFilteredStocks = async (page: number, scores: string[] = []) => {
         try {
+            const params = new URLSearchParams();
+            params.append("page_number", String(page - 1));
+            params.append("page_size", "10");
+
+            scores.forEach(score => params.append("score_range", score));
+
             const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/widgets?page_number=${page - 1}&page_size=${Page.default_size}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
 
-            console.log("Stock widget: " + response.data);
+            console.log("Stock widget: " + scoreFilters+ " : " + response.data);
 
             const data = response.data.data;
 
@@ -68,14 +82,11 @@ function Dashboard() {
             setPageData(data.pagination);
         } catch (error) {
             console.error("Error fetching stocks", error);
-            if(error == 'Access token expired. Please login again.') {
-                navigate(Routers.Dashboard);
-            }
         }
     };
 
     useEffect(() => {
-        fetchStocks(currentPage);
+        fetchFilteredStocks(currentPage, scoreFilters);
     }, [currentPage]);
 
     return (
@@ -84,13 +95,33 @@ function Dashboard() {
             <div className={styles['main-div']}>
                 <div className={styles['stock-table-container']}>
                     <div className={styles['stock-header']}>
-                        <h3>Top by Market Cap</h3>
-                        <div>
-                            <a href="#" className={styles.seeMore} onClick={handleSeeMoreButtonClick}>See more</a>
-                            <button className={`${styles.refreshBtn} ${isRotating ? styles.rotated : ''}`}  onClick={handleRefreshClick}  aria-label="Refresh stocks">
-                                🔄
-                            </button>
+                        <h3>All Stocks</h3>
+                        <div className={styles['stock-total-search']}>
+                            Search results {pageData?.total_count || 0} Stocks
                         </div>
+                    </div>
+
+                    <div className={styles['filterContainer']}>
+                        <div className={styles['dropdown']}>
+                            <button onClick={() => setScoreOpen(!scoreOpen)}>
+                                Score ▾
+                            </button>
+                            {scoreOpen && (
+                                <div className={styles['dropdownItem']}>
+                                    <div className={styles['filter-text']}>
+                                        <label><input type="checkbox" value="80-100" onChange={handleScoreFilter}/> 80 - 100</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label className={styles['filter-text']}><input type="checkbox" value="60-80" onChange={handleScoreFilter}/> 60 - 80</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label className={styles['filter-text']}><input type="checkbox" value="40-60" onChange={handleScoreFilter}/> 40 - 60</label>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <button className={styles['applyBtn']} onClick={applyFilters}>Apply</button>
                     </div>
 
                     <div className={styles['stock-table']}>
@@ -108,6 +139,7 @@ function Dashboard() {
                                 <div className={styles['stock-company']}>
                                     <div>{stock.name}</div>
                                 </div>
+
                                 <div className={styles['stock-sector']}>
                                     <div>{stock.sector}</div>
                                 </div>
@@ -152,4 +184,4 @@ function Dashboard() {
     );
 }
 
-export default Dashboard;
+export default StockChecklist;

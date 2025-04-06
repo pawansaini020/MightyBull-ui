@@ -1,0 +1,12 @@
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  width: 100%;
+}
+
+.apply-btn{
+  color: var(--background-blue);
+  border: 1px solid var(--background-blue) !important;
+  background-color: #fff;
+}
