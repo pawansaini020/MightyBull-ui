@@ -1,4 +1,4 @@
-import { useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss'
 import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
@@ -11,6 +11,7 @@ function Header() {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const dropdownOpenRef = useRef<HTMLDivElement>(null);
 
     const handleProfileClick = () => {
         setDropdownOpen(!dropdownOpen);
@@ -28,6 +29,19 @@ function Header() {
         navigate(Routers.Dashboard);
     }
 
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            const target = event.target as Node;
+            if (
+                dropdownOpenRef.current && !dropdownOpenRef.current.contains(target)
+            ) {
+                setDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     return (
         <div className={styles['main-div']}>
             <div className={styles['header']}>
@@ -43,7 +57,7 @@ function Header() {
                         {getTwoCapitalChars(loggedInUser || 'U')}
                     </span>
                     {dropdownOpen && (
-                        <div className={styles['dropdown']}>
+                        <div className={styles['dropdown']} ref={dropdownOpenRef}>
                             {loggedInUser ? (
                                 <>
                                     <div className={styles['dropdown-item']}>User Details</div>

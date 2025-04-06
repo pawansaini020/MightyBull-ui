@@ -7,22 +7,25 @@ import Login from "./components/user/login/Login";
 import ForgotPassword from "./components/user/forgot-password/ForgotPassword";
 import Dashboard from "./components/dashboard/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import StockWidgets from "./components/stock/checklist/StockWidgets.tsx";
+import StockWidgets from "./components/stock/widget/StockWidgets.tsx";
+import StockWidgetDetails from "./components/stock/widget-details/StockWidgetDetails.tsx";
+import {Routers} from "./constants/AppConstants.ts";
 
 function App() {
     return (
         <Router>
             <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path={Routers.Home} element={<Home />} />
+                <Route path={Routers.Signup} element={<Signup />} />
+                <Route path={Routers.Login} element={<Login />} />
+                <Route path={Routers.ForgotPassword} element={<ForgotPassword />} />
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                     {/* Add other protected pages here */}
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/stock/widgets" element={<StockWidgets />}></Route>
+                    <Route path={Routers.Dashboard} element={<Dashboard />} />
+                    <Route path={Routers.StockWidgets} element={<StockWidgets />}></Route>
+                    <Route path={Routers.StockWidgetDetails} element={<StockWidgetDetails />}></Route>
                 </Route>
 
                 {/* Redirect unknown routes to login */}
