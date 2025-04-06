@@ -27,25 +27,51 @@
     font-weight: 600;
   }
 
-  .seeMore {
-    font-size: var(--font-middle-size);
-    color: #00a976;
-    text-decoration: none;
-    font-weight: 500;
+  .stock-total-search {
+    background-color: #f1f5f9; // light slate
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: var(--font-small-size);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-text);
   }
+}
 
-  .refreshBtn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-middle-size);
-    transition: transform 0.4s ease;
-    outline: none;
+.filterContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
 
-    &.rotated {
-      transform: rotate(90deg);
-    }
-  }
+.dropdown {
+  position: relative;
+  display: block;
+}
+
+.dropdownItem {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  white-space: nowrap; /* Ensures text stays in one line */
+}
+
+.filter-text {
+  color: var(--primary-text);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .stock-table {
@@ -80,7 +106,7 @@
   cursor: pointer;
 
   &:hover {
-    background: var(--background-hover);
+    background-color: var(--background-hover);
   }
 }
 
@@ -102,7 +128,7 @@
 
 .stock-price {
   flex: 1;
-  font-size:var(--font-small-size);
+  font-size: var(--font-small-size);
   color: var(--primary-text);
 
   .positive {

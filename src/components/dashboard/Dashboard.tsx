@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Headers from "../layout/header/Header.tsx";
 import styles from './Dashboard.module.scss';
 import Pagination from '../global/pagination/Pagination.tsx';
@@ -9,6 +9,7 @@ import {Routers} from '../../constants/AppConstants.ts'
 
 function Dashboard() {
     interface StockItem {
+        stockId: string;
         name: string;
         sector: string;
         price: string;
@@ -54,6 +55,7 @@ function Dashboard() {
             const data = response.data.data;
 
             const transformed: StockItem[] = data.data.map((item: any) => ({
+                stockId: item.stockId,
                 name: item.name,
                 sector: item.sector,
                 price: item.closePrice.toFixed(2),
@@ -68,9 +70,6 @@ function Dashboard() {
             setPageData(data.pagination);
         } catch (error) {
             console.error("Error fetching stocks", error);
-            if(error == 'Access token expired. Please login again.') {
-                navigate(Routers.Dashboard);
-            }
         }
     };
 
@@ -104,7 +103,11 @@ function Dashboard() {
                         </div>
 
                         {stockList.map((stock, index) => (
-                            <div className={styles['stock-table-row']} key={index}>
+                            <div
+                                className={styles['stock-table-row']}
+                                key={index}
+                                onClick={() => navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))}
+                            >
                                 <div className={styles['stock-company']}>
                                     <div>{stock.name}</div>
                                 </div>

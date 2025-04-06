@@ -10,4 +10,5 @@ export const Routers = {
     ForgotPassword: '/forgot-password',
     Dashboard: '/dashboard',
     StockWidgets: '/stock/widgets',
+    StockWidgetDetails: '/stock/widget/:stockId',
 }

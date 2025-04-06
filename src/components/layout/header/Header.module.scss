@@ -25,7 +25,7 @@
   width: 50%;
   display: flex;
   align-items: center;
-  padding: 0 2.4rem;
+  padding: 0 2%;
   gap: 1.2rem; // Adjusted for better spacing
   font-size: 2rem;
   font-weight: 100;
@@ -40,9 +40,9 @@
 }
 
 .logo-heading {
-  font-size: 1.8rem;
+  font-size: var(--font-large-size);
   font-weight: bold;
-  color: var(--special-text);
+  color: var(--bull-text);
 }
 
 /* Search - Center */
@@ -71,7 +71,7 @@
   display: flex;
   justify-content: flex-end; // Moves the icon to the right
   align-items: center;
-  padding-right: 2.4rem; // Optional: add some padding if needed
+  padding-right: 2%; // Optional: add some padding if needed
 }
 
 .profile-icon {
@@ -110,6 +110,6 @@
   color: var(--primary-text);
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: var(--background-hover);
   }
 }
