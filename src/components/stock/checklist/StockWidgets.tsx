@@ -3,7 +3,6 @@ import styles from './StockWidgets.module.scss';
 import {useEffect, useState, useRef} from "react";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import Pagination from "../../global/pagination/Pagination.tsx";
-import {Page} from '../../../constants/AppConstants.ts'
 
 function StockWidgets() {
 
@@ -24,6 +23,8 @@ function StockWidgets() {
 
     const [scoreFilters, setScoreFilters] = useState<string[]>([]);
     const [scoreOpen, setScoreOpen] = useState(false);
+    const [sortByFilters, setSortByFilters] = useState<string[]>([]);
+    const [sortBy, setsortBy] = useState(false);
 
     const scoreRef = useRef<HTMLDivElement>(null);
 
@@ -45,25 +46,33 @@ function StockWidgets() {
         );
     };
 
-    const applyFilters = () => {
-        fetchFilteredStocks(currentPage, scoreFilters);
+    const handleSortByFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSortByFilters(prev =>
+            e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
+        );
     };
 
-    const fetchFilteredStocks = async (page: number, scores: string[] = []) => {
+    const applyFilters = () => {
+        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters);
+    };
+
+    const fetchFilteredStocks = async (page: number, scores: string[] = [], sortBys: string[] = []) => {
         try {
             const params = new URLSearchParams();
             params.append("page_number", String(page - 1));
             params.append("page_size", "10");
 
             scores.forEach(score => params.append("score_range", score));
+            sortBys.forEach(sortBy => params.append("sort_by", sortBy));
 
-            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/widgets?page_number=${page - 1}&page_size=${Page.default_size}`, {
+            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/widgets?${params.toString()}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
 
-            console.log("Stock widget: " + scoreFilters+ " : " + response.data);
+            console.log("Stock widget: " + scoreFilters+ " : " + sortByFilters + " : " + response.data);
 
             const data = response.data.data;
 
@@ -86,7 +95,7 @@ function StockWidgets() {
     };
 
     useEffect(() => {
-        fetchFilteredStocks(currentPage, scoreFilters);
+        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters);
     }, [currentPage]);
 
     return (
@@ -109,13 +118,37 @@ function StockWidgets() {
                             {scoreOpen && (
                                 <div className={styles['dropdownItem']}>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="80-100" onChange={handleScoreFilter}/> 80 - 100</label>
+                                        <label><input type="checkbox" value="600-1000" onChange={handleScoreFilter}/> 600-1000</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label className={styles['filter-text']}><input type="checkbox" value="60-80" onChange={handleScoreFilter}/> 60 - 80</label>
+                                        <label><input type="checkbox" value="500-600" onChange={handleScoreFilter}/> 500 - 600</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label className={styles['filter-text']}><input type="checkbox" value="40-60" onChange={handleScoreFilter}/> 40 - 60</label>
+                                        <label><input type="checkbox" value="400-500" onChange={handleScoreFilter}/> 400 - 500</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label className={styles['filter-text']}><input type="checkbox" value="200-400" onChange={handleScoreFilter}/> 200 - 400</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label className={styles['filter-text']}><input type="checkbox" value="0-200" onChange={handleScoreFilter}/> 0 - 200</label>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        <div className={styles['dropdown']}>
+                            <button onClick={() => setsortBy(!sortBy)}>
+                                Sort By ▾
+                            </button>
+                            {sortBy && (
+                                <div className={styles['dropdownItem']}>
+                                    <div className={styles['filter-text']}>
+                                        <label><input type="checkbox" value="score" onChange={handleSortByFilter}/> Score</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input type="checkbox" value="marketCap" onChange={handleSortByFilter}/> Market Cap</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input type="checkbox" value="dividendYield" onChange={handleSortByFilter}/> Dividend</label>
                                     </div>
                                 </div>
                             )}
