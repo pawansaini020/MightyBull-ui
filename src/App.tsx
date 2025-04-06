@@ -7,7 +7,7 @@ import Login from "./components/user/login/Login";
 import ForgotPassword from "./components/user/forgot-password/ForgotPassword";
 import Dashboard from "./components/dashboard/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import StockChecklist from "./components/stock/checklist/StockChecklist.tsx";
+import StockWidgets from "./components/stock/checklist/StockWidgets.tsx";
 
 function App() {
     return (
@@ -22,7 +22,7 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                     {/* Add other protected pages here */}
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/stock/checklist" element={<StockChecklist />}></Route>
+                    <Route path="/stock/widgets" element={<StockWidgets />}></Route>
                 </Route>
 
                 {/* Redirect unknown routes to login */}

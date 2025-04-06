@@ -1,11 +1,11 @@
 import Headers from "../../layout/header/Header.tsx";
-import styles from './StockChecklist.module.scss';
+import styles from './StockWidgets.module.scss';
 import {useEffect, useState, useRef} from "react";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import Pagination from "../../global/pagination/Pagination.tsx";
 import {Page} from '../../../constants/AppConstants.ts'
 
-function StockChecklist() {
+function StockWidgets() {
 
     interface StockItem {
         name: string;
@@ -184,4 +184,4 @@ function StockChecklist() {
     );
 }
 
-export default StockChecklist;
+export default StockWidgets;

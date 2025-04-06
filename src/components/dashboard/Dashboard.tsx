@@ -37,7 +37,7 @@ function Dashboard() {
     };
 
     const handleSeeMoreButtonClick = () => {
-        navigate(Routers.StockChecklist)
+        navigate(Routers.StockWidgets)
     }
 
 

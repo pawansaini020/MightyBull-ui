@@ -9,5 +9,5 @@ export const Routers = {
     Signup: '/signup',
     ForgotPassword: '/forgot-password',
     Dashboard: '/dashboard',
-    StockChecklist: '/stock/checklist',
+    StockWidgets: '/stock/widgets',
 }
