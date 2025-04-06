@@ -24,14 +24,20 @@ function StockWidgets() {
     const [scoreFilters, setScoreFilters] = useState<string[]>([]);
     const [scoreOpen, setScoreOpen] = useState(false);
     const [sortByFilters, setSortByFilters] = useState<string[]>([]);
-    const [sortBy, setsortBy] = useState(false);
+    const [sortBy, setSortBy] = useState(false);
 
     const scoreRef = useRef<HTMLDivElement>(null);
+    const sortRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (scoreRef.current && !scoreRef.current.contains(event.target as Node)) {
+            const target = event.target as Node;
+            if (
+                scoreRef.current && !scoreRef.current.contains(target) &&
+                sortRef.current && !sortRef.current.contains(target)
+            ) {
                 setScoreOpen(false);
+                setSortBy(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -41,16 +47,26 @@ function StockWidgets() {
 
     const handleScoreFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setScoreFilters(prev =>
-            e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
-        );
+        if (e.target.checked) {
+            setScoreFilters([value]); // Only allow one selected
+        } else {
+            setScoreFilters([]);
+        }
+        // setScoreFilters(prev =>
+        //     e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
+        // );
     };
 
     const handleSortByFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setSortByFilters(prev =>
-            e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
-        );
+        if (e.target.checked) {
+            setSortByFilters([value]); // Only allow one selected
+        } else {
+            setSortByFilters([]);
+        }
+        // setSortByFilters(prev =>
+        //     e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
+        // );
     };
 
     const applyFilters = () => {
@@ -111,44 +127,82 @@ function StockWidgets() {
                     </div>
 
                     <div className={styles['filterContainer']}>
-                        <div className={styles['dropdown']}>
-                            <button onClick={() => setScoreOpen(!scoreOpen)}>
+                        <div className={styles['dropdown']} ref={scoreRef}>
+                            <button onClick={() => {
+                                setScoreOpen(!scoreOpen)
+                                setSortBy(false); // Close other dropdown
+                            }}>
                                 Score ▾
                             </button>
                             {scoreOpen && (
                                 <div className={styles['dropdownItem']}>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="600-1000" onChange={handleScoreFilter}/> 600-1000</label>
+                                        <label><input
+                                            type="checkbox" value="600-1000"
+                                            onChange={handleScoreFilter}
+                                            checked={scoreFilters.includes("600-1000")}
+                                        /> 600-1000</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="500-600" onChange={handleScoreFilter}/> 500 - 600</label>
+                                        <label><input
+                                            type="checkbox" value="500-600"
+                                            onChange={handleScoreFilter}
+                                            checked={scoreFilters.includes("500-600")}
+                                        /> 500 - 600</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="400-500" onChange={handleScoreFilter}/> 400 - 500</label>
+                                        <label><input
+                                            type="checkbox" value="400-500"
+                                            onChange={handleScoreFilter}
+                                            checked={scoreFilters.includes("400-500")}
+                                        /> 400 - 500</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label className={styles['filter-text']}><input type="checkbox" value="200-400" onChange={handleScoreFilter}/> 200 - 400</label>
+                                        <label className={styles['filter-text']}><input
+                                            type="checkbox" value="200-400"
+                                            onChange={handleScoreFilter}
+                                            checked={scoreFilters.includes("200-400")}
+                                        /> 200 - 400</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label className={styles['filter-text']}><input type="checkbox" value="0-200" onChange={handleScoreFilter}/> 0 - 200</label>
+                                        <label className={styles['filter-text']}><input
+                                            type="checkbox" value="0-200"
+                                            onChange={handleScoreFilter}
+                                            checked={scoreFilters.includes("0-200")}
+                                        /> 0 - 200</label>
                                     </div>
                                 </div>
                             )}
                         </div>
-                        <div className={styles['dropdown']}>
-                            <button onClick={() => setsortBy(!sortBy)}>
+                        <div className={styles['dropdown']} ref={sortRef}>
+                            <button onClick={() => {
+                                setScoreOpen(false); // Close other dropdown
+                                setSortBy(!sortBy)
+                            }}>
                                 Sort By ▾
                             </button>
                             {sortBy && (
                                 <div className={styles['dropdownItem']}>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="score" onChange={handleSortByFilter}/> Score</label>
+                                        <label><input
+                                            type="checkbox" value="score"
+                                            onChange={handleSortByFilter}
+                                            checked={sortByFilters.includes("score")}
+                                        /> Score</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="marketCap" onChange={handleSortByFilter}/> Market Cap</label>
+                                        <label><input
+                                            type="checkbox" value="marketCap"
+                                            onChange={handleSortByFilter}
+                                            checked={sortByFilters.includes("marketCap")}
+                                        /> Market Cap</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label><input type="checkbox" value="dividendYield" onChange={handleSortByFilter}/> Dividend</label>
+                                        <label><input
+                                            type="checkbox" value="dividendYield"
+                                            onChange={handleSortByFilter}
+                                            checked={sortByFilters.includes("dividendYield")}
+                                        /> Dividend</label>
                                     </div>
                                 </div>
                             )}
