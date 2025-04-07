@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import './App.css'
 import './styles/variables.scss';
 import './styles/font.scss';
@@ -6,6 +6,7 @@ import Home from "./components/home/Home"
 import Signup from "./components/user/signup/Signup";
 import Login from "./components/user/login/Login";
 import ForgotPassword from "./components/user/forgot-password/ForgotPassword";
+import NotFound from "./routes/NotFound.tsx";
 import Dashboard from "./components/dashboard/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import StockWidgets from "./components/stock/widget/StockWidgets.tsx";
@@ -30,7 +31,7 @@ function App() {
                 </Route>
 
                 {/* Redirect unknown routes to login */}
-                <Route path="*" element={<Navigate to="/login" />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
     )
