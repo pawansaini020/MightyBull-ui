@@ -5,13 +5,12 @@ import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
 import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts'
 import {Routers} from "../../../constants/AppConstants.ts";
 
-const loggedInUser = localStorage.getItem('name') ? localStorage.getItem('name') : '';
-
 function Header() {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dropdownOpenRef = useRef<HTMLDivElement>(null);
+    const loggedInUser = localStorage.getItem('name') ? localStorage.getItem('name') : '';
 
     const handleProfileClick = () => {
         setDropdownOpen(!dropdownOpen);
