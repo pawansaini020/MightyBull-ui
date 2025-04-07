@@ -26,17 +26,6 @@
     font-size: var(--font-large-size);
     font-weight: 600;
   }
-
-  .stock-total-search {
-    background-color: #f1f5f9; // light slate
-    padding: 8px 14px;
-    border-radius: 12px;
-    font-size: var(--font-small-size);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--primary-text);
-  }
 }
 
 .filterContainer {
@@ -72,6 +61,18 @@
   display: flex;
   align-items: center;
   white-space: nowrap;
+}
+
+.stock-total-search {
+  background-color: var(--background-hover); // light slate
+  padding: 0.5% 1%;
+  border-radius: 12px;
+  font-size: var(--font-small-size);
+  display: flex;
+  align-items: center;
+  color: var(--primary-text);
+  margin-left: auto; // 👈 Pushes it to the right
+  font-weight: 600;
 }
 
 .stock-table {

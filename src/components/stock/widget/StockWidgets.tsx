@@ -127,9 +127,6 @@ function StockWidgets() {
                 <div className={styles['stock-table-container']}>
                     <div className={styles['stock-header']}>
                         <h3>All Stocks</h3>
-                        <div className={styles['stock-total-search']}>
-                            Search results {pageData?.total_count || 0} Stocks
-                        </div>
                     </div>
 
                     <div className={styles['filterContainer']}>
@@ -215,6 +212,9 @@ function StockWidgets() {
                         </div>
 
                         <button className={styles['applyBtn']} onClick={applyFilters}>Apply</button>
+                        <div className={styles['stock-total-search']}>
+                            Search results {pageData?.total_count || 0} Stocks
+                        </div>
                     </div>
 
                     <div className={styles['stock-table']}>
