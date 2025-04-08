@@ -29,10 +29,6 @@ function Header() {
         navigate(Routers.Dashboard);
     }
 
-    const handleSearchClick = () => {
-        console.log("clicked on search button");
-    }
-
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             const target = event.target as Node;
@@ -46,15 +42,7 @@ function Header() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const allStocks = [
-        { name: "IRFC", stockId: "IRFC" },
-        { name: "IRFC Motors", stockId: "IRFCMotors" },
-        { name: "Tata Motors", stockId: "TATAMOTORS" },
-        { name: "Infosys", stockId: "INFY" },
-        // more...
-    ];
-
-    const handleStockSearch = (stock) => {
+    const handleStockSearch = (stock: { name: string; stockId: string; }) => {
         console.log("Search triggered for redirecting ot this stock page: ", stock);
         navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))
     };
