@@ -131,9 +131,10 @@ function StockWidgets() {
 
                     <div className={styles['filterContainer']}>
                         <div className={styles['dropdown']} ref={scoreRef}>
-                            <button onClick={() => {
-                                setScoreOpen(!scoreOpen)
-                                setSortBy(false); // Close other dropdown
+                            <button className={styles['dropdownButton']}
+                                    onClick={() => {
+                                    setScoreOpen(!scoreOpen)
+                                    setSortBy(false); // Close other dropdown
                             }}>
                                 Score ▾
                             </button>
@@ -161,14 +162,14 @@ function StockWidgets() {
                                         /> 400 - 500</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label className={styles['filter-text']}><input
+                                        <label><input
                                             type="checkbox" value="200-400"
                                             onChange={handleScoreFilter}
                                             checked={scoreFilters.includes("200-400")}
                                         /> 200 - 400</label>
                                     </div>
                                     <div className={styles['filter-text']}>
-                                        <label className={styles['filter-text']}><input
+                                        <label><input
                                             type="checkbox" value="0-200"
                                             onChange={handleScoreFilter}
                                             checked={scoreFilters.includes("0-200")}
@@ -178,9 +179,10 @@ function StockWidgets() {
                             )}
                         </div>
                         <div className={styles['dropdown']} ref={sortRef}>
-                            <button onClick={() => {
-                                setScoreOpen(false); // Close other dropdown
-                                setSortBy(!sortBy)
+                            <button className={styles['dropdownButton']}
+                                    onClick={() => {
+                                    setScoreOpen(false); // Close other dropdown
+                                    setSortBy(!sortBy)
                             }}>
                                 Sort By ▾
                             </button>
@@ -211,7 +213,7 @@ function StockWidgets() {
                             )}
                         </div>
 
-                        <button className={styles['applyBtn']} onClick={applyFilters}>Apply</button>
+                        <button className={styles['searchButton']} onClick={applyFilters}>Apply</button>
                         <div className={styles['stock-total-search']}>
                             Search results {pageData?.total_count || 0} Stocks
                         </div>

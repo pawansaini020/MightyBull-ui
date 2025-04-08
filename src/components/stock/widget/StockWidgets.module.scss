@@ -40,6 +40,15 @@
   display: block;
 }
 
+.dropdownButton {
+  background-color: var(--text-white);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color: var(--primary-text);
+  font-weight: 600;
+  font-size: var(--font-size-small);
+}
+
 .dropdownItem {
   position: absolute;
   top: 110%;
@@ -56,11 +65,39 @@
   white-space: nowrap; /* Ensures text stays in one line */
 }
 
+.filter-text-div {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0 4px 0 0;
+  &:hover {
+    background: var(--background-hover);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
+
 .filter-text {
   color: var(--primary-text);
   display: flex;
   align-items: center;
   white-space: nowrap;
+
+  &:hover {
+    background: var(--background-hover);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 4px 0 0;
+  }
+}
+
+.searchButton {
+  background-color: var(--text-white);
+  border: 1px solid var(--background-blue);
+  border-radius: 6px;
+  color: var(--primary-text);
+  font-weight: 600;
+  font-size: var(--background-blue);;
 }
 
 .stock-total-search {
