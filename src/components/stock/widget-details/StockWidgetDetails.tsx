@@ -20,6 +20,8 @@ function StockWidgetDetails() {
         roce: number;
         roe: number;
         score: number;
+        prosList: string[];
+        consList: string[];
     }
 
     const { stockId } = useParams();
@@ -52,7 +54,7 @@ function StockWidgetDetails() {
         return (
             <>
                 <Headers />
-                <div>Loading...</div>;
+                <div>Loading...</div>
             </>
         );
     }
@@ -139,6 +141,41 @@ function StockWidgetDetails() {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className={styles['pros-cons-container']}>
+                    <div className={styles['pros-cons-container-title']}>
+                        <h3>Fundamental Analysis</h3>
+                    </div>
+                    <div className={styles['card-grid']}>
+                        {/* Pros */}
+                        <div className={styles['card-pros']}>
+                            <h3 className={styles['card-heading']}>PROS</h3>
+                            <ul className={styles['card-list']}>
+                                {stock.prosList.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Cons */}
+                        <div className={styles['card-cons']}>
+                            <h3 className={styles['card-heading']}>CONS</h3>
+                            <ul className={styles['card-list']}>
+                                {stock.consList.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                    <p className={styles['disclaimer']}>
+                        * The pros and cons are machine generated.{" "}
+                        <div className={styles["tooltip-wrapper"]}>
+                            <span className={styles["tooltip-icon"]}>ⓘ</span>
+                            <div className={styles["custom-tooltip"]}>
+                                These are AI generated insights. Please exercise caution and do your own analysis.
+                            </div>
+                        </div>
+                    </p>
                 </div>
             </div>
         </>

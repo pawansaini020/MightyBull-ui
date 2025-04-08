@@ -9,8 +9,6 @@ function StockSearch({ onSearch } : {onSearch: any}) {
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const token = localStorage.getItem("token"); // assuming token is stored in localStorage
-
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (query.length >= 3) {
