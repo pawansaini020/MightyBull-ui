@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import { formatNumber } from "../../../helpers/StringTransform.ts";
+import {Routers} from "../../../constants/AppConstants.ts";
 
 function StockWidgetDetails() {
 
@@ -22,6 +23,25 @@ function StockWidgetDetails() {
         score: number;
         prosList: string[];
         consList: string[];
+        scoreDTO: StockScore;
+    }
+
+    interface StockScore {
+        stockId: string;
+        marketCapScore: number;
+        priceScore: number;
+        peScore: number;
+        dividendYieldScore: number;
+        roceScore: number;
+        rocScore: number;
+        quarterlyProfitScore: number;
+        profitAndLossScore: number;
+        balanceSheetScore: number;
+        cashFlowScore: number;
+        debtorDaysScore: number;
+        yearlyRoceScore: number;
+        shareholdingPatternScore: number;
+        score: number;
     }
 
     const { stockId } = useParams();
@@ -176,6 +196,172 @@ function StockWidgetDetails() {
                             </div>
                         </div>
                     </p>
+                </div>
+                <div className={styles['stock-details']}>
+                    <div className={styles['stock-title']}>
+                        <h3>Score Analysis</h3>
+                    </div>
+                    <div className={styles['score-details']}>
+                        <div className={styles['score-table-head']}>
+                            <span><strong>Score Parameter</strong></span>
+                            <span><strong>Score</strong></span>
+                            <span><strong>Remark</strong></span>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Market Cap</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.marketCapScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Price</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.priceScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Pe</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.peScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Dividend Yield</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.dividendYieldScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Roce</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.roceScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Roc</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.rocScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Quarterly Profit</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.quarterlyProfitScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Profit And Loss</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.profitAndLossScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Balance Sheet</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.balanceSheetScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Cash Flow</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.cashFlowScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Debtor Days</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.debtorDaysScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Yearly Roce</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.yearlyRoceScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Shareholding Pattern</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.shareholdingPatternScore.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                        <div className={styles['score-table-row']}>
+                            <div className={styles['score-row-text']}>
+                                <div>Total</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>{stock.scoreDTO.score.toFixed(2)}</div>
+                            </div>
+                            <div className={styles['score-row-text']}>
+                                <div>NA</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

@@ -53,7 +53,7 @@
   border-collapse: collapse; /* Ensures borders don't double up */
   border-radius: 10px;
   overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid #ccc; /* Optional outer border */
+  border: 1px solid  var(--border-color); /* Optional outer border */
 }
 
 .stock-table-head {

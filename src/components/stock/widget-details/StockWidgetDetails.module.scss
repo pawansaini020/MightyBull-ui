@@ -20,7 +20,7 @@
   font-family: 'Inter', sans-serif;
   border-collapse: collapse; /* Ensures borders don't double up */
   overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid #ccc; /* Optional outer border */
+  border: 1px solid var(--background-grey); /* Optional outer border */
 }
 
 .stock-title {
@@ -214,5 +214,47 @@
   }
 }
 
+// Stock score
+.score-details {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+}
 
+.score-table-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  font-size: var(--font-size-small);
+  color: #666;
+  padding: 1.0rem 2.5rem;
+  border-bottom: 1px solid #eee;
 
+  span {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+.score-table-row {
+  display: flex;
+  text-align: left;
+  padding: 1.0rem 2.5rem;
+  font-size: var(--font-size-small);
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--background-hover);
+  }
+}
+
+.score-row-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
+}
