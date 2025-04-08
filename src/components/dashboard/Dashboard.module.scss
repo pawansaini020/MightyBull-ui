@@ -23,12 +23,12 @@
   color: var(--primary-text);
 
   h3 {
-    font-size: var(--font-large-size);
+    font-size: var(--font-size-large);
     font-weight: 600;
   }
 
   .seeMore {
-    font-size: var(--font-middle-size);
+    font-size: var(--font-size-middle);
     color: #00a976;
     text-decoration: none;
     font-weight: 500;
@@ -38,7 +38,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: var(--font-middle-size);
+    font-size: var(--font-size-middle);
     transition: transform 0.4s ease;
     outline: none;
 
@@ -60,7 +60,7 @@
   display: flex;
   justify-content: space-between;
   font-weight: 800;
-  font-size: var(--font-small-size);
+  font-size: var(--font-size-small);
   color: #666;
   padding: 1.0rem 2.5rem;
   border-bottom: 1px solid #eee;
@@ -75,7 +75,7 @@
   display: flex;
   text-align: left;
   padding: 1.0rem 2.5rem;
-  font-size: var(--font-small-size);
+  font-size: var(--font-size-small);
   border-bottom: 1px solid #eee;
   cursor: pointer;
 
@@ -102,17 +102,17 @@
 
 .stock-price {
   flex: 1;
-  font-size:var(--font-small-size);
+  font-size:var(--font-size-small);
   color: var(--primary-text);
 
   .positive {
     color: var(--bull-text);
-    font-size: var(--font-small-size);
+    font-size: var(--font-size-small);
   }
 
   .negative {
     color: var(--bear-text);
-    font-size: var(--font-small-size);
+    font-size: var(--font-size-small);
   }
 }
 

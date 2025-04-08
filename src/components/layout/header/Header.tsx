@@ -4,6 +4,7 @@ import styles from './Header.module.scss'
 import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
 import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts'
 import {Routers} from "../../../constants/AppConstants.ts";
+import StockSearch from "../../global/search/StockSearch.tsx";
 
 function Header() {
 
@@ -28,6 +29,10 @@ function Header() {
         navigate(Routers.Dashboard);
     }
 
+    const handleSearchClick = () => {
+        console.log("clicked on search button");
+    }
+
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             const target = event.target as Node;
@@ -41,6 +46,19 @@ function Header() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const allStocks = [
+        { name: "IRFC", stockId: "IRFC" },
+        { name: "IRFC Motors", stockId: "IRFCMotors" },
+        { name: "Tata Motors", stockId: "TATAMOTORS" },
+        { name: "Infosys", stockId: "INFY" },
+        // more...
+    ];
+
+    const handleStockSearch = (stock) => {
+        console.log("Search triggered for redirecting ot this stock page: ", stock);
+        navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))
+    };
+
     return (
         <div className={styles['main-div']}>
             <div className={styles['header']}>
@@ -48,9 +66,10 @@ function Header() {
                     <img className={styles['logo-img']} src={MIGHTYBULL_LOGO} alt="MIGHTYBULL-Logo" />
                     <span className={styles['logo-heading']}>Mighty Bull</span>
                 </div>
-                <div className={styles['search-options']}>
-                    <input className={styles['search-box']} type="text" placeholder="Search Stock..."/>
-                </div>
+                {/*<div className={styles['search-options']}>*/}
+                {/*    <input className={styles['search-box']} type="text" placeholder="Search Stock..." onClick={handleSearchClick} />*/}
+                {/*</div>*/}
+                {loggedInUser && <StockSearch onSearch={handleStockSearch} />}
                 <div className={styles['profile-options']}>
                     <span className={styles['profile-icon']} onClick={handleProfileClick}>
                         {getTwoCapitalChars(loggedInUser || 'U')}
