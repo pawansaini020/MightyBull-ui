@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import { formatNumber } from "../../../helpers/StringTransform.ts";
-import {Routers} from "../../../constants/AppConstants.ts";
+// import {Routers} from "../../../constants/AppConstants.ts";
 
 function StockWidgetDetails() {
 

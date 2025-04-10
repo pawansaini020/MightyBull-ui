@@ -7,7 +7,7 @@ function StockSearch({ onSearch } : {onSearch: any}) {
     const [query, setQuery] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -24,7 +24,7 @@ function StockSearch({ onSearch } : {onSearch: any}) {
 
     const fetchSuggestions = async (name: string) => {
         try {
-            setLoading(true);
+            // setLoading(true);
             const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/search?name=${name}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -35,7 +35,7 @@ function StockSearch({ onSearch } : {onSearch: any}) {
 
             const data = response.data.data;
 
-            setLoading(false);
+            // setLoading(false);
             setSuggestions(data || []);
             setShowSuggestions(true);
         } catch (error) {
@@ -80,7 +80,7 @@ function StockSearch({ onSearch } : {onSearch: any}) {
 
             {showSuggestions && suggestions.length > 0 && (
                 <ul className={styles["suggestion-list"]}>
-                    {suggestions.map((stock, index) => (
+                    {suggestions.map((stock : {name: string, stockId: string}, index) => (
                         <li
                             key={index}
                             className={styles["suggestion-item"]}
