@@ -24,6 +24,11 @@ function StockWidgetDetails() {
         prosList: string[];
         consList: string[];
         scoreDTO: StockScore;
+        quarterlyResults: any;
+        profitAndLoss: any;
+        balanceSheet: any;
+        ratios: any;
+        shareholdingPattern: any;
     }
 
     interface StockScore {
@@ -88,6 +93,18 @@ function StockWidgetDetails() {
             </>
         );
     }
+
+    const quarters = [
+        "Mar 2022", "Jun 2022", "Sep 2022", "Dec 2022",
+        "Mar 2023", "Jun 2023", "Sep 2023", "Dec 2023",
+        "Mar 2024", "Jun 2024", "Sep 2024", "Dec 2024"
+    ];
+
+    const years = [
+        "Mar 2013", "Mar 2014", "Mar 2015", "Mar 2016",
+        "Mar 2017", "Mar 2018", "Mar 2019", "Mar 2020",
+        "Mar 2021", "Mar 2022", "Mar 2023", "Mar 2024"
+    ];
 
     return (
         <>
@@ -361,6 +378,190 @@ function StockWidgetDetails() {
                                 <div>NA</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                {/*quarterly results*/}
+                <div className={styles['stock-details']}>
+                    <div className={styles['stock-title']}>
+                        <h3>Quarterly Results</h3>
+                    </div>
+                    <div className={styles['quarterly-results-container']}>
+                        {/* Table Head - Quarters */}
+                        <div className={styles['score-table-head']}>
+                            <span><strong>Metric</strong></span>
+                            {quarters.map((quarter, index) => (
+                                <span key={index}><strong>{quarter}</strong></span>
+                            ))}
+                        </div>
+
+                        {/* Table Rows - One per Metric */}
+                        {Object.keys(stock.quarterlyResults).map((metric, i) => (
+                            <div key={i} className={styles['score-table-row']}>
+                                <div className={styles['score-row-text']}>
+                                    <div>{metric}</div>
+                                </div>
+                                {quarters.map((q, index) => (
+                                    <div key={index} className={styles['score-row-text']}>
+                                        <div>
+                                            {
+                                                stock.quarterlyResults[metric][q] !== null &&
+                                                stock.quarterlyResults[metric][q] !== undefined
+                                                    ? stock.quarterlyResults[metric][q].toFixed(2)
+                                                    : "-"
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/*Profit Loss*/}
+                <div className={styles['stock-details']}>
+                    <div className={styles['stock-title']}>
+                        <h3>Profit And Loss</h3>
+                    </div>
+                    <div className={styles['profit-loss-container']}>
+                        {/* Table Head - Years */}
+                        <div className={styles['score-table-head']}>
+                            <span><strong>Metric</strong></span>
+                            {years.map((year, index) => (
+                                <span key={index}><strong>{year}</strong></span>
+                            ))}
+                        </div>
+
+                        {/* Table Rows - One per Metric */}
+                        {Object.keys(stock.profitAndLoss).map((metric, i) => (
+                            <div key={i} className={styles['score-table-row']}>
+                                <div className={styles['score-row-text']}>
+                                    <div>{metric}</div>
+                                </div>
+                                {years.map((q, index) => (
+                                    <div key={index} className={styles['score-row-text']}>
+                                        <div>
+                                            {
+                                                stock.profitAndLoss[metric][q] !== null &&
+                                                stock.profitAndLoss[metric][q] !== undefined
+                                                    ? stock.profitAndLoss[metric][q].toFixed(2)
+                                                    : "-"
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/*Balance Sheet*/}
+                <div className={styles['stock-details']}>
+                    <div className={styles['stock-title']}>
+                        <h3>Balance Sheet</h3>
+                    </div>
+                    <div className={styles['balance-sheet-container']}>
+                        {/* Table Head - Years */}
+                        <div className={styles['score-table-head']}>
+                            <span><strong>Metric</strong></span>
+                            {years.map((year, index) => (
+                                <span key={index}><strong>{year}</strong></span>
+                            ))}
+                        </div>
+
+                        {/* Table Rows - One per Metric */}
+                        {Object.keys(stock.balanceSheet).map((metric, i) => (
+                            <div key={i} className={styles['score-table-row']}>
+                                <div className={styles['score-row-text']}>
+                                    <div>{metric}</div>
+                                </div>
+                                {years.map((q, index) => (
+                                    <div key={index} className={styles['score-row-text']}>
+                                        <div>
+                                            {
+                                                stock.balanceSheet[metric][q] !== null &&
+                                                stock.balanceSheet[metric][q] !== undefined
+                                                    ? stock.balanceSheet[metric][q].toFixed(2)
+                                                    : "-"
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/*Rations*/}
+                <div className={styles['stock-details']}>
+                    <div className={styles['stock-title']}>
+                        <h3>Rations</h3>
+                    </div>
+                    <div className={styles['ratios-container']}>
+                        {/* Table Head - Years */}
+                        <div className={styles['score-table-head']}>
+                            <span><strong>Metric</strong></span>
+                            {years.map((year, index) => (
+                                <span key={index}><strong>{year}</strong></span>
+                            ))}
+                        </div>
+
+                        {/* Table Rows - One per Metric */}
+                        {Object.keys(stock.ratios).map((metric, i) => (
+                            <div key={i} className={styles['score-table-row']}>
+                                <div className={styles['score-row-text']}>
+                                    <div>{metric}</div>
+                                </div>
+                                {years.map((q, index) => (
+                                    <div key={index} className={styles['score-row-text']}>
+                                        <div>
+                                            {
+                                                stock.ratios[metric][q] !== null &&
+                                                stock.ratios[metric][q] !== undefined
+                                                    ? stock.ratios[metric][q].toFixed(2)
+                                                    : "-"
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/*shareholding pattern*/}
+                <div className={styles['stock-details']}>
+                    <div className={styles['stock-title']}>
+                        <h3>Shareholding Pattern</h3>
+                    </div>
+                    <div className={styles['shareholding-pattern-container']}>
+                        {/* Table Head - Quarters */}
+                        <div className={styles['score-table-head']}>
+                            <span><strong>Metric</strong></span>
+                            {quarters.map((quarter, index) => (
+                                <span key={index}><strong>{quarter}</strong></span>
+                            ))}
+                        </div>
+
+                        {/* Table Rows - One per Metric */}
+                        {Object.keys(stock.shareholdingPattern).map((metric, i) => (
+                            <div key={i} className={styles['score-table-row']}>
+                                <div className={styles['score-row-text']}>
+                                    <div>{metric}</div>
+                                </div>
+                                {quarters.map((q, index) => (
+                                    <div key={index} className={styles['score-row-text']}>
+                                        <div>
+                                            {
+                                                stock.shareholdingPattern[metric][q] !== null &&
+                                                stock.shareholdingPattern[metric][q] !== undefined
+                                                    ? stock.shareholdingPattern[metric][q].toFixed(2)
+                                                    : "-"
+                                            }
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

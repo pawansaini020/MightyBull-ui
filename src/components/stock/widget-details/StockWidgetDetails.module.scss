@@ -258,3 +258,27 @@
   font-weight: 500;
   color: var(--primary-text);
 }
+
+.quarterly-results-container {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.profit-loss-container {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.shareholding-pattern-container {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+}
