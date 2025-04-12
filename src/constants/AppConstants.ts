@@ -11,5 +11,5 @@ export const Routers = {
     Dashboard: '/dashboard',
     StockWidgets: '/stock/widgets',
     StockWidgetDetails: '/stock/widget/:stockId',
-    Indexes: '/indexes',
+    Indices: '/indices',
 }

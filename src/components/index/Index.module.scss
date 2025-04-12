@@ -1,0 +1,89 @@
+.main-div {
+  width: 94%;
+  position: absolute;
+  padding: 1.5% 3%;
+  top: 6rem;
+  left: 0;
+  display: flex;
+  flex-direction: column; /* stack containers vertically */
+  gap: 1.5rem; /* spacing between each container */
+  background: var(--background-grey);
+}
+
+
+.index-container {
+  width: auto;
+  background-color: var(--background-white);
+  border-radius: 10px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.05);
+  padding: 1% 2% 2% 2%;
+  font-family: 'Inter', sans-serif;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  overflow: hidden; /* Ensures rounded corners apply properly */
+  border: 1px solid var(--background-grey); /* Optional outer border */
+}
+
+.index-table {
+  width: 100%;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  border-radius: 10px;
+  overflow: hidden; /* Ensures rounded corners apply properly */
+  border: 1px solid var(--border-color); /* Optional outer border */
+}
+
+.index-table-head {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  font-size: var(--font-size-small);
+  color: #666;
+  padding: 1.0rem 2.5rem;
+  border-bottom: 1px solid #eee;
+
+  span {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+.index-table-row {
+  display: flex;
+  text-align: left;
+  padding: 1.0rem 2.5rem;
+  font-size: var(--font-size-small);
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--background-hover);
+  }
+}
+
+.index-row {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
+}
+
+.index-logo {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+  align-items: center;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  border-radius: 2px;
+  overflow: hidden; /* Ensures rounded corners apply properly */
+  border: 1px solid var(--background-hover); /* Optional outer border */
+}
+
+.positive {
+  color: var(--bull-text);
+  font-size: var(--font-size-small);
+}
+
+.negative {
+  color: var(--bear-text);
+  font-size: var(--font-size-small);
+}

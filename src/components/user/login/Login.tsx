@@ -58,6 +58,7 @@ function Login() {
                         value={formData.email}
                         onChange={handleChange}
                         required
+                        autoComplete="new-password"
                     />
                     <input
                         type="password"
@@ -67,6 +68,7 @@ function Login() {
                         value={formData.password}
                         onChange={handleChange}
                         required
+                        autoComplete="new-password"
                     />
                     <button type="submit" className={styles['auth-button']} disabled={loading}>
                         {loading ? "Logging in..." : "Login"}

@@ -70,7 +70,7 @@ function Dashboard() {
     }
 
     const handleAllIndexesButtonClick = () => {
-        navigate(Routers.Indexes);
+        navigate(Routers.Indices);
     };
 
 
@@ -107,7 +107,7 @@ function Dashboard() {
 
     const fetchIndexItems = async () => {
         try {
-            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/index/widgets`, {
+            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/index/widgets?index_type=INDIAN`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -163,7 +163,7 @@ function Dashboard() {
                     <div className={styles['stock-header']}>
                         <h3>Indexes</h3>
                         <div>
-                            <a href="#" className={styles.seeMore} onClick={handleAllIndexesButtonClick}>All Indexes</a>
+                            <a href="#" className={styles.seeMore} onClick={handleAllIndexesButtonClick}>All Indices</a>
                             <button className={`${styles.refreshBtn} ${isRotatingIndex ? styles.rotated : ''}`}  onClick={handleRefreshIndexClick}  aria-label="Refresh stocks">
                                 🔄
                             </button>

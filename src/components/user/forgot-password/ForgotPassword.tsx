@@ -59,12 +59,18 @@ function ForgotPassword() {
                             type="email"
                             placeholder="Enter your Email"
                             onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="off"
+                            name="email"
+                            id="email"
                         />
                         <input
                             className={styles['input']}
                             type="password"
                             placeholder="Enter New Password"
                             onChange={(e) => setNewPassword(e.target.value)}
+                            autoComplete="new-password"
+                            name="password"
+                            id="password"
                         />
                         <button onClick={handleResetPassword} className={styles['btn']}>
                             Send OTP
@@ -77,9 +83,13 @@ function ForgotPassword() {
                             type="text"
                             placeholder="Enter OTP"
                             onChange={(e) => setOtp(e.target.value)}
+                            autoComplete="off"
+                            name="otp"  // Different name to avoid confusion with email
+                            id="otp"    // Ensure it doesn't match email or password
+                            spellCheck="false"
                         />
-                        <button onClick={handleVerifyOtp} className={styles['btn btn-green']}>
-                            Verify OTP & Reset Password
+                        <button onClick={handleVerifyOtp} className={styles['btn']}>
+                            Reset Password
                         </button>
                     </>
                 )}

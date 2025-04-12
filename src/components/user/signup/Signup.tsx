@@ -72,17 +72,17 @@ const Signup = () => {
                 <h2>{otpSent ? "Verify OTP" : "Signup"}</h2>
                 {!otpSent ? (
                     <>
-                        <input name="name" type="text" className={styles['input']} placeholder="Full Name" onChange={handleChange} />
-                        <input name="email" type="email" className={styles['input']} placeholder="Email" onChange={handleChange} />
-                        <input name="phone" type="tel" className={styles['input']} placeholder="Phone" onChange={handleChange} />
-                        <input name="password" type="password" className={styles['input']} placeholder="Password" onChange={handleChange} />
+                        <input name="name" type="text" className={styles['input']} placeholder="Full Name" onChange={handleChange} autoComplete="off"/>
+                        <input name="email" type="email" className={styles['input']} placeholder="Email" onChange={handleChange} autoComplete="off"/>
+                        <input name="phone" type="tel" className={styles['input']} placeholder="Phone" onChange={handleChange} autoComplete="off"/>
+                        <input name="password" type="password" className={styles['input']} placeholder="Password" onChange={handleChange} autoComplete="new-password"/>
                         <button onClick={handleSignup} className={styles['btn']} disabled={loading}>
                             {loading ? "Signing Up..." : "Sign Up"}
                         </button>
                     </>
                 ) : (
                     <>
-                        <input type="text" className={styles['input']} placeholder="Enter OTP" onChange={(e) => setOtp(e.target.value)} />
+                        <input type="text" className={styles['input']} placeholder="Enter OTP" onChange={(e) => setOtp(e.target.value)} autoComplete="off"/>
                         <button onClick={handleVerifyOtp} className={styles['btn']} disabled={loading}>
                             {loading ? "Verifying OTP..." : "Verify OTP"}
                         </button>
