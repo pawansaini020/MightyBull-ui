@@ -229,7 +229,7 @@ function StockWidgetDetails() {
                                 <div>Market Cap</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.marketCapScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.marketCapScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -240,7 +240,7 @@ function StockWidgetDetails() {
                                 <div>Price</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.priceScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.priceScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -251,7 +251,7 @@ function StockWidgetDetails() {
                                 <div>Pe</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.peScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.peScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -262,7 +262,7 @@ function StockWidgetDetails() {
                                 <div>Dividend Yield</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.dividendYieldScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.dividendYieldScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -273,7 +273,7 @@ function StockWidgetDetails() {
                                 <div>Roce</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.roceScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.roceScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -284,7 +284,7 @@ function StockWidgetDetails() {
                                 <div>Roc</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.rocScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.rocScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -295,7 +295,7 @@ function StockWidgetDetails() {
                                 <div>Quarterly Profit</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.quarterlyProfitScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.quarterlyProfitScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -306,7 +306,7 @@ function StockWidgetDetails() {
                                 <div>Profit And Loss</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.profitAndLossScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.profitAndLossScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -317,7 +317,7 @@ function StockWidgetDetails() {
                                 <div>Balance Sheet</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.balanceSheetScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.balanceSheetScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -328,7 +328,7 @@ function StockWidgetDetails() {
                                 <div>Cash Flow</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.cashFlowScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.cashFlowScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -339,7 +339,7 @@ function StockWidgetDetails() {
                                 <div>Debtor Days</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.debtorDaysScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.debtorDaysScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -350,7 +350,7 @@ function StockWidgetDetails() {
                                 <div>Yearly Roce</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.yearlyRoceScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.yearlyRoceScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -361,7 +361,7 @@ function StockWidgetDetails() {
                                 <div>Shareholding Pattern</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.shareholdingPatternScore.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.shareholdingPatternScore)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -372,7 +372,7 @@ function StockWidgetDetails() {
                                 <div>Total</div>
                             </div>
                             <div className={styles['score-row-text']}>
-                                <div>{stock.scoreDTO.score.toFixed(2)}</div>
+                                <div>{formatNumber(stock.scoreDTO.score)}</div>
                             </div>
                             <div className={styles['score-row-text']}>
                                 <div>NA</div>
@@ -406,7 +406,7 @@ function StockWidgetDetails() {
                                             {
                                                 stock.quarterlyResults[metric][q] !== null &&
                                                 stock.quarterlyResults[metric][q] !== undefined
-                                                    ? stock.quarterlyResults[metric][q].toFixed(2)
+                                                    ? formatNumber(stock.quarterlyResults[metric][q])
                                                     : "-"
                                             }
                                         </div>
@@ -443,7 +443,7 @@ function StockWidgetDetails() {
                                             {
                                                 stock.profitAndLoss[metric][q] !== null &&
                                                 stock.profitAndLoss[metric][q] !== undefined
-                                                    ? stock.profitAndLoss[metric][q].toFixed(2)
+                                                    ? formatNumber(stock.profitAndLoss[metric][q])
                                                     : "-"
                                             }
                                         </div>
@@ -480,7 +480,7 @@ function StockWidgetDetails() {
                                             {
                                                 stock.balanceSheet[metric][q] !== null &&
                                                 stock.balanceSheet[metric][q] !== undefined
-                                                    ? stock.balanceSheet[metric][q].toFixed(2)
+                                                    ? formatNumber(stock.balanceSheet[metric][q])
                                                     : "-"
                                             }
                                         </div>
@@ -517,7 +517,7 @@ function StockWidgetDetails() {
                                             {
                                                 stock.ratios[metric][q] !== null &&
                                                 stock.ratios[metric][q] !== undefined
-                                                    ? stock.ratios[metric][q].toFixed(2)
+                                                    ? formatNumber(stock.ratios[metric][q])
                                                     : "-"
                                             }
                                         </div>
@@ -554,7 +554,7 @@ function StockWidgetDetails() {
                                             {
                                                 stock.shareholdingPattern[metric][q] !== null &&
                                                 stock.shareholdingPattern[metric][q] !== undefined
-                                                    ? stock.shareholdingPattern[metric][q].toFixed(2)
+                                                    ? formatNumber(stock.shareholdingPattern[metric][q])
                                                     : "-"
                                             }
                                         </div>

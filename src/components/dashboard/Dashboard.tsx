@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 import Headers from "../layout/header/Header.tsx";
 import styles from './Dashboard.module.scss';
-import Pagination from '../global/pagination/Pagination.tsx';
+// import Pagination from '../global/pagination/Pagination.tsx';
 import axiosInstance from "../../helpers/axiosInstance.ts";
 import {Page} from '../../constants/AppConstants.ts'
 import {Routers} from '../../constants/AppConstants.ts'
+import {formatNumber, getColoredStyle} from "../../helpers/StringTransform.ts";
 
 function Dashboard() {
     interface StockItem {
@@ -20,26 +21,57 @@ function Dashboard() {
         dividend: number;
     }
 
+    interface IndexData {
+        name: string;
+        symbol: string;
+        country: string;
+        logoUrl: string;
+        value: number;
+        open: number;
+        close: number;
+        dayChange: number;
+        dayChangePerc: number;
+        low: number;
+        high: number;
+        yearLowPrice: number;
+        yearHighPrice: number;
+    }
+
     const [stockList, setStockList] = useState<StockItem[]>([])
     const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
-    const [pageData, setPageData] = useState<any>({})
+    // const [pageData, setPageData] = useState<any>({})
     const navigate = useNavigate();
+    const [isRotatingStock, setIsRotatingStock] = useState(false);
+    const [indexes, setIndexes] = useState<Record<string, IndexData>>({});
+    const [isRotatingIndex, setIsRotatingIndex] = useState(false);
 
-    const [isRotating, setIsRotating] = useState(false);
-
-    const handleRefreshClick = () => {
-        setIsRotating(true);
+    const handleRefreshStockClick = () => {
+        setIsRotatingStock(true);
         fetchStocks(currentPage);
 
         // Reset rotation after animation ends (400ms matches the CSS duration)
         setTimeout(() => {
-            setIsRotating(false);
+            setIsRotatingStock(false);
         }, 400);
     };
 
-    const handleSeeMoreButtonClick = () => {
-        navigate(Routers.StockWidgets)
+    const handleRefreshIndexClick = () => {
+        setIsRotatingIndex(true);
+        fetchIndexItemsFromSource()
+
+        // Reset rotation after animation ends (400ms matches the CSS duration)
+        setTimeout(() => {
+            setIsRotatingIndex(false);
+        }, 400);
     }
+
+    const handleSeeMoreButtonClick = () => {
+        navigate(Routers.StockWidgets);
+    }
+
+    const handleAllIndexesButtonClick = () => {
+        navigate(Routers.Indexes);
+    };
 
 
     const fetchStocks = async (page: number) => {
@@ -50,7 +82,7 @@ function Dashboard() {
                 },
             });
 
-            console.log("Stock widget: " + response.data);
+            console.log("Stock widget: {}", response.data.data);
 
             const data = response.data.data;
 
@@ -67,26 +99,151 @@ function Dashboard() {
             }));
 
             setStockList(transformed);
-            setPageData(data.pagination);
+            // setPageData(data.pagination);
         } catch (error) {
             console.error("Error fetching stocks", error);
         }
     };
 
+    const fetchIndexItems = async () => {
+        try {
+            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/index/widgets`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            console.log("Indexes widget: {}", response.data);
+            const json = response.data;
+            if (response.status) {
+                const map: Record<string, IndexData> = {};
+                json.data.forEach((idx: IndexData) => {
+                    map[idx.name] = idx;
+                });
+                setIndexes(map);
+            }
+        } catch (error) {
+            console.error("Error fetching indexes widgets", error);
+        }
+    }
+
+    const fetchIndexItemsFromSource = async () => {
+        try {
+            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/grow/index/sync`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            const json = response.data;
+            if (response.status) {
+                const map: Record<string, IndexData> = {};
+                json.data.forEach((idx: IndexData) => {
+                    map[idx.name] = idx;
+                });
+                setIndexes(map);
+            }
+        } catch (error) {
+            console.error("Error fetching indexes widgets", error);
+        }
+    }
+
     useEffect(() => {
+        fetchIndexItems();
         fetchStocks(currentPage);
+        setCurrentPage(currentPage);
     }, [currentPage]);
 
     return (
         <>
             <Headers />
             <div className={styles['main-div']}>
+                {/* Index Details*/}
+                <div className={styles['index-container']}>
+                    <div className={styles['stock-header']}>
+                        <h3>Indexes</h3>
+                        <div>
+                            <a href="#" className={styles.seeMore} onClick={handleAllIndexesButtonClick}>All Indexes</a>
+                            <button className={`${styles.refreshBtn} ${isRotatingIndex ? styles.rotated : ''}`}  onClick={handleRefreshIndexClick}  aria-label="Refresh stocks">
+                                🔄
+                            </button>
+                        </div>
+                    </div>
+                    <div className={styles['index-table-container']}>
+                        <div className={styles.row}>
+                            <div className={styles.card}>
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>NIFTY</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['NIFTY']?.value || 0)} | <span className={getColoredStyle(indexes['NIFTY']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['NIFTY']?.dayChange || 0)} ({formatNumber(indexes['NIFTY']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={styles.card}>
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>BANKNIFTY</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['BANKNIFTY']?.value || 0)} | <span className={getColoredStyle(indexes['BANKNIFTY']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['BANKNIFTY']?.dayChange || 0)} ({formatNumber(indexes['BANKNIFTY']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={styles.card}>
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>FINNIFTY</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['FINNIFTY']?.value || 0)} | <span className={getColoredStyle(indexes['FINNIFTY']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['FINNIFTY']?.dayChange || 0)} ({formatNumber(indexes['FINNIFTY']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.row}>
+                            <div className={styles.card}>
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>SENSEX</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['SENSEX']?.value || 0)} | <span className={getColoredStyle(indexes['SENSEX']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['SENSEX']?.dayChange || 0)} ({formatNumber(indexes['SENSEX']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={styles.card}>
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>BANKEX</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['BANKEX']?.value || 0)} | <span className={getColoredStyle(indexes['BANKEX']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['BANKEX']?.dayChange || 0)} ({formatNumber(indexes['BANKEX']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={styles.card}>
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>NIFTYMIDSELECT</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['NIFTYMIDSELECT']?.value || 0)} | <span className={getColoredStyle(indexes['NIFTYMIDSELECT']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['NIFTYMIDSELECT']?.dayChange || 0)} ({formatNumber(indexes['NIFTYMIDSELECT']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/*stocks details*/}
                 <div className={styles['stock-table-container']}>
                     <div className={styles['stock-header']}>
                         <h3>Top by Market Cap</h3>
                         <div>
                             <a href="#" className={styles.seeMore} onClick={handleSeeMoreButtonClick}>See more</a>
-                            <button className={`${styles.refreshBtn} ${isRotating ? styles.rotated : ''}`}  onClick={handleRefreshClick}  aria-label="Refresh stocks">
+                            <button className={`${styles.refreshBtn} ${isRotatingStock ? styles.rotated : ''}`}  onClick={handleRefreshStockClick}  aria-label="Refresh stocks">
                                 🔄
                             </button>
                         </div>
@@ -138,17 +295,17 @@ function Dashboard() {
                         ))}
                     </div>
 
-                    {/* Pagination */}
-                    <div className={styles['pagination_container']}>
-                        <Pagination
-                            className="pagination-bar"
-                            siblingCount={1}
-                            currentPage={currentPage}
-                            totalCount={pageData?.total_count || 0}
-                            pageSize={pageData?.page_size || 10}
-                            onPageChange={setCurrentPage}
-                        />
-                    </div>
+                    {/*/!* Pagination *!/*/}
+                    {/*<div className={styles['pagination_container']}>*/}
+                    {/*    <Pagination*/}
+                    {/*        className="pagination-bar"*/}
+                    {/*        siblingCount={1}*/}
+                    {/*        currentPage={currentPage}*/}
+                    {/*        totalCount={pageData?.total_count || 0}*/}
+                    {/*        pageSize={pageData?.page_size || 10}*/}
+                    {/*        onPageChange={setCurrentPage}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </>

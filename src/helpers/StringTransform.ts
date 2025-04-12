@@ -11,13 +11,19 @@ export function getTwoCapitalChars(input: string): string {
 }
 
 export function formatNumber(input: number): string {
-    if (!input) {
-        return '0';
-    } else if (isNaN(input)) {
+    if (!input || input == undefined || isNaN(input)) {
         return '0';
     }
     if(input < 0.01) {
         return input.toFixed(4);
     }
     return input.toFixed(2);
+}
+
+export const getColoredStyle = (value: number, styles: any): string => {
+    if(!value || value == undefined || isNaN(value) || value == 0) {
+        return styles.neutral;
+    }
+    if (value > 0) return styles.positive;
+    return styles.negative;
 }

@@ -4,15 +4,68 @@
   top: 6rem;
   left: 0;
   display: flex;
+  flex-direction: column; /* stack containers vertically */
+  gap: 1.5rem; /* spacing between each container */
   background: var(--background-grey);
 }
 
-.stock-table-container {
-  width: 100%;
+.index-container {
+  width: auto;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 2.4rem;
+  padding: 0 3% 1.5% 3%;
+  font-family: 'Inter', sans-serif;
+}
+
+.index-table-container {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 10%;
+  margin: 1%;
+  background-color: var(--background-hover);
+  padding: 1%;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.flexRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 97%;
+}
+
+.label {
+  font-size: var(--font-size-small);
+  color: var(--primary-text);
+}
+
+.value {
+  font-size: var(--font-size-small);
+  color: var(--primary-text);
+  font-weight: 700;
+}
+
+.stock-table-container {
+  width: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.05);
+  padding: 0 3% 1.5% 3%;
   font-family: 'Inter', sans-serif;
 }
 
@@ -28,7 +81,7 @@
   }
 
   .seeMore {
-    font-size: var(--font-size-middle);
+    font-size: var(--font-size-small);
     color: #00a976;
     text-decoration: none;
     font-weight: 500;
@@ -104,16 +157,21 @@
   flex: 1;
   font-size:var(--font-size-small);
   color: var(--primary-text);
+}
 
-  .positive {
-    color: var(--bull-text);
-    font-size: var(--font-size-small);
-  }
+.neutral {
+  color: var(--primary-text);
+  font-size: var(--font-size-small);
+}
 
-  .negative {
-    color: var(--bear-text);
-    font-size: var(--font-size-small);
-  }
+.positive {
+  color: var(--bull-text);
+  font-size: var(--font-size-small);
+}
+
+.negative {
+  color: var(--bear-text);
+  font-size: var(--font-size-small);
 }
 
 .stock-score {
