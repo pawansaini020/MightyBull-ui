@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   return {
     server: {
       allowedHosts: [
-        'c6c1-2409-40f2-1045-5c52-d133-f640-54e3-2f34.ngrok-free.app'
+        '**'
       ]
     },
     plugins: [
