@@ -38,7 +38,7 @@ function Dashboard() {
     }
 
     const [stockList, setStockList] = useState<StockItem[]>([])
-    const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
+    // const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
     // const [pageData, setPageData] = useState<any>({})
     const navigate = useNavigate();
     const [isRotatingStock, setIsRotatingStock] = useState(false);
@@ -47,7 +47,7 @@ function Dashboard() {
 
     const handleRefreshStockClick = () => {
         setIsRotatingStock(true);
-        fetchStocks(currentPage);
+        fetchStocks(1);
 
         // Reset rotation after animation ends (400ms matches the CSS duration)
         setTimeout(() => {
@@ -150,9 +150,8 @@ function Dashboard() {
 
     useEffect(() => {
         fetchIndexItems();
-        fetchStocks(currentPage);
-        setCurrentPage(currentPage);
-    }, [currentPage]);
+        fetchStocks(1);
+    }, []);
 
     return (
         <>
