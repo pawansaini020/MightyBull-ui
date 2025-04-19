@@ -24,6 +24,7 @@ function Dashboard() {
     interface IndexData {
         name: string;
         symbol: string;
+        indexId: string;
         country: string;
         logoUrl: string;
         value: number;
@@ -118,7 +119,7 @@ function Dashboard() {
             if (response.status) {
                 const map: Record<string, IndexData> = {};
                 json.data.forEach((idx: IndexData) => {
-                    map[idx.name] = idx;
+                    map[idx.indexId] = idx;
                 });
                 setIndexes(map);
             }
@@ -148,6 +149,8 @@ function Dashboard() {
         }
     }
 
+    const handleIndexWidget = (indexId : string) => navigate(Routers.IndexDetails.replace(':indexId', encodeURIComponent(indexId)));
+
     useEffect(() => {
         fetchIndexItems();
         fetchStocks(1);
@@ -170,64 +173,76 @@ function Dashboard() {
                     </div>
                     <div className={styles['index-table-container']}>
                         <div className={styles.row}>
-                            <div className={styles.card}>
+                            <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['nifty']?.indexId)}
+                            >
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>NIFTY</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['NIFTY']?.value || 0)} | <span className={getColoredStyle(indexes['NIFTY']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['NIFTY']?.dayChange || 0)} ({formatNumber(indexes['NIFTY']?.dayChangePerc || 0)}%)
+                                        {formatNumber(indexes['nifty']?.value || 0)} | <span className={getColoredStyle(indexes['nifty']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['nifty']?.dayChange || 0)} ({formatNumber(indexes['nifty']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>
                             </div>
-                            <div className={styles.card}>
+                            <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['nifty-bank']?.indexId)}
+                            >
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>BANKNIFTY</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['BANKNIFTY']?.value || 0)} | <span className={getColoredStyle(indexes['BANKNIFTY']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['BANKNIFTY']?.dayChange || 0)} ({formatNumber(indexes['BANKNIFTY']?.dayChangePerc || 0)}%)
+                                        {formatNumber(indexes['nifty-bank']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-bank']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['nifty-bank']?.dayChange || 0)} ({formatNumber(indexes['nifty-bank']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>
                             </div>
-                            <div className={styles.card}>
+                            <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['nifty-financial-services']?.indexId)}
+                            >
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>FINNIFTY</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['FINNIFTY']?.value || 0)} | <span className={getColoredStyle(indexes['FINNIFTY']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['FINNIFTY']?.dayChange || 0)} ({formatNumber(indexes['FINNIFTY']?.dayChangePerc || 0)}%)
+                                        {formatNumber(indexes['nifty-financial-services']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-financial-services']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['nifty-financial-services']?.dayChange || 0)} ({formatNumber(indexes['nifty-financial-services']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div className={styles.row}>
-                            <div className={styles.card}>
+                            <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['sp-bse-sensex']?.indexId)}
+                            >
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>SENSEX</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['SENSEX']?.value || 0)} | <span className={getColoredStyle(indexes['SENSEX']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['SENSEX']?.dayChange || 0)} ({formatNumber(indexes['SENSEX']?.dayChangePerc || 0)}%)
+                                        {formatNumber(indexes['sp-bse-sensex']?.value || 0)} | <span className={getColoredStyle(indexes['sp-bse-sensex']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['sp-bse-sensex']?.dayChange || 0)} ({formatNumber(indexes['sp-bse-sensex']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>
                             </div>
-                            <div className={styles.card}>
+                            <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['sp-bse-bankex']?.indexId)}
+                            >
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>BANKEX</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['BANKEX']?.value || 0)} | <span className={getColoredStyle(indexes['BANKEX']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['BANKEX']?.dayChange || 0)} ({formatNumber(indexes['BANKEX']?.dayChangePerc || 0)}%)
+                                        {formatNumber(indexes['sp-bse-bankex']?.value || 0)} | <span className={getColoredStyle(indexes['sp-bse-bankex']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['sp-bse-bankex']?.dayChange || 0)} ({formatNumber(indexes['sp-bse-bankex']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>
                             </div>
-                            <div className={styles.card}>
+                            <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['nifty-midcap-select']?.indexId)}
+                            >
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>NIFTYMIDSELECT</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['NIFTYMIDSELECT']?.value || 0)} | <span className={getColoredStyle(indexes['NIFTYMIDSELECT']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['NIFTYMIDSELECT']?.dayChange || 0)} ({formatNumber(indexes['NIFTYMIDSELECT']?.dayChangePerc || 0)}%)
+                                        {formatNumber(indexes['nifty-midcap-select']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-midcap-select']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['nifty-midcap-select']?.dayChange || 0)} ({formatNumber(indexes['nifty-midcap-select']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>

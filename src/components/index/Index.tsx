@@ -1,15 +1,20 @@
 import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import Headers from "../layout/header/Header.tsx";
 import styles from "./Index.module.scss";
 import TabSwitcher from "../global/tab-switch/TabSwitcher.tsx";
 import axiosInstance from "../../helpers/axiosInstance.ts";
 // import {Routers} from "../../constants/AppConstants.ts";
 import {formatNumber, getColoredStyle} from "../../helpers/StringTransform.ts";
+import {Routers} from "../../constants/AppConstants.ts";
 
 function Index() {
 
+    const navigate = useNavigate();
+
     interface IndexItem {
         name: string;
+        indexId: string;
         symbol: string;
         country: string;
         logoUrl: string;
@@ -46,6 +51,8 @@ function Index() {
         }
     };
 
+    const handleIndexWidget = (indexId : string) => navigate(Routers.IndexDetails.replace(':indexId', encodeURIComponent(indexId)));
+
     useEffect(() => {
         fetchIndexData(activeTab);
     }, [activeTab]);
@@ -70,7 +77,7 @@ function Index() {
                         {indexData.map((index, i) => (
                             <div className={styles['index-table-row']}
                                  key={i}
-                                 // onClick={() => navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))}
+                                 onClick={() => handleIndexWidget(index.indexId)}
                             >
                                 <div className={styles['index-row']}>
                                     <div><img src={index.logoUrl} className={styles['index-logo']} />  {index.name}</div>
@@ -82,9 +89,8 @@ function Index() {
 
                                 <div className={styles['index-row']}>
                                     <div>
-                                        <span>{formatNumber(index.dayChange)} </span>
                                         <span className={getColoredStyle(index?.dayChange || 0, styles)}>
-                                            ({formatNumber(index.dayChangePerc)}%)
+                                            {formatNumber(index.dayChange)} ({formatNumber(index.dayChangePerc)}%)
                                         </span>
                                     </div>
                                 </div>

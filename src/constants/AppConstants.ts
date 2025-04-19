@@ -12,4 +12,5 @@ export const Routers = {
     StockWidgets: '/stock/widgets',
     StockWidgetDetails: '/stock/widget/:stockId',
     Indices: '/indices',
+    IndexDetails: '/index/:indexId',
 }

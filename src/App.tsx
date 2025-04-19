@@ -12,6 +12,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import StockWidgets from "./components/stock/widget/StockWidgets.tsx";
 import StockWidgetDetails from "./components/stock/widget-details/StockWidgetDetails.tsx";
 import Index from "./components/index/Index.tsx";
+import IndexWidgetDetails from "./components/index/widget/IndexWidgetDetails.tsx";
 import {Routers} from "./constants/AppConstants.ts";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                     <Route path={Routers.StockWidgets} element={<StockWidgets />}></Route>
                     <Route path={Routers.StockWidgetDetails} element={<StockWidgetDetails />}></Route>
                     <Route path={Routers.Indices} element={<Index />}></Route>
+                    <Route path={Routers.IndexDetails} element={<IndexWidgetDetails />}></Route>
                 </Route>
 
                 {/* Redirect unknown routes to login */}
