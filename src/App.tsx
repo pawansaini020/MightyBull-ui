@@ -7,12 +7,13 @@ import Signup from "./components/user/signup/Signup";
 import Login from "./components/user/login/Login";
 import ForgotPassword from "./components/user/forgot-password/ForgotPassword";
 import NotFound from "./routes/NotFound.tsx";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./components/dashboard/stocks/Dashboard.tsx";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import StockWidgets from "./components/stock/widget/StockWidgets.tsx";
 import StockWidgetDetails from "./components/stock/widget-details/StockWidgetDetails.tsx";
 import Index from "./components/index/Index.tsx";
 import IndexWidgetDetails from "./components/index/widget/IndexWidgetDetails.tsx";
+import MutualFundDashboard from "./components/dashboard/mutual-funds/MutualFundDashboard.tsx";
 import {Routers} from "./constants/AppConstants.ts";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                     <Route path={Routers.StockWidgetDetails} element={<StockWidgetDetails />}></Route>
                     <Route path={Routers.Indices} element={<Index />}></Route>
                     <Route path={Routers.IndexDetails} element={<IndexWidgetDetails />}></Route>
+                    <Route path={Routers.MutualFundDashboard} element={<MutualFundDashboard />}></Route>
                 </Route>
 
                 {/* Redirect unknown routes to login */}

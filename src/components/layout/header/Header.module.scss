@@ -22,7 +22,7 @@
 
 // Logo Block
 .logo-options {
-  width: 68%;
+  width: 12%;
   display: flex;
   align-items: center;
   padding: 0 2%;
@@ -113,4 +113,8 @@
   &:hover {
     background-color: var(--background-hover);
   }
+}
+
+.tabs-section {
+  width: 56%;
 }

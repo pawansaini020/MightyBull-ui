@@ -8,9 +8,10 @@ export const Routers = {
     Login: '/login',
     Signup: '/signup',
     ForgotPassword: '/forgot-password',
-    Dashboard: '/dashboard',
+    Dashboard: '/stock/dashboard',
     StockWidgets: '/stock/widgets',
     StockWidgetDetails: '/stock/widget/:stockId',
     Indices: '/indices',
     IndexDetails: '/index/:indexId',
+    MutualFundDashboard: '/mutual/dashboard',
 }

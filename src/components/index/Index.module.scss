@@ -23,6 +23,11 @@
   border: 1px solid var(--background-grey); /* Optional outer border */
 }
 
+.tabs-container {
+  margin-bottom: 16px;
+  border-bottom: 2px solid #ddd;
+}
+
 .index-table {
   width: 100%;
   border-collapse: collapse; /* Ensures borders don't double up */

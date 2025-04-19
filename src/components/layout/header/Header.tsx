@@ -5,13 +5,20 @@ import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
 import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts'
 import {Routers} from "../../../constants/AppConstants.ts";
 import StockSearch from "../../global/search/StockSearch.tsx";
+import TabSwitcher from "../../global/tab-switch/TabSwitcher.tsx";
 
 function Header() {
+
+    const TABS = [
+        { key: 'STOCK', label: 'Stocks' },
+        { key: 'MUTUAL_FUND', label: 'Mutual Fund' },
+    ];
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dropdownOpenRef = useRef<HTMLDivElement>(null);
     const loggedInUser = localStorage.getItem('name') ? localStorage.getItem('name') : '';
+    const [activeTab, setActiveTab] = useState(TABS[0].key);
 
     const handleProfileClick = () => {
         setDropdownOpen(!dropdownOpen);
@@ -22,7 +29,7 @@ function Header() {
 
     const handleLogout = () => {
         localStorage.clear() // Clear token
-        navigate(Routers.Login); // Redirect to login page
+        navigate(Routers.Home); // Redirect to login page
     };
 
     const handleDashboardClick = () => {
@@ -47,6 +54,15 @@ function Header() {
         navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))
     };
 
+    // useEffect(() => {
+    //     console.log("Active tab: ", activeTab);
+    //     if(activeTab == TABS[0].key) {
+    //         navigate(Routers.Dashboard);
+    //     } else if(activeTab == TABS[1].key) {
+    //         navigate(Routers.Indices);
+    //     }
+    // }, [activeTab]);
+
     return (
         <div className={styles['main-div']}>
             <div className={styles['header']}>
@@ -57,10 +73,14 @@ function Header() {
                     />
                     <span className={styles['logo-heading']} onClick={handleDashboardClick}>Mighty Bull</span>
                 </div>
-                {/*<div className={styles['search-options']}>*/}
-                {/*    <input className={styles['search-box']} type="text" placeholder="Search Stock..." onClick={handleSearchClick} />*/}
-                {/*</div>*/}
-                {loggedInUser && <StockSearch onSearch={handleStockSearch} />}
+                {loggedInUser && (
+                    <>
+                        <div className={styles['tabs-section']}>
+                            <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} tabs={TABS} />
+                        </div>
+                        <StockSearch onSearch={handleStockSearch} />
+                    </>
+                )}
                 <div className={styles['profile-options']}>
                     <span className={styles['profile-icon']} onClick={handleProfileClick}>
                         {getTwoCapitalChars(loggedInUser || 'U')}

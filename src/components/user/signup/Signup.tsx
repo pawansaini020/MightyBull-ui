@@ -88,7 +88,7 @@ const Signup = () => {
                         </button>
                     </>
                 )}
-                <p className={styles['text-link']} onClick={() => navigate("/login")}>
+                <p className={styles['text-link']} onClick={() => navigate(Routers.Login)}>
                     Already have an account? Login
                 </p>
             </div>

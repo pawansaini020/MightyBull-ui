@@ -62,7 +62,9 @@ function Index() {
             <Headers />
             <div className={styles['main-div']}>
                 <div className={styles['index-container']}>
-                    <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} tabs={TABS} />
+                    <div className={styles['tabs-container']}>
+                        <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} tabs={TABS} />
+                    </div>
                     <div className={styles['index-table']}>
                         <div className={styles['index-table-head']}>
                             <span><strong>Index name</strong></span>

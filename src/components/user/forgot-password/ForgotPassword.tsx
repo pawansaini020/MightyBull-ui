@@ -94,7 +94,7 @@ function ForgotPassword() {
                     </>
                 )}
 
-                <p className={styles['text-link']} onClick={() => navigate("/login")}>
+                <p className={styles['text-link']} onClick={() => navigate(Routers.Login)}>
                     Back to Login
                 </p>
             </div>

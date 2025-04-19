@@ -74,10 +74,10 @@ function Login() {
                         {loading ? "Logging in..." : "Login"}
                     </button>
                 </form>
-                <Link to="/forgot-password" className={styles['auth-link']}>
+                <Link to={Routers.ForgotPassword} className={styles['auth-link']}>
                     Forgot Password?
                 </Link>
-                <Link to="/signup" className={styles['auth-link']}>
+                <Link to={Routers.Signup} className={styles['auth-link']}>
                     Don't have an account? Sign Up
                 </Link>
             </div>
