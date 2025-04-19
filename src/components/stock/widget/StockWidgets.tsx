@@ -30,19 +30,24 @@ function StockWidgets() {
     const [scoreOpen, setScoreOpen] = useState(false);
     const [sortByFilters, setSortByFilters] = useState<string[]>([]);
     const [sortBy, setSortBy] = useState(false);
+    const [sectorFilters, setSectorFilters] = useState<string[]>([]);
+    const [sectorOpen, setSectorOpen] = useState(false);
 
     const scoreRef = useRef<HTMLDivElement>(null);
     const sortRef = useRef<HTMLDivElement>(null);
+    const sectorRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             const target = event.target as Node;
             if (
                 scoreRef.current && !scoreRef.current.contains(target) &&
-                sortRef.current && !sortRef.current.contains(target)
+                sortRef.current && !sortRef.current.contains(target) &&
+                sectorRef.current && !sectorRef.current.contains(target)
             ) {
                 setScoreOpen(false);
                 setSortBy(false);
+                setSectorOpen(false);
             }
         }
         document.addEventListener("mousedown", handleClickOutside);
@@ -57,9 +62,6 @@ function StockWidgets() {
         } else {
             setScoreFilters([]);
         }
-        // setScoreFilters(prev =>
-        //     e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
-        // );
     };
 
     const handleSortByFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,16 +71,22 @@ function StockWidgets() {
         } else {
             setSortByFilters([]);
         }
-        // setSortByFilters(prev =>
-        //     e.target.checked ? [...prev, value] : prev.filter(v => v !== value)
-        // );
+    };
+
+    const handleSectorByFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (e.target.checked) {
+            setSectorFilters([value]); // Only allow one selected
+        } else {
+            setSectorFilters([]);
+        }
     };
 
     const applyFilters = () => {
-        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters);
+        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
     };
 
-    const fetchFilteredStocks = async (page: number, scores: string[] = [], sortBys: string[] = []) => {
+    const fetchFilteredStocks = async (page: number, scores: string[] = [], sortBys: string[] = [], sectors: string[] = []) => {
         try {
             const params = new URLSearchParams();
             params.append("page_number", String(page - 1));
@@ -86,14 +94,15 @@ function StockWidgets() {
 
             scores.forEach(score => params.append("score_range", score));
             sortBys.forEach(sortBy => params.append("sort_by", sortBy));
+            sectors.forEach(sector => params.append("sector", sector));
 
-            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/widgets?${params.toString()}`, {
+            const response = await axiosInstance.get(`/v1/api/stock/widgets?${params.toString()}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
 
-            console.log("Stock widget: " + scoreFilters+ " : " + sortByFilters + " : " + response.data);
+            console.log("Stock widget: " + scores+ " : " + sortBys + " : " + sectors + " : " + response.data);
 
             const data = response.data.data;
 
@@ -117,7 +126,7 @@ function StockWidgets() {
     };
 
     useEffect(() => {
-        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters);
+        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
     }, [currentPage]);
 
     return (
@@ -135,6 +144,7 @@ function StockWidgets() {
                                     onClick={() => {
                                     setScoreOpen(!scoreOpen)
                                     setSortBy(false); // Close other dropdown
+                                    setSectorOpen(false);
                             }}>
                                 Score ▾
                             </button>
@@ -178,11 +188,98 @@ function StockWidgets() {
                                 </div>
                             )}
                         </div>
+
+                        <div className={styles['dropdown']} ref={sectorRef}>
+                            <button className={styles['dropdownButton']}
+                                    onClick={() => {
+                                        setSectorOpen(!sectorOpen)
+                                        setScoreOpen(false);
+                                        setSortBy(false);
+                                    }}>
+                                Sector ▾
+                            </button>
+                            {sectorOpen && (
+                                <div className={styles['dropdownItem']}>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Finance"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Finance")}
+                                        /> Finance</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Trading"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Trading")}
+                                        /> Trading</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Textiles"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Textiles")}
+                                        /> Textiles</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="IT - Software"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("IT - Software")}
+                                        /> IT - Software</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Pharmaceuticals"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Pharmaceuticals")}
+                                        /> Pharmaceuticals</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Chemicals"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Chemicals")}
+                                        /> Chemicals</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Steel"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Steel")}
+                                        /> Steel</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Healthcare"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Healthcare")}
+                                        /> Healthcare</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Stock/ Commodity Brokers"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Stock/ Commodity Brokers")}
+                                        /> Stock/ Commodity Brokers</label>
+                                    </div>
+                                    <div className={styles['filter-text']}>
+                                        <label><input
+                                            type="checkbox" value="Power Generation & Distribution"
+                                            onChange={handleSectorByFilter}
+                                            checked={sectorFilters.includes("Power Generation & Distribution")}
+                                        /> Power Generation & Distribution</label>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
                         <div className={styles['dropdown']} ref={sortRef}>
                             <button className={styles['dropdownButton']}
                                     onClick={() => {
-                                    setScoreOpen(false); // Close other dropdown
                                     setSortBy(!sortBy)
+                                    setScoreOpen(false); // Close other dropdown
+                                    setSectorOpen(false);
                             }}>
                                 Sort By ▾
                             </button>
