@@ -63,6 +63,34 @@
   flex-direction: column;
   gap: 6px;
   white-space: nowrap; /* Ensures text stays in one line */
+  max-height: 250px;   // restricts vertical height
+  overflow-y: auto;    // enables vertical scrolling when needed
+  min-width: 100px;
+
+  .filter-search {
+    padding: 8px 25px 8px 8px;
+    border-bottom: 1px solid #ccc;
+    background-color: white;
+
+    input {
+      width: 100%;
+      min-width: 100px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+  }
+}
+
+.search-box {
+  flex: 1;
+  padding: 10px 12px 10px 36px; // leave space for icon
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: var(--background-hover);
+  color: var(--primary-text);
+  font-size: var(--font-size-small);
 }
 
 .filter-text-div {

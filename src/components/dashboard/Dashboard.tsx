@@ -163,7 +163,7 @@ function Dashboard() {
                 {/* Index Details*/}
                 <div className={styles['index-container']}>
                     <div className={styles['stock-header']}>
-                        <h3>Indexes</h3>
+                        <h3>Indices</h3>
                         <div>
                             <a href="#" className={styles.seeMore} onClick={handleAllIndexesButtonClick}>All Indices</a>
                             <button className={`${styles.refreshBtn} ${isRotatingIndex ? styles.rotated : ''}`}  onClick={handleRefreshIndexClick}  aria-label="Refresh stocks">

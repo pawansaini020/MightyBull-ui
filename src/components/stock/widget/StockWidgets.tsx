@@ -20,6 +20,12 @@ function StockWidgets() {
         dividend: number;
     }
 
+    const sectors = [
+        "Finance", "Trading", "Textiles", "IT - Software", "Pharmaceuticals",
+        "Chemicals", "Steel", "Healthcare", "Stock/ Commodity Brokers",
+        "Power Generation & Distribution"
+    ];
+
     const navigate = useNavigate();
 
     const [stockList, setStockList] = useState<StockItem[]>([])
@@ -36,6 +42,8 @@ function StockWidgets() {
     const scoreRef = useRef<HTMLDivElement>(null);
     const sortRef = useRef<HTMLDivElement>(null);
     const sectorRef = useRef<HTMLDivElement>(null);
+
+    const [sectorSearchText, setSectorSearchText] = useState("");
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -200,76 +208,35 @@ function StockWidgets() {
                             </button>
                             {sectorOpen && (
                                 <div className={styles['dropdownItem']}>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Finance"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Finance")}
-                                        /> Finance</label>
+                                    {/* Search Input */}
+                                    <div className={styles['filter-search']}>
+                                        <input
+                                            type="text"
+                                            className={styles["search-box"]}
+                                            placeholder="Search sector..."
+                                            value={sectorSearchText}
+                                            onChange={(e) => setSectorSearchText(e.target.value)}
+                                        />
                                     </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Trading"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Trading")}
-                                        /> Trading</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Textiles"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Textiles")}
-                                        /> Textiles</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="IT - Software"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("IT - Software")}
-                                        /> IT - Software</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Pharmaceuticals"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Pharmaceuticals")}
-                                        /> Pharmaceuticals</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Chemicals"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Chemicals")}
-                                        /> Chemicals</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Steel"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Steel")}
-                                        /> Steel</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Healthcare"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Healthcare")}
-                                        /> Healthcare</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Stock/ Commodity Brokers"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Stock/ Commodity Brokers")}
-                                        /> Stock/ Commodity Brokers</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="Power Generation & Distribution"
-                                            onChange={handleSectorByFilter}
-                                            checked={sectorFilters.includes("Power Generation & Distribution")}
-                                        /> Power Generation & Distribution</label>
-                                    </div>
+
+                                    {/* Scrollable Filter List */}
+                                    {sectors
+                                        .filter((sector) =>
+                                            sector.toLowerCase().includes(sectorSearchText.toLowerCase())
+                                        )
+                                        .map((sector) => (
+                                            <div className={styles['filter-text']} key={sector}>
+                                                <label>
+                                                    <input
+                                                        type="checkbox"
+                                                        value={sector}
+                                                        onChange={handleSectorByFilter}
+                                                        checked={sectorFilters.includes(sector)}
+                                                    />{" "}
+                                                    {sector}
+                                                </label>
+                                            </div>
+                                        ))}
                                 </div>
                             )}
                         </div>

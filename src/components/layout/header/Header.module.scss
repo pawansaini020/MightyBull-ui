@@ -29,7 +29,6 @@
   gap: 1.2rem; // Adjusted for better spacing
   font-size: 2rem;
   font-weight: 100;
-  cursor: pointer;
 }
 
 .logo-img {
@@ -37,12 +36,14 @@
   width: auto;  // Maintain aspect ratio
   max-width: 30%; // Prevent logo from being too large
   object-fit: contain; // Ensures logo scales properly
+  cursor: pointer;
 }
 
 .logo-heading {
   font-size: var(--font-size-large);
   font-weight: bold;
   color: var(--bull-text);
+  cursor: pointer;
 }
 
 /* Search - Center */
