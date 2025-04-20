@@ -1,3 +1,127 @@
 .main-div {
+  width: 94%;
+  position: absolute;
+  padding: 1.5% 3%;
+  top: 6rem;
+  left: 0;
+  display: flex;
+  flex-direction: column; /* stack containers vertically */
+  gap: 1.5rem; /* spacing between each container */
+  background: var(--background-grey);
+}
+
+.popular-funds {
+  width: auto;
+  background-color: var(--background-white);
+  border-radius: 10px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.05);
+  padding: 0 3% 2% 3%;
+  font-family: 'Inter', sans-serif;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  overflow: hidden; /* Ensures rounded corners apply properly */
+  border: 1px solid var(--background-grey); /* Optional outer border */
+}
+
+.popular-funds-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  h2 {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--primary-text);
+  }
+
+  a {
+    color: #059669; // emerald-600
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.popular-funds-div {
+  width: 100%;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  border-radius: 10px;
+  overflow: hidden; /* Ensures rounded corners apply properly */
+  border: 1px solid #ccc; /* Optional outer border */
+  align-items: center;
+  overflow-x: auto;
+}
+
+.popular-funds-grid {
+  display: grid;
+  gap: 2.5rem;
+  padding: 2rem 2.4rem;
+  text-align: left;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(10, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+
+.all-mutual-funds {
+  font-size: var(--font-size-small);
+  color: var(--bull-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.popular-funds-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb; // gray-200
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease-in-out;
+  width: 140px;
+  height: 120px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  img {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-bottom: 0.5rem;
+    border-collapse: collapse; /* Ensures borders don't double up */
+    border-radius: 5px;
+    overflow: hidden; /* Ensures rounded corners apply properly */
+    border: 1px solid #ccc; /* Optional outer border */
+    align-items: center;
+    padding: 2px;
+  }
+}
+
+.popular-funds-card-name {
+  font-size: var(--font-size-small);
   color: var(--primary-text);
+}
+
+.popular-funds-card-return {
+  font-size: var(--font-size-small);
+  color: var(--primary-text);
+  margin-top: 0.25rem;
+
+  span {
+    font-weight: 600;
+    color: var(--primary-text);
+  }
+
+  duration {
+    color: var(--primary-text);
+    //font-weight: 400;
+  }
 }

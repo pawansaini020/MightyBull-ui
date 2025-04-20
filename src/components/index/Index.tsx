@@ -44,7 +44,6 @@ function Index() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 }
             });
-            console.log("")
             setIndexData(response.data.data);
         } catch (err) {
             console.error("Failed to fetch indices", err);

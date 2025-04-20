@@ -13,5 +13,7 @@ export const Routers = {
     StockWidgetDetails: '/stock/widget/:stockId',
     Indices: '/indices',
     IndexDetails: '/index/:indexId',
-    MutualFundDashboard: '/mutual/dashboard',
+    MutualFundDashboard: '/mutual-fund/dashboard',
+    MutualFundWidgets: '/mutual-fund/widgets',
+    MutualFundWidgetDetails: '/mutual-fund/widget/:mutualFundId',
 }

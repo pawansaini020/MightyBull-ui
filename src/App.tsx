@@ -14,6 +14,8 @@ import StockWidgetDetails from "./components/stock/widget-details/StockWidgetDet
 import Index from "./components/index/Index.tsx";
 import IndexWidgetDetails from "./components/index/widget/IndexWidgetDetails.tsx";
 import MutualFundDashboard from "./components/dashboard/mutual-funds/MutualFundDashboard.tsx";
+import MutualFundWidgets from "./components/mutual-fund/widget/MutualFundWidgets.tsx";
+import MutualFundWidgetDetails from "./components/mutual-fund/widget-details/MutualFundWidgetDetails.tsx";
 import {Routers} from "./constants/AppConstants.ts";
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
                     <Route path={Routers.Indices} element={<Index />}></Route>
                     <Route path={Routers.IndexDetails} element={<IndexWidgetDetails />}></Route>
                     <Route path={Routers.MutualFundDashboard} element={<MutualFundDashboard />}></Route>
+                    <Route path={Routers.MutualFundWidgets} element={<MutualFundWidgets />}></Route>
+                    <Route path={Routers.MutualFundWidgetDetails} element={<MutualFundWidgetDetails />}></Route>
                 </Route>
 
                 {/* Redirect unknown routes to login */}
