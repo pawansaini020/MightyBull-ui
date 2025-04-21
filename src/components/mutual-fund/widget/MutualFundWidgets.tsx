@@ -173,7 +173,13 @@ function MutualFundWidgets() {
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Node;
-            if (!Object.values(refs).some(ref => ref.current?.contains(target))) {
+            // Check if the click is on a dropdown item or its children
+            const isDropdownItem = Object.values(refs).some(ref => 
+                ref.current?.contains(target) || 
+                ref.current?.querySelector('.dropdownItem')?.contains(target)
+            );
+            
+            if (!isDropdownClick) {
                 setDropdownStates({
                     score: false,
                     sortBy: false,
@@ -205,9 +211,14 @@ function MutualFundWidgets() {
                             isOpen={dropdownStates.score}
                             onToggle={handleDropdownToggle('score')}
                             label="Score"
+                            dropdownRef={refs.score}
                         >
                             {SCORE_RANGES.map(({ value, label }) => (
-                                <div className={styles['filter-text']} key={value}>
+                                <div 
+                                    className={styles['filter-text']} 
+                                    key={value}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
                                     <label>
                                         <input
                                             type="checkbox"
@@ -224,8 +235,12 @@ function MutualFundWidgets() {
                             isOpen={dropdownStates.sector}
                             onToggle={handleDropdownToggle('sector')}
                             label="Sector"
+                            dropdownRef={refs.sector}
                         >
-                            <div className={styles['filter-search']}>
+                            <div 
+                                className={styles['filter-search']}
+                                onClick={(e) => e.stopPropagation()}
+                            >
                                 <input
                                     type="text"
                                     className={styles["search-box"]}
@@ -235,7 +250,11 @@ function MutualFundWidgets() {
                                 />
                             </div>
                             {filteredSectors.map((sector) => (
-                                <div className={styles['filter-text']} key={sector}>
+                                <div 
+                                    className={styles['filter-text']} 
+                                    key={sector}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
                                     <label>
                                         <input
                                             type="checkbox"
@@ -252,9 +271,14 @@ function MutualFundWidgets() {
                             isOpen={dropdownStates.sortBy}
                             onToggle={handleDropdownToggle('sortBy')}
                             label="Sort By"
+                            dropdownRef={refs.sortBy}
                         >
                             {SORT_OPTIONS.map(({ value, label }) => (
-                                <div className={styles['filter-text']} key={value}>
+                                <div 
+                                    className={styles['filter-text']} 
+                                    key={value}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
                                     <label>
                                         <input
                                             type="checkbox"

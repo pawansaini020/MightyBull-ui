@@ -33,6 +33,7 @@
   gap: 1rem;
   margin-bottom: 1rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .dropdown {
@@ -119,13 +120,40 @@
   }
 }
 
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .searchButton {
   background-color: var(--text-white);
   border: 1px solid var(--background-blue);
   border-radius: 6px;
   color: var(--primary-text);
   font-weight: 600;
-  font-size: var(--background-blue);;
+  font-size: var(--font-size-small);
+  padding: 6px 12px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: var(--background-hover);
+  }
+}
+
+.clearButton {
+  background-color: var(--text-white);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color: var(--primary-text);
+  font-weight: 600;
+  font-size: var(--font-size-small);
+  padding: 6px 12px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: var(--background-hover);
+  }
 }
 
 .mutual-fund-total-search {
