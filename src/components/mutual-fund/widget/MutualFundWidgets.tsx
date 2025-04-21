@@ -56,22 +56,30 @@ const FilterDropdown = ({
     isOpen, 
     onToggle, 
     label, 
-    children 
+    children,
+    dropdownRef
 }: { 
     isOpen: boolean; 
     onToggle: () => void; 
     label: string; 
-    children: React.ReactNode 
+    children: React.ReactNode;
+    dropdownRef: React.RefObject<HTMLDivElement | null>;
 }) => (
-    <div className={styles['dropdown']}>
+    <div className={styles['dropdown']} ref={dropdownRef}>
         <button 
             className={styles['dropdownButton']}
-            onClick={onToggle}
+            onClick={(e) => {
+                e.stopPropagation();
+                onToggle();
+            }}
         >
             {label} ▾
         </button>
         {isOpen && (
-            <div className={styles['dropdownItem']}>
+            <div 
+                className={styles['dropdownItem']}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {children}
             </div>
         )}
@@ -173,10 +181,10 @@ function MutualFundWidgets() {
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Node;
-            // Check if the click is on a dropdown item or its children
-            const isDropdownItem = Object.values(refs).some(ref => 
-                ref.current?.contains(target) || 
-                ref.current?.querySelector('.dropdownItem')?.contains(target)
+            
+            // Check if the click is on any of the dropdown elements
+            const isDropdownClick = Object.values(refs).some(ref => 
+                ref.current && ref.current.contains(target)
             );
             
             if (!isDropdownClick) {
@@ -196,6 +204,18 @@ function MutualFundWidgets() {
     useEffect(() => {
         fetchFilteredMutualFunds(currentPage);
     }, [currentPage, fetchFilteredMutualFunds]);
+
+    // Add a clear filters function
+    const handleClearFilters = useCallback(() => {
+        setFilters({
+            score: [],
+            sortBy: [],
+            sector: []
+        });
+        setSectorSearchText("");
+        // Fetch data with cleared filters
+        fetchFilteredMutualFunds(currentPage);
+    }, [fetchFilteredMutualFunds, currentPage]);
 
     return (
         <>
@@ -291,12 +311,20 @@ function MutualFundWidgets() {
                             ))}
                         </FilterDropdown>
 
-                        <button 
-                            className={styles['searchButton']} 
-                            onClick={() => fetchFilteredMutualFunds(currentPage)}
-                        >
-                            Apply
-                        </button>
+                        <div className={styles['filter-buttons']}>
+                            <button 
+                                className={styles['searchButton']} 
+                                onClick={() => fetchFilteredMutualFunds(currentPage)}
+                            >
+                                Apply
+                            </button>
+                            <button 
+                                className={styles['searchButton']} 
+                                onClick={handleClearFilters}
+                            >
+                                Clear
+                            </button>
+                        </div>
                         <div className={styles['mutual-fund-total-search']}>
                             Search results {pageData?.total_count ?? 0} Stocks
                         </div>
