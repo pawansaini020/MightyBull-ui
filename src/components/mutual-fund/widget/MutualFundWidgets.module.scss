@@ -168,7 +168,7 @@
   font-weight: 800;
   font-size: var(--font-size-small);
   color: #666;
-  padding: 1.0rem 2.5rem;
+  padding: 1.0rem 2rem;
   border-bottom: 1px solid #eee;
 
   span {
@@ -180,7 +180,7 @@
     text-align: left;
   }
   .span-logo {
-    flex: 0.2;
+    flex: 0.4;
     text-align: left;
   }
 }
@@ -188,7 +188,7 @@
 .mutual-fund-table-row {
   display: flex;
   text-align: left;
-  padding: 1.0rem 2.5rem;
+  padding: 1.0rem 2rem;
   font-size: var(--font-size-small);
   border-bottom: 1px solid #eee;
   cursor: pointer;
@@ -199,7 +199,7 @@
 }
 
 .mutual-fund-row-image {
-  flex: 0.2;
+  flex: 0.4;
   display: flex;
   flex-direction: column;
   font-weight: 500;

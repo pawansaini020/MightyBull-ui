@@ -25,30 +25,36 @@ interface MutualFundItem {
 }
 
 interface FilterState {
-    score: string[];
-    sortBy: string[];
-    sector: string[];
+    category: string[];
+    cap: string[];
+    fundHouse: string[];
 }
 
 // Constants
-const SCORE_RANGES = [
-    { value: "600-1000", label: "600-1000" },
-    { value: "500-600", label: "500 - 600" },
-    { value: "400-500", label: "400 - 500" },
-    { value: "200-400", label: "200 - 400" },
-    { value: "0-200", label: "0 - 200" }
+const FUND_HOUSE_OPTIONS = [
+    "Quant Small Cap Fund", 
+    "PPFAS Mutual Fund", 
+    "Axis Mutual Fund", 
+    "LIC Mutual Fund",
+    "Nippon India Mutual Fund", 
+    "SBI Mutual Fund", 
+    "Quant Mutual Fund", 
+    "Tata Mutual Fund",
+    "HDFC Mutual Fund"
+];
+const CATEGORY_OPTIONS = [
+    { value: "Equity", label: "Equity" },
+    { value: "Hybrid", label: "Hybrid" },
+    { value: "Commodities", label: "Commodities" },
+    { value: "Debt", label: "Debt" }
 ];
 
-const SORT_OPTIONS = [
-    { value: "score", label: "Score" },
-    { value: "marketCap", label: "Market Cap" },
-    { value: "dividendYield", label: "Dividend" }
-];
-
-const SECTORS = [
-    "Finance", "Trading", "Textiles", "IT - Software", "Pharmaceuticals",
-    "Chemicals", "Steel", "Healthcare", "Stock/ Commodity Brokers",
-    "Power Generation & Distribution"
+const CAP_OPTIONS = [
+    { value: "Small Cap", label: "Small Cap" },
+    { value: "marketCap", label: "Mid Cap" },
+    { value: "Large Cap", label: "Large Cap" },
+    { value: "Flexi Cap", label: "Flexi Cap" },
+    { value: "Multi Cap", label: "Multi Cap" }
 ];
 
 // Reusable Dropdown Component
@@ -91,27 +97,27 @@ function MutualFundWidgets() {
     const [mutualFundList, setMutualFundList] = useState<MutualFundItem[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageData, setPageData] = useState<any>({});
-    const [sectorSearchText, setSectorSearchText] = useState("");
+    const [fundHouseSearchText, setFundHouseSearchText] = useState("");
 
     // Combined filter state
     const [filters, setFilters] = useState<FilterState>({
-        score: [],
-        sortBy: [],
-        sector: []
+        category: [],
+        cap: [],
+        fundHouse: []
     });
 
     // Dropdown states
     const [dropdownStates, setDropdownStates] = useState({
-        score: false,
-        sortBy: false,
-        sector: false
+        category: false,
+        cap: false,
+        fundHouse: false
     });
 
     // Refs for click outside handling
     const refs = {
-        score: useRef<HTMLDivElement>(null),
-        sortBy: useRef<HTMLDivElement>(null),
-        sector: useRef<HTMLDivElement>(null)
+        category: useRef<HTMLDivElement>(null),
+        cap: useRef<HTMLDivElement>(null),
+        fundHouse: useRef<HTMLDivElement>(null)
     };
 
     // Memoized filter handlers
@@ -126,19 +132,19 @@ function MutualFundWidgets() {
     // Memoized dropdown toggle handler
     const handleDropdownToggle = useCallback((dropdownType: keyof typeof dropdownStates) => () => {
         setDropdownStates(prev => ({
-            score: false,
-            sortBy: false,
-            sector: false,
+            category: false,
+            cap: false,
+            fundHouse: false,
             [dropdownType]: !prev[dropdownType]
         }));
     }, []);
 
-    // Memoized filtered sectors
-    const filteredSectors = useMemo(() => 
-        SECTORS.filter(sector => 
-            sector.toLowerCase().includes(sectorSearchText.toLowerCase())
+    // Memoized filtered fundHouse
+    const filteredFundHouses = useMemo(() => 
+        FUND_HOUSE_OPTIONS.filter(fundHouse => 
+            fundHouse.toLowerCase().includes(fundHouseSearchText.toLowerCase())
         ),
-        [sectorSearchText]
+        [fundHouseSearchText]
     );
 
     // Memoized fetch function
@@ -150,9 +156,9 @@ function MutualFundWidgets() {
 
             Object.entries(filters).forEach(([key, values]: [string, string[]]) => {
                 values?.forEach(value => {
-                    if (key === 'score') params.append("score_range", value);
-                    if (key === 'sortBy') params.append("sort_by", value);
-                    if (key === 'sector') params.append("sector", value);
+                    if (key === 'category') params.append("category", value);
+                    if (key === 'cap') params.append("cap", value);
+                    if (key === 'fundHouse') params.append("fund_house", value);
                 });
             });
 
@@ -189,9 +195,9 @@ function MutualFundWidgets() {
             
             if (!isDropdownClick) {
                 setDropdownStates({
-                    score: false,
-                    sortBy: false,
-                    sector: false
+                    category: false,
+                    cap: false,
+                    fundHouse: false
                 });
             }
         };
@@ -208,11 +214,11 @@ function MutualFundWidgets() {
     // Add a clear filters function
     const handleClearFilters = useCallback(() => {
         setFilters({
-            score: [],
-            sortBy: [],
-            sector: []
+            category: [],
+            cap: [],
+            fundHouse: []
         });
-        setSectorSearchText("");
+        setFundHouseSearchText("");
         // Fetch data with cleared filters
         fetchFilteredMutualFunds(currentPage);
     }, [fetchFilteredMutualFunds, currentPage]);
@@ -227,35 +233,12 @@ function MutualFundWidgets() {
                     </div>
 
                     <div className={styles['filterContainer']}>
-                        <FilterDropdown
-                            isOpen={dropdownStates.score}
-                            onToggle={handleDropdownToggle('score')}
-                            label="Score"
-                            dropdownRef={refs.score}
-                        >
-                            {SCORE_RANGES.map(({ value, label }) => (
-                                <div 
-                                    className={styles['filter-text']} 
-                                    key={value}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    <label>
-                                        <input
-                                            type="checkbox"
-                                            value={value}
-                                            onChange={handleFilterChange('score')}
-                                            checked={filters.score.includes(value)}
-                                        /> {label}
-                                    </label>
-                                </div>
-                            ))}
-                        </FilterDropdown>
 
                         <FilterDropdown
-                            isOpen={dropdownStates.sector}
-                            onToggle={handleDropdownToggle('sector')}
-                            label="Sector"
-                            dropdownRef={refs.sector}
+                            isOpen={dropdownStates.fundHouse}
+                            onToggle={handleDropdownToggle('fundHouse')}
+                            label="Fund House"
+                            dropdownRef={refs.fundHouse}
                         >
                             <div 
                                 className={styles['filter-search']}
@@ -264,36 +247,36 @@ function MutualFundWidgets() {
                                 <input
                                     type="text"
                                     className={styles["search-box"]}
-                                    placeholder="Search sector..."
-                                    value={sectorSearchText}
-                                    onChange={(e) => setSectorSearchText(e.target.value)}
+                                    placeholder="Search fund..."
+                                    value={fundHouseSearchText}
+                                    onChange={(e) => setFundHouseSearchText(e.target.value)}
                                 />
                             </div>
-                            {filteredSectors.map((sector) => (
+                            {filteredFundHouses.map((fundHouse) => (
                                 <div 
                                     className={styles['filter-text']} 
-                                    key={sector}
+                                    key={fundHouse}
                                     onClick={(e) => e.stopPropagation()}
                                 >
                                     <label>
                                         <input
                                             type="checkbox"
-                                            value={sector}
-                                            onChange={handleFilterChange('sector')}
-                                            checked={filters.sector.includes(sector)}
-                                        /> {sector}
+                                            value={fundHouse}
+                                            onChange={handleFilterChange('fundHouse')}
+                                            checked={filters.fundHouse.includes(fundHouse)}
+                                        /> {fundHouse}
                                     </label>
                                 </div>
                             ))}
                         </FilterDropdown>
 
                         <FilterDropdown
-                            isOpen={dropdownStates.sortBy}
-                            onToggle={handleDropdownToggle('sortBy')}
-                            label="Sort By"
-                            dropdownRef={refs.sortBy}
+                            isOpen={dropdownStates.category}
+                            onToggle={handleDropdownToggle('category')}
+                            label="Category"
+                            dropdownRef={refs.category}
                         >
-                            {SORT_OPTIONS.map(({ value, label }) => (
+                            {CATEGORY_OPTIONS.map(({ value, label }) => (
                                 <div 
                                     className={styles['filter-text']} 
                                     key={value}
@@ -303,8 +286,32 @@ function MutualFundWidgets() {
                                         <input
                                             type="checkbox"
                                             value={value}
-                                            onChange={handleFilterChange('sortBy')}
-                                            checked={filters.sortBy.includes(value)}
+                                            onChange={handleFilterChange('category')}
+                                            checked={filters.category.includes(value)}
+                                        /> {label}
+                                    </label>
+                                </div>
+                            ))}
+                        </FilterDropdown>
+
+                        <FilterDropdown
+                            isOpen={dropdownStates.cap}
+                            onToggle={handleDropdownToggle('cap')}
+                            label="Cap"
+                            dropdownRef={refs.cap}
+                        >
+                            {CAP_OPTIONS.map(({ value, label }) => (
+                                <div 
+                                    className={styles['filter-text']} 
+                                    key={value}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value={value}
+                                            onChange={handleFilterChange('cap')}
+                                            checked={filters.cap.includes(value)}
                                         /> {label}
                                     </label>
                                 </div>
@@ -332,15 +339,15 @@ function MutualFundWidgets() {
 
                     <div className={styles['mutual-fund-table']}>
                         <div className={styles['mutual-fund-table-head']}>
-                            <span className={styles['span-logo']}><strong>Name</strong></span>
-                            <span className={styles['span-name']}><strong></strong></span>
-                            <span><strong>category</strong></span>
-                            <span><strong>subCategory</strong></span>
-                            <span><strong>risk</strong></span>
-                            <span><strong>riskRating</strong></span>
-                            <span><strong>return1y</strong></span>
-                            <span><strong>return3y</strong></span>
-                            <span><strong>return5y</strong></span>
+                            <span className={styles['span-logo']}><strong></strong></span>
+                            <span className={styles['span-name']}><strong>Name</strong></span>
+                            <span><strong>Category</strong></span>
+                            <span><strong>Cap</strong></span>
+                            <span><strong>Risk</strong></span>
+                            <span><strong>Risk Rating</strong></span>
+                            <span><strong>Return(1 Year)</strong></span>
+                            <span><strong>Return(2 Year)</strong></span>
+                            <span><strong>Return(3 Year)</strong></span>
                         </div>
 
                         {mutualFundList?.map((mutualFund) => (

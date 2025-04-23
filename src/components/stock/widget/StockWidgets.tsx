@@ -94,6 +94,14 @@ function StockWidgets() {
         fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
     };
 
+    const handleClearFilters = () => {
+        setScoreFilters([]);
+        setSortByFilters([]);
+        setSectorFilters([]);
+        setSectorSearchText("");
+        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
+    };
+
     const fetchFilteredStocks = async (page: number, scores: string[] = [], sortBys: string[] = [], sectors: string[] = []) => {
         try {
             const params = new URLSearchParams();
@@ -278,6 +286,12 @@ function StockWidgets() {
                         </div>
 
                         <button className={styles['searchButton']} onClick={applyFilters}>Apply</button>
+                        <button 
+                                className={styles['searchButton']} 
+                                onClick={handleClearFilters}
+                            >
+                                Clear
+                            </button>
                         <div className={styles['stock-total-search']}>
                             Search results {pageData?.total_count || 0} Stocks
                         </div>
