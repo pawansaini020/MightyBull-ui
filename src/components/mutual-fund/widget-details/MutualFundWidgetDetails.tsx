@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./MutualFundWidgetDetails.module.scss";
 import Headers from "../../layout/header/Header.tsx";
 import { formatNumber, formateString, formatDate } from "../../../helpers/StringTransform.ts";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import { Routers } from "../../../constants/AppConstants.ts";
+import Pagination from "../../global/pagination/Pagination.tsx";
 
 // Types
 interface ReturnStats {
@@ -61,6 +62,10 @@ function MutualFundWidgetDetails() {
     const [mutualFund, setMutualFund] = useState<MutualFundItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [stockHoldings, setStockHoldings] = useState<StockHoldingItem[]>([]);
+    
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize] = useState(10);
 
     // API call to fetch mutual fund details
     const fetchMutualFundDetails = async (id: string | undefined) => {
@@ -82,7 +87,12 @@ function MutualFundWidgetDetails() {
         fetchMutualFundDetails(mutualFundId);
     }, [mutualFundId]);
 
-    
+    // Calculate paginated data
+    const paginatedHoldings = useMemo(() => {
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        return stockHoldings.slice(startIndex, endIndex);
+    }, [stockHoldings, currentPage, pageSize]);
 
     const handleStockClick = (stockId: string) => {
         navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stockId)));
@@ -238,7 +248,7 @@ function MutualFundWidgetDetails() {
                             <span><strong>Corpus %</strong></span>
                         </div>
 
-                        {stockHoldings.map((stock, index) => (
+                        {paginatedHoldings.map((stock, index) => (
                             <div
                                 className={styles['stock-table-row']}
                                 key={index}
@@ -264,6 +274,18 @@ function MutualFundWidgetDetails() {
                                 </div>
                             </div>
                         ))}
+                    </div>
+
+                    {/* Pagination */}
+                    <div className={styles['pagination_container']}>
+                        <Pagination
+                            className="pagination-bar"
+                            siblingCount={1}
+                            currentPage={currentPage}
+                            totalCount={stockHoldings.length}
+                            pageSize={pageSize}
+                            onPageChange={setCurrentPage}
+                        />
                     </div>
                 </div>
             </div>
