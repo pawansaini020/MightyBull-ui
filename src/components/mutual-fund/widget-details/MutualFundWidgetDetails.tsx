@@ -15,7 +15,7 @@ interface ReturnStats {
 }
 
 interface StockHoldingItem {
-    mutualFundId: string;
+    stock_id: string;
     stock_search_id: string;
     company_name: string;
     sector_name: string;
@@ -252,7 +252,7 @@ function MutualFundWidgetDetails() {
                             <div
                                 className={styles['stock-table-row']}
                                 key={index}
-                                onClick={() => handleStockClick(stock.stock_search_id)}
+                                onClick={() => handleStockClick(stock.stock_id)}
                             >
                                 <div className={styles['row-text']}>
                                     <div>{formateString(stock.company_name)}</div>
