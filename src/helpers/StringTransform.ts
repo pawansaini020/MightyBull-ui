@@ -20,7 +20,7 @@ export function formatNumber(input: number): string {
     if (!input || input == undefined || isNaN(input)) {
         return '0';
     }
-    if(input < 0.01) {
+    if(input < 0.01 && input > -0.01) {
         return input.toFixed(4);
     }
     return input.toFixed(2);
