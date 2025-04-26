@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./MutualFundWidgetDetails.module.scss";
 import Headers from "../../layout/header/Header.tsx";
-import { formatNumber } from "../../../helpers/StringTransform.ts";
+import { formatNumber, formateString, formatDate } from "../../../helpers/StringTransform.ts";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import { Routers } from "../../../constants/AppConstants.ts";
 
@@ -55,9 +55,6 @@ interface MutualFundItem {
     lockIn: object;
 }
 
-// Constants
-const DEFAULT_VALUE = "NA";
-
 function MutualFundWidgetDetails() {
     const { mutualFundId } = useParams<{ mutualFundId: string }>();
     const navigate = useNavigate();
@@ -85,10 +82,7 @@ function MutualFundWidgetDetails() {
         fetchMutualFundDetails(mutualFundId);
     }, [mutualFundId]);
 
-    // Helper functions
-    const getFormattedValue = (value: any, suffix: string = "") => {
-        return value ? `${value}${suffix}` : DEFAULT_VALUE;
-    };
+    
 
     const handleStockClick = (stockId: string) => {
         navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stockId)));
@@ -137,20 +131,20 @@ function MutualFundWidgetDetails() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Current Value</span>
                                     <span className={styles.value}>
-                                        {getFormattedValue(mutualFund.nav)} ({getFormattedValue(mutualFund.navDate)})
+                                        {formateString(mutualFund.nav)} ({formateString(mutualFund.navDate)})
                                     </span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Rank</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.rank)}</span>
+                                    <span className={styles.value}>{formateString(mutualFund.rank)}</span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
-                                    <span className={styles.label}>Risk Rating</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.riskRating)}</span>
+                                    <span className={styles.label}>Aum</span>
+                                    <span className={styles.value}>{formatNumber(mutualFund.aum)}</span>
                                 </div>
                             </div>
                         </div>
@@ -160,19 +154,19 @@ function MutualFundWidgetDetails() {
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Category</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.category)}</span>
+                                    <span className={styles.value}>{formateString(mutualFund.category)}</span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Cap</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.subCategory)}</span>
+                                    <span className={styles.value}>{formateString(mutualFund.subCategory)}</span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Risk</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.risk)}</span>
+                                    <span className={styles.value}>{formateString(mutualFund.risk)} ({formateString(mutualFund.riskRating)})</span>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +177,7 @@ function MutualFundWidgetDetails() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Return 1M</span>
                                     <span className={styles.value}>
-                                        {getFormattedValue(mutualFund.returnStats[0]?.return1w, "%")}
+                                        {formatNumber(mutualFund.returnStats[0]?.return1w || 0)} %
                                     </span>
                                 </div>
                             </div>
@@ -191,7 +185,7 @@ function MutualFundWidgetDetails() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Return 1y</span>
                                     <span className={styles.value}>
-                                        {getFormattedValue(mutualFund.returnStats[0]?.return1y, "%")}
+                                        {formatNumber(mutualFund.returnStats[0]?.return1y || 0)}  %
                                     </span>
                                 </div>
                             </div>
@@ -199,7 +193,7 @@ function MutualFundWidgetDetails() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Return 3y</span>
                                     <span className={styles.value}>
-                                        {getFormattedValue(mutualFund.returnStats[0]?.return3y, "%")}
+                                        {formatNumber(mutualFund.returnStats[0]?.return3y || 0)}  %
                                     </span>
                                 </div>
                             </div>
@@ -210,19 +204,19 @@ function MutualFundWidgetDetails() {
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Stamp Duty</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.stampDuty)}</span>
+                                    <span className={styles.value}>{formateString(mutualFund.stampDuty)}</span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Expense Ratio</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.expenseRatio, "%")}</span>
+                                    <span className={styles.value}>{formatNumber(mutualFund.expenseRatio)} %</span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Exit Load Message</span>
-                                    <span className={styles.value}>{getFormattedValue(mutualFund.exitLoadMessage)}</span>
+                                    <span className={styles.value}>{formateString(mutualFund.exitLoadMessage)}</span>
                                 </div>
                             </div>
                         </div>
@@ -251,22 +245,22 @@ function MutualFundWidgetDetails() {
                                 onClick={() => handleStockClick(stock.stock_search_id)}
                             >
                                 <div className={styles['row-text']}>
-                                    <div>{getFormattedValue(stock.company_name)}</div>
+                                    <div>{formateString(stock.company_name)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
-                                    <div>{getFormattedValue(stock.sector_name)}</div>
+                                    <div>{formateString(stock.sector_name)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
-                                    <div>{getFormattedValue(stock.portfolio_date)}</div>
+                                    <div>{formatDate(stock.portfolio_date)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
-                                    <div>{getFormattedValue(stock.instrument_name)}</div>
+                                    <div>{formateString(stock.instrument_name)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
-                                    <div>{getFormattedValue(stock.market_value)}</div>
+                                    <div>{formatNumber(stock.market_value)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
-                                    <div>{getFormattedValue(stock.corpus_per, "%")}</div>
+                                    <div>{formatNumber(stock.corpus_per)} %</div>
                                 </div>
                             </div>
                         ))}
