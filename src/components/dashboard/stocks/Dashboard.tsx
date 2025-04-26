@@ -209,8 +209,6 @@ function Dashboard() {
                                     </span>
                                 </div>
                             </div>
-                        </div>
-                        <div className={styles.row}>
                             <div className={styles.card}
                                  onClick={() => handleIndexWidget(indexes['sp-bse-sensex']?.indexId)}
                             >

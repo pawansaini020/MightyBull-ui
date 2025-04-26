@@ -42,13 +42,15 @@
 }
 
 .row {
-  display: flex;
+   display: grid;
   justify-content: space-between;
+  grid-template-columns: repeat(3, 1fr); /* 2 columns */
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.2rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 1rem;
     padding: 0 2%;
   }
 }
@@ -80,9 +82,11 @@
   justify-content: space-between;
   align-items: center;
   width: 97%;
+  padding: 2%;
 
   @media (max-width: 768px) {
     align-items: flex-start;
+    flex-direction: column;
     width: 100%;
     gap: 0.2rem;
   }
