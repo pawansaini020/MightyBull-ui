@@ -12,12 +12,34 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+
+    @media (max-width: 768px) {
+        max-width: 90%;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    @media (max-width: 480px) {
+        margin: 20px auto;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 }
 
 h2 {
-    font-size: 24px;
+    font-size: var(--text-2xl);
     margin-bottom: 15px;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: var(--text-xl);
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: var(--text-lg);
+        margin-bottom: 10px;
+    }
 }
 
 .input {
@@ -26,13 +48,28 @@ h2 {
     margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: var(--text-base);
     outline: none;
-    transition: border-color 0.3s ease;
-}
+    transition: all 0.3s ease;
 
-.input:focus {
-    border-color: #007bff;
+    @media (max-width: 768px) {
+        width: 90%;
+        padding: 10px;
+        margin-top: 8px;
+        font-size: var(--text-sm);
+    }
+
+    @media (max-width: 480px) {
+        width: 85%;
+        padding: 8px;
+        margin-top: 6px;
+        font-size: var(--text-sm);
+    }
+
+    &:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
 }
 
 .btn {
@@ -44,27 +81,72 @@ h2 {
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-}
+    font-size: var(--text-base);
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
 
-.btn:hover {
-    background-color: #0056b3;
-}
+    @media (max-width: 768px) {
+        width: 45%;
+        padding: 8px;
+        margin: 8px;
+        font-size: var(--text-sm);
+    }
 
-.btn:disabled {
-    background-color: #999;
-    cursor: not-allowed;
+    @media (max-width: 480px) {
+        width: 50%;
+        padding: 6px;
+        margin: 6px;
+        font-size: var(--text-sm);
+    }
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &:disabled {
+        background-color: #999;
+        cursor: not-allowed;
+        transform: none;
+    }
 }
 
 .text-link {
     display: block;
     margin-top: 12px;
     color: #007bff;
-    font-size: 14px;
+    font-size: var(--text-sm);
     text-decoration: none;
+    transition: color 0.3s ease;
+
+    @media (max-width: 768px) {
+        margin-top: 10px;
+    }
+
+    @media (max-width: 480px) {
+        margin-top: 8px;
+    }
+
+    &:hover {
+        text-decoration: underline;
+        color: #0056b3;
+    }
 }
 
-.text-link:hover {
-    text-decoration: underline;
-}
+// Additional mobile optimizations
+// @media (max-width: 480px) {
+//     .container {
+//         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+//     }
+
+//     .input:focus {
+//         outline: none;
+//     }
+
+//     .btn {
+//         -webkit-tap-highlight-color: transparent;
+//     }
+// }

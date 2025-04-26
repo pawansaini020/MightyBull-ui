@@ -2,4 +2,9 @@
     padding: 2rem;
     display: flex;
     color: var(--special-text);
+    font-size: var(--text-base);
+
+    @media (max-width: 768px) {
+        font-size: var(--text-s);
+    }
 }

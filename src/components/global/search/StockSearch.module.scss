@@ -2,6 +2,12 @@
   position: relative;
   width: 100%;
   max-width: 20%;
+
+  @media (max-width: 768px) {
+    width: 50%;
+    max-width: 50%;
+    order: 3;
+  }
 }
 
 .search-wrapper {
@@ -10,6 +16,11 @@
   position: relative;
   width: 100%;
   max-width: 400px;
+
+  @media (max-width: 768px) {
+    width: 50%;
+    max-width: 10px;
+  }
 }
 
 .search-icon {
@@ -20,10 +31,19 @@
   height: 100%;
   pointer-events: none;
 
+  @media (max-width: 768px) {
+    left: 8px;
+  }
+
   img {
     width: 70%;
     height: 70%;
     opacity: 0.8;
+
+    @media (max-width: 480px) {
+      width: 10%;
+      height: 10%;
+    }
   }
 }
 
@@ -35,6 +55,18 @@
   background-color: var(--background-hover);
   color: var(--primary-text);
   font-size: var(--font-size-small);
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px 8px 32px;
+    font-size: var(--font-size-xs);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
 }
 
 .suggestion-list {
@@ -49,6 +81,12 @@
   max-height: 200px;
   overflow-y: auto;
   font-size: var(--font-size-small);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    max-height: 180px;
+    font-size: var(--font-size-xs);
+  }
 }
 
 .suggestion-item {
@@ -57,9 +95,19 @@
   font-size: var(--font-size-small);
   color: var(--primary-text);
   text-align: left;
+  transition: background-color 0.2s ease;
+
+  @media (max-width: 768px) {
+    padding: 6px 10px;
+    font-size: var(--font-size-xs);
+  }
 
   &:hover {
     background-color: var(--background-hover);
+  }
+
+  &:active {
+    background-color: var(--background-active);
   }
 }
 
@@ -68,4 +116,21 @@
   padding: 8px 12px;
   font-style: italic;
   color: var(--secondary-text);
+  font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    padding: 6px 10px;
+    font-size: var(--font-size-xs);
+  }
 }
+
+// Add mobile-specific optimizations
+// @media (max-width: 480px) {
+//   .search-box {
+//     -webkit-tap-highlight-color: transparent;
+//   }
+
+//   .suggestion-item {
+//     -webkit-tap-highlight-color: transparent;
+//   }
+// }

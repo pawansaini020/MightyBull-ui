@@ -7,12 +7,33 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+
+    @media (max-width: 768px) {
+        max-width: 90%;
+        margin: 30px auto;
+        padding: 15px;
+    }
+
+    @media (max-width: 480px) {
+        margin: 20px auto;
+        padding: 12px;
+    }
 }
 
 .auth-container h2 {
-    font-size: 24px;
+    font-size: var(--text-2xl);
     margin-bottom: 15px;
     color: #333;
+
+    @media (max-width: 768px) {
+        font-size: var(--text-xl);
+        margin-bottom: 12px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: var(--text-lg);
+        margin-bottom: 10px;
+    }
 }
 
 .auth-input {
@@ -21,7 +42,21 @@
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: var(--text-base);
+
+    @media (max-width: 768px) {
+        width: 90%;
+        padding: 8px;
+        margin: 8px 0;
+        font-size: var(--text-sm);
+    }
+
+    @media (max-width: 480px) {
+        width: 85%;
+        padding: 6px;
+        margin: 6px 0;
+        font-size: var(--text-sm);
+    }
 }
 
 .auth-button {
@@ -33,11 +68,30 @@
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-}
+    font-size: var(--text-base);
+    transition: background-color 0.3s ease;
 
-.auth-button:hover {
-    background-color: #0056b3;
+    @media (max-width: 768px) {
+        width: 45%;
+        padding: 8px;
+        margin: 8px;
+        font-size: var(--text-sm);
+    }
+
+    @media (max-width: 480px) {
+        width: 50%;
+        padding: 6px;
+        margin: 6px;
+        font-size: var(--text-sm);
+    }
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
 }
 
 .auth-link {
@@ -45,4 +99,36 @@
     margin-top: 10px;
     color: #007bff;
     text-decoration: none;
+    font-size: var(--text-base);
+
+    @media (max-width: 768px) {
+        margin-top: 8px;
+        font-size: var(--text-sm);
+    }
+
+    @media (max-width: 480px) {
+        margin-top: 6px;
+        font-size: var(--text-sm);
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// Additional mobile optimizations
+@media (max-width: 480px) {
+    .auth-container {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .auth-input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .auth-button {
+        -webkit-tap-highlight-color: transparent;
+    }
 }

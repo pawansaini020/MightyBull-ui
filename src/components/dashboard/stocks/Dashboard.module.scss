@@ -7,6 +7,12 @@
   flex-direction: column; /* stack containers vertically */
   gap: 0.8rem; /* spacing between each container */
   background: var(--background-grey);
+
+  @media (max-width: 768px) {
+    top: 4rem;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+  }
 }
 
 .index-container {
@@ -16,6 +22,10 @@
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
   padding: 0 3% 1.5% 3%;
   font-family: 'Inter', sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 0 1% 1% 1%;
+  }
 }
 
 .index-table-container {
@@ -24,12 +34,23 @@
   border: 1px solid var(--border-color);
   overflow: hidden;
   border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    width: 95%;
+    border-radius: 8px;
+  }
 }
 
 .row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0 2%;
+  }
 }
 
 .card {
@@ -45,6 +66,13 @@
     background-color: var(--background-disabled);
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    min-width: 90%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    font-size: var(--font-size-xs);
+  }
 }
 
 .flexRow {
@@ -52,17 +80,32 @@
   justify-content: space-between;
   align-items: center;
   width: 97%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0.2rem;
+  }
 }
 
 .label {
   font-size: var(--font-size-small);
   color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xs);
+  }
 }
 
 .value {
   font-size: var(--font-size-small);
   color: var(--primary-text);
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xs);
+  }
 }
 
 .stock-table-container {
@@ -72,6 +115,10 @@
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
   padding: 0 3% 1.5% 3%;
   font-family: 'Inter', sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 0 1% 1% 1%;
+  }
 }
 
 .stock-header {
@@ -83,6 +130,10 @@
   h3 {
     font-size: var(--font-size-large);
     font-weight: 600;
+
+    @media (max-width: 768px) {
+      font-size: var(--text-base);
+    }
   }
 
   .seeMore {
@@ -104,6 +155,11 @@
       transform: rotate(90deg);
     }
   }
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
 }
 
 .stock-table {
@@ -112,6 +168,10 @@
   border-radius: 10px;
   overflow: hidden; /* Ensures rounded corners apply properly */
   border: 1px solid  var(--border-color); /* Optional outer border */
+
+  @media (max-width: 768px) {
+    font-size: var(--text-s);
+  }
 }
 
 .stock-table-head {
@@ -127,6 +187,12 @@
     flex: 1;
     text-align: left;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: var(--text-s);
+    gap: 0.25rem;
+  }
 }
 
 .stock-table-row {
@@ -140,70 +206,63 @@
   &:hover {
     background: var(--background-hover);
   }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: var(--text-s);
+    gap: 0.25rem;
+  }
 }
 
-.stock-company {
+.stock-company, .stock-sector, .stock-price, .stock-score, .stock-marketCap, .stock-dividend {
   flex: 1;
   display: flex;
   flex-direction: column;
   font-weight: 500;
   color: var(--primary-text);
-}
 
-.stock-sector {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-}
-
-.stock-price {
-  flex: 1;
-  font-size:var(--font-size-small);
-  color: var(--primary-text);
+  @media (max-width: 768px) {
+    font-size: var(--text-s);
+    margin-bottom: 0.25rem;
+  }
 }
 
 .neutral {
   color: var(--primary-text);
   font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-sm);
+    margin-bottom: 0.25rem;
+  }
 }
 
 .positive {
   color: var(--bull-text);
   font-size: var(--font-size-small);
+  
+  @media (max-width: 768px) {
+    font-size: var(--text-sm);
+    margin-bottom: 0.25rem;
+  }
 }
-
+  
 .negative {
   color: var(--bear-text);
   font-size: var(--font-size-small);
-}
-
-.stock-score {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-}
-
-.stock-marketCap {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-}
-
-.stock-dividend {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
+  
+  @media (max-width: 768px) {
+    font-size: var(--text-sm);
+    margin-bottom: 0.25rem;
+  }
 }
 
 .pagination_container {
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    margin-top: 0.5rem;
+  }
 }
