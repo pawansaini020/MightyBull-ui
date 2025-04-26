@@ -71,7 +71,7 @@
     min-width: 90%;
     margin: 0.5rem 0;
     padding: 0.75rem;
-    font-size: var(--font-size-xs);
+    font-size: var(--text-base);
   }
 }
 
@@ -93,7 +93,7 @@
   color: var(--primary-text);
 
   @media (max-width: 768px) {
-    font-size: var(--font-size-xs);
+    font-size: var(--text-base);
   }
 }
 
@@ -103,7 +103,7 @@
   font-weight: 700;
 
   @media (max-width: 768px) {
-    font-size: var(--font-size-xs);
+    font-size: var(--text-base);
   }
 }
 
@@ -169,7 +169,7 @@
   border: 1px solid  var(--border-color); /* Optional outer border */
 
   @media (max-width: 768px) {
-    font-size: var(--text-s);
+    font-size: var(--text-base);
   }
 }
 
@@ -189,7 +189,7 @@
 
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
-    font-size: var(--text-s);
+    font-size: var(--text-base);
     gap: 0.25rem;
   }
 }
@@ -208,7 +208,7 @@
 
   @media (max-width: 768px) {
     padding: 0.5rem 1rem;
-    font-size: var(--text-s);
+    font-size: var(--text-base);
     gap: 0.25rem;
   }
 }
@@ -221,7 +221,7 @@
   color: var(--primary-text);
 
   @media (max-width: 768px) {
-    font-size: var(--text-xs);
+    font-size: var(--text-base);
     margin-bottom: 0.25rem;
   }
 }
@@ -231,7 +231,7 @@
   font-size: var(--font-size-small);
 
   @media (max-width: 768px) {
-    font-size: var(--text-xs);
+    font-size: var(--text-base);
     margin-bottom: 0.25rem;
   }
 }
@@ -241,7 +241,7 @@
   font-size: var(--font-size-small);
   
   @media (max-width: 768px) {
-    font-size: var(--text-xs);
+    font-size: var(--text-base);
     margin-bottom: 0.25rem;
   }
 }
@@ -251,7 +251,7 @@
   font-size: var(--font-size-small);
   
   @media (max-width: 768px) {
-    font-size: var(--text-xs);
+    font-size: var(--text-base);
     margin-bottom: 0.25rem;
   }
 }
