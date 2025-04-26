@@ -86,7 +86,7 @@ function Header() {
                         <div className={styles['tabs-section']} onClick={handleTabsClick}>
                             <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} tabs={TABS} />
                         </div>
-                        {/* <StockSearch onSearch={handleStockSearch} /> */}
+                        <StockSearch onSearch={handleStockSearch} />
                     </>
                 )}
                 <div className={styles['profile-options']}>
