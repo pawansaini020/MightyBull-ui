@@ -37,7 +37,7 @@
 
   @media (max-width: 768px) {
     padding: 0 0 0 1%;
-    width: 30%;
+    width: 45%;
     justify-content: center;
     gap: 0.5rem;
     order: 1;
@@ -188,6 +188,6 @@
   @media (max-width: 768px) {
     width: 60%;
     order: 2;
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
   }
 }
