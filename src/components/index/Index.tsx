@@ -66,13 +66,14 @@ function Index() {
                     </div>
                     <div className={styles['index-table']}>
                         <div className={styles['index-table-head']}>
+                            <span className={styles['span-logo']}><strong></strong></span>
                             <span><strong>Index name</strong></span>
-                            <span><strong>Last traded</strong></span>
+                            <span><strong>Last traded(1D)</strong></span>
                             <span><strong>Day change</strong></span>
-                            <span><strong>High</strong></span>
-                            <span><strong>Low</strong></span>
-                            <span><strong>Open</strong></span>
-                            <span><strong>Prev Close</strong></span>
+                            <span className={styles['hide-mobile']}><strong>High</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Low</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Open</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Prev Close</strong></span>
                         </div>
 
                         {indexData.map((index, i) => (
@@ -80,8 +81,9 @@ function Index() {
                                  key={i}
                                  onClick={() => handleIndexWidget(index.indexId)}
                             >
+                                <div className={styles['index-row-logo']}><img src={index.logoUrl} className={styles['index-logo']} /></div>
                                 <div className={styles['index-row']}>
-                                    <div><img src={index.logoUrl} className={styles['index-logo']} />  {index.name}</div>
+                                    <div>{index.name}</div>
                                 </div>
 
                                 <div className={styles['index-row']}>
@@ -96,17 +98,17 @@ function Index() {
                                     </div>
                                 </div>
 
-                                <div className={styles['index-row']}>
+                                <div className={`${styles['index-row']} ${styles['hide-mobile']}`}>
                                     <div>{formatNumber(index.high)}</div>
                                 </div>
 
-                                <div className={styles['index-row']}>
+                                <div className={`${styles['index-row']} ${styles['hide-mobile']}`}>
                                     <div>{formatNumber(index.low)}</div>
                                 </div>
-                                <div className={styles['index-row']}>
+                                <div className={`${styles['index-row']} ${styles['hide-mobile']}`}>
                                     <div>{formatNumber(index.open)}</div>
                                 </div>
-                                <div className={styles['index-row']}>
+                                <div className={`${styles['index-row']} ${styles['hide-mobile']}`}>
                                     <div>{formatNumber(index.close)}</div>
                                 </div>
                             </div>

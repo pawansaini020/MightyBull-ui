@@ -21,11 +21,19 @@
   border-collapse: collapse; /* Ensures borders don't double up */
   overflow: hidden; /* Ensures rounded corners apply properly */
   border: 1px solid var(--background-grey); /* Optional outer border */
+
+  @media (max-width: 768px) {
+    padding: 0 1% 1% 1%;
+  }
 }
 
 .tabs-container {
   margin-bottom: 16px;
   border-bottom: 2px solid #ddd;
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
 }
 
 .index-table {
@@ -34,6 +42,10 @@
   border-radius: 10px;
   overflow: hidden; /* Ensures rounded corners apply properly */
   border: 1px solid var(--border-color); /* Optional outer border */
+
+  @media (max-width: 768px) {
+    padding: 0 1% 1% 1%;
+  }
 }
 
 .index-table-head {
@@ -49,6 +61,16 @@
     flex: 1;
     text-align: left;
   }
+  .span-logo {
+    flex: 0.1;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: var(--text-base);
+    gap: 0.25rem;
+  }
 }
 
 .index-table-row {
@@ -62,12 +84,34 @@
   &:hover {
     background-color: var(--background-hover);
   }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: var(--text-base);
+    gap: 0.25rem;
+  }
 }
 
 .index-row {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Center vertically */
+  font-weight: 500;
+  color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    padding-top: 0.2rem;
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
+}
+
+.index-row-logo {
+  flex: 0.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
   font-weight: 500;
   color: var(--primary-text);
 }
@@ -83,12 +127,38 @@
   border: 1px solid var(--background-hover); /* Optional outer border */
 }
 
+.neutral {
+  color: var(--primary-text);
+  font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
+}
+
 .positive {
   color: var(--bull-text);
   font-size: var(--font-size-small);
+  
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
 }
-
+  
 .negative {
   color: var(--bear-text);
   font-size: var(--font-size-small);
+  
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
 }
