@@ -197,7 +197,7 @@ function IndexWidgetDetails() {
                             <div className={styles['stock-table-head']}>
                                 <span><strong>Company</strong></span>
                                 <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
-                                <span><strong>Market Price </strong></span>
+                                <span className={styles['span-right']}><strong>Market Price </strong></span>
                                 <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             </div>
 
@@ -213,10 +213,11 @@ function IndexWidgetDetails() {
                                     <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
                                         <div>{formatNumber(stock.marketCap)}</div>
                                     </div>
-                                    <div className={styles['row-text']}>
-                                        <div>{formatNumber(stock.closePrice)} <span className={stock.isPositive ? styles.positive : styles.negative}>
+                                    <div className={styles['row-text-right']}>
+                                        <div>{formatNumber(stock.closePrice)}</div>
+                                        <div className={stock.isPositive ? styles.positive : styles.negative}>
                                             {stock.change}
-                                        </span></div>
+                                        </div>
                                     </div>
                                     <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
                                         <div>{stock.sector}</div>

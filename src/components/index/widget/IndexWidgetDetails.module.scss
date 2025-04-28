@@ -35,11 +35,15 @@
 }
 
 .index-info-div {
-  width: 100%;
+  width: auto;
   border-collapse: collapse; /* Ensures borders don't double up */
   border-radius: 10px;
   overflow: hidden; /* Ensures rounded corners apply properly */
   border: 1px solid #ccc; /* Optional outer border */
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 }
 
 .range-row {
@@ -48,6 +52,10 @@
   align-items: center;
   font-size: 0.875rem;
   margin-bottom: 1%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 25% 50% 25%;
+  }
 }
 
 .range-bar {
@@ -56,6 +64,10 @@
   background-color: var(--background-disabled);
   border-radius: 9999px;
   margin: 0 1%;
+
+  @media (max-width: 768px) {
+    margin: 0 10%;
+  }
 }
 
 .triangle {
@@ -98,17 +110,33 @@
   justify-content: space-between;
   align-items: center;
   width: 97%;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.1rem;
+  }
 }
 
 .label {
   font-size: var(--font-size-small);
   color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    padding-top: 0.1rem;
+    padding-left: 0.3rem;
+  }
 }
 
 .value {
   font-size: var(--font-size-small);
   color: var(--primary-text);
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    padding-left: 0.3rem;
+  }
 }
 
 .stock-table {
@@ -132,6 +160,20 @@
     flex: 1;
     text-align: left;
   }
+
+  .span-right {
+    flex: 1;
+    text-align: right;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.0rem 1.25rem;
+
+    .span-right {
+      flex: 1;
+      text-align: right;
+    }
+  }
 }
 
 .stock-table-row {
@@ -144,6 +186,11 @@
 
   &:hover {
     background: var(--background-hover);
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.0rem 1.25rem;
+    align-items: flex-end;
   }
 }
 
@@ -161,6 +208,34 @@
   .negative {
     color: var(--bear-text);
     font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.row-text-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
+
+  .positive {
+    color: var(--bull-text);
+    font-size: var(--font-size-small);
+  }
+  .negative {
+    color: var(--bear-text);
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
 
