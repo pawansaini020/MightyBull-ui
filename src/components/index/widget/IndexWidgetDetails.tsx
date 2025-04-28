@@ -146,8 +146,8 @@ function IndexWidgetDetails() {
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
-                                    <span className={styles.label}>Previous Close</span>
-                                    <span className={styles.value}>₹ {formatNumber(index.close)} Cr.</span>
+                                    <span className={styles.label}>Prev. Close</span>
+                                    <span className={styles.value}>{formatNumber(index.close)}</span>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +197,7 @@ function IndexWidgetDetails() {
                             <div className={styles['stock-table-head']}>
                                 <span><strong>Company</strong></span>
                                 <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
-                                <span className={styles['span-right']}><strong>Market Price </strong></span>
+                                <span><strong>Market Price </strong></span>
                                 <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             </div>
 

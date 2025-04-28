@@ -68,8 +68,7 @@ function Index() {
                         <div className={styles['index-table-head']}>
                             <span className={styles['span-logo']}><strong></strong></span>
                             <span><strong>Index name</strong></span>
-                            <span><strong>Last traded(1D)</strong></span>
-                            <span><strong>Day change</strong></span>
+                            <span className={styles['span-right']}><strong>Last traded(1D)</strong></span>
                             <span className={styles['hide-mobile']}><strong>High</strong></span>
                             <span className={styles['hide-mobile']}><strong>Low</strong></span>
                             <span className={styles['hide-mobile']}><strong>Open</strong></span>
@@ -86,11 +85,8 @@ function Index() {
                                     <div>{index.name}</div>
                                 </div>
 
-                                <div className={styles['index-row']}>
+                                <div className={styles['index-row-right']}>
                                     <div>{formatNumber(index.value)}</div>
-                                </div>
-
-                                <div className={styles['index-row']}>
                                     <div>
                                         <span className={getColoredStyle(index?.dayChange || 0, styles)}>
                                             {formatNumber(index.dayChange)} ({formatNumber(index.dayChangePerc)}%)

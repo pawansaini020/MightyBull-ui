@@ -186,6 +186,18 @@ function Dashboard() {
                                 </div>
                             </div>
                             <div className={styles.card}
+                                 onClick={() => handleIndexWidget(indexes['sp-bse-sensex']?.indexId)}
+                            >
+                                <div className={styles.flexRow}>
+                                    <span className={styles.label}>SENSEX</span>
+                                    <span className={styles.value}>
+                                        {formatNumber(indexes['sp-bse-sensex']?.value || 0)} | <span className={getColoredStyle(indexes['sp-bse-sensex']?.dayChange || 0, styles)}>
+                                                {formatNumber(indexes['sp-bse-sensex']?.dayChange || 0)} ({formatNumber(indexes['sp-bse-sensex']?.dayChangePerc || 0)}%)
+                                            </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={styles.card}
                                  onClick={() => handleIndexWidget(indexes['nifty-bank']?.indexId)}
                             >
                                 <div className={styles.flexRow}>
@@ -205,18 +217,6 @@ function Dashboard() {
                                     <span className={styles.value}>
                                         {formatNumber(indexes['nifty-financial-services']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-financial-services']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['nifty-financial-services']?.dayChange || 0)} ({formatNumber(indexes['nifty-financial-services']?.dayChangePerc || 0)}%)
-                                            </span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div className={styles.card}
-                                 onClick={() => handleIndexWidget(indexes['sp-bse-sensex']?.indexId)}
-                            >
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>SENSEX</span>
-                                    <span className={styles.value}>
-                                        {formatNumber(indexes['sp-bse-sensex']?.value || 0)} | <span className={getColoredStyle(indexes['sp-bse-sensex']?.dayChange || 0, styles)}>
-                                                {formatNumber(indexes['sp-bse-sensex']?.dayChange || 0)} ({formatNumber(indexes['sp-bse-sensex']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
                                 </div>

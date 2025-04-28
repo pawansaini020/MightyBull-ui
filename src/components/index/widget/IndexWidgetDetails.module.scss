@@ -42,7 +42,7 @@
   border: 1px solid #ccc; /* Optional outer border */
 
   @media (max-width: 768px) {
-    padding: 0.5rem;
+    padding: 0.2rem;
   }
 }
 
@@ -167,7 +167,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 1.0rem 1.25rem;
+    padding: 1.0rem;
 
     .span-right {
       flex: 1;
@@ -189,7 +189,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 1.0rem 1.25rem;
+    padding: 1.0rem;
     align-items: flex-end;
   }
 }
