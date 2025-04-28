@@ -197,7 +197,7 @@ function IndexWidgetDetails() {
                             <div className={styles['stock-table-head']}>
                                 <span><strong>Company</strong></span>
                                 <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
-                                <span><strong>Market Price </strong></span>
+                                <span className={styles['span-right']}><strong>Market Price </strong></span>
                                 <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             </div>
 

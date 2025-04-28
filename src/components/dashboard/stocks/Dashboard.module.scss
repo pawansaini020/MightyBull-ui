@@ -98,7 +98,7 @@
   color: var(--primary-text);
 
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
   }
 }
 
@@ -108,7 +108,7 @@
   font-weight: 700;
 
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
   }
 }
 
@@ -236,7 +236,7 @@
   font-size: var(--font-size-small);
 
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
     margin-bottom: 0.25rem;
   }
 }
@@ -246,7 +246,7 @@
   font-size: var(--font-size-small);
   
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
     margin-bottom: 0.25rem;
   }
 }
@@ -256,7 +256,7 @@
   font-size: var(--font-size-small);
   
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
     margin-bottom: 0.25rem;
   }
 }
@@ -268,5 +268,11 @@
 
   @media (max-width: 768px) {
     margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
   }
 }

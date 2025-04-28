@@ -264,11 +264,11 @@ function Dashboard() {
                     <div className={styles['stock-table']}>
                         <div className={styles['stock-table-head']}>
                             <span><strong>Company</strong></span>
-                            <span><strong>Sector</strong></span>
-                            <span><strong>Market Price</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             <span><strong>Score</strong></span>
-                            <span><strong>Market Cap (In Cr)</strong></span>
-                            <span><strong>Dividend</strong></span>
+                            <span><strong>Market Price</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Dividend</strong></span>
                         </div>
 
                         {stockList.map((stock, index) => (
@@ -280,27 +280,29 @@ function Dashboard() {
                                 <div className={styles['stock-company']}>
                                     <div>{stock.name}</div>
                                 </div>
-                                <div className={styles['stock-sector']}>
+                                <div className={`${styles['stock-sector']} ${styles['hide-mobile']}`}>
                                     <div>{stock.sector}</div>
-                                </div>
-
-                                <div className={styles['stock-price']}>
-                                    <div>
-                                        <span>{stock.price} </span>
-                                        <span className={stock.isPositive ? styles.positive : styles.negative}>
-                                            {stock.change}
-                                        </span>
-                                    </div>
                                 </div>
 
                                 <div className={styles['stock-score']}>
                                     <div>{stock.score.toFixed(2)}</div>
                                 </div>
 
-                                <div className={styles['stock-marketCap']}>
+                                <div className={styles['stock-price']}>
+                                    <div>
+                                        <span>{stock.price} </span>
+                                    </div>
+                                    <div>
+                                        <span className={stock.isPositive ? styles.positive : styles.negative}>
+                                            {stock.change}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className={`${styles['stock-marketCap']} ${styles['hide-mobile']}`}>
                                     <div>{stock.marketCap.toFixed(2)}</div>
                                 </div>
-                                <div className={styles['stock-dividend']}>
+                                <div className={`${styles['stock-dividend']} ${styles['hide-mobile']}`}>
                                     <div>{stock.dividend.toFixed(2)}</div>
                                 </div>
                             </div>
