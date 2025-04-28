@@ -292,19 +292,19 @@ function StockWidgets() {
                             >
                                 Clear
                             </button>
-                        <div className={styles['stock-total-search']}>
+                        <div className={`${styles['stock-total-search']} ${styles['hide-mobile']}`}>
                             Search results {pageData?.total_count || 0} Stocks
                         </div>
                     </div>
 
                     <div className={styles['stock-table']}>
                         <div className={styles['stock-table-head']}>
-                            <span><strong>Company</strong></span>
+                            <span className={styles['span-company']}><strong>Company</strong></span>
                             <span><strong>Sector</strong></span>
-                            <span><strong>Market Price</strong></span>
-                            <span><strong>Score</strong></span>
-                            <span><strong>Market Cap (In Cr)</strong></span>
-                            <span><strong>Dividend</strong></span>
+                            <span className={styles['span-score']}><strong>Score</strong></span>
+                            <span className={styles['span-right']}><strong>Market Price</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Dividend</strong></span>
                         </div>
 
                         {stockList.map((stock, index) => (
@@ -320,6 +320,10 @@ function StockWidgets() {
                                     <div>{stock.sector}</div>
                                 </div>
 
+                                <div className={styles['stock-score']}>
+                                    <div>{stock.score.toFixed(2)}</div>
+                                </div>
+
                                 <div className={styles['stock-price']}>
                                     <div>
                                         <span>{stock.price} </span>
@@ -331,14 +335,10 @@ function StockWidgets() {
                                     </div>
                                 </div>
 
-                                <div className={styles['stock-score']}>
-                                    <div>{stock.score.toFixed(2)}</div>
-                                </div>
-
-                                <div className={styles['stock-marketCap']}>
+                                <div className={`${styles['stock-marketCap']} ${styles['hide-mobile']}`}>
                                     <div>{stock.marketCap.toFixed(2)}</div>
                                 </div>
-                                <div className={styles['stock-dividend']}>
+                                <div className={`${styles['stock-dividend']} ${styles['hide-mobile']}`}>
                                     <div>{stock.dividend.toFixed(2)}</div>
                                 </div>
                             </div>

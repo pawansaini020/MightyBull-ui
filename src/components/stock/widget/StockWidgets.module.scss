@@ -6,11 +6,11 @@
   display: flex;
   background: var(--background-grey);
 
-  @media (max-width: 768px) {
-    top: 4rem;
-    flex-direction: column;
-    padding: 0 0.5rem;
-  }
+  // @media (max-width: 768px) {
+  //   top: 4rem;
+  //   flex-direction: column;
+  //   padding: 0 0.5rem;
+  // }
 }
 
 .stock-table-container {
@@ -42,11 +42,11 @@
     }
   }
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
+  // @media (max-width: 768px) {
+  //   flex-direction: column;
+  //   align-items: flex-start;
+  //   gap: 0.5rem;
+  // }
 }
 
 .filterContainer {
@@ -56,7 +56,6 @@
   align-items: center;
 
   @media (max-width: 768px) {
-    flex-direction: column;
     gap: 0.5rem;
     align-items: stretch;
   }
@@ -66,9 +65,9 @@
   position: relative;
   display: block;
 
-  @media (max-width: 768px) {
-    min-width: 120px;
-  }
+  // @media (max-width: 768px) {
+  //   min-width: 120px;
+  // }
 }
 
 .dropdownButton {
@@ -80,7 +79,7 @@
   font-size: var(--font-size-small);
 
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
     padding: 10px 14px;
   }
 }
@@ -188,7 +187,7 @@
   }
 
   @media (max-width: 768px) {
-    font-size: var(--text-base);
+    font-size: var(--text-xs);
     padding: 10px 14px;
   }
 }
@@ -221,7 +220,7 @@
 
   @media (max-width: 768px) {
     font-size: var(--text-base);
-    min-width: 600px;
+    min-width: auto;
   }
 }
 
@@ -239,9 +238,29 @@
     text-align: left;
   }
 
+  .span-right {
+    flex: 1;
+    text-align: left;
+  }
+
+  .span-company {
+    flex: 1.4;
+    text-align: left;
+  }
+
+  .span-score {
+    flex: 0.6;
+    text-align: left;
+  }
+
   @media (max-width: 768px) {
     font-size: var(--text-base);
     padding: 0.5rem 1rem;
+
+    .span-right {
+      flex: 1;
+      text-align: right;
+    }
   }
 }
 
@@ -276,6 +295,32 @@
   }
 }
 
+.stock-company {
+  flex: 1.4;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
+}
+
+.stock-score {
+  flex: 0.6;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
+}
+
 .stock-price {
   flex: 1;
   font-size: var(--font-size-small);
@@ -290,6 +335,10 @@
     color: var(--bear-text);
     font-size: var(--font-size-small);
   }
+
+  @media (max-width: 768px) {
+    text-align: right;
+  }
 }
 
 .pagination_container {
@@ -299,5 +348,12 @@
 
   @media (max-width: 768px) {
     margin-top: 0.5rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
   }
 }

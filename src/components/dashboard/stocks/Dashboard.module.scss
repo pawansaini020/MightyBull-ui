@@ -44,7 +44,7 @@
 .row {
    display: grid;
   justify-content: space-between;
-  grid-template-columns: repeat(3, 1fr); /* 2 columns */
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
   flex-wrap: wrap;
 
   @media (max-width: 768px) {

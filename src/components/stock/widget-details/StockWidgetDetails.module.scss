@@ -72,6 +72,13 @@
   justify-content: space-between;
   align-items: center;
   width: 97%;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.2rem;
+  }
 }
 
 .label {
@@ -112,7 +119,7 @@
   width: auto;
   display: grid;
   grid-template-columns: 1fr; // default: stacked vertically
-  gap: 2%;
+  gap: 3%;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr); // side by side on medium+ screens
@@ -126,6 +133,10 @@
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
   border: 1.5px solid var(--bull-text);
   padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 }
 
 .card-cons {
@@ -135,6 +146,10 @@
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
   border: 1.5px solid var(--bear-text); // red-300
   padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 }
 
 .card-heading {
