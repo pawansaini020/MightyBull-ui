@@ -196,9 +196,9 @@ function IndexWidgetDetails() {
                         <div className={styles['stock-table']}>
                             <div className={styles['stock-table-head']}>
                                 <span><strong>Company</strong></span>
-                                <span><strong>Market Cap (In Cr)</strong></span>
+                                <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
                                 <span><strong>Market Price </strong></span>
-                                <span><strong>Sector</strong></span>
+                                <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             </div>
 
                             {stockList.map((stock, index) => (
@@ -210,7 +210,7 @@ function IndexWidgetDetails() {
                                     <div className={styles['row-text']}>
                                         <div>{stock.name}</div>
                                     </div>
-                                    <div className={styles['row-text']}>
+                                    <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
                                         <div>{formatNumber(stock.marketCap)}</div>
                                     </div>
                                     <div className={styles['row-text']}>
@@ -218,7 +218,7 @@ function IndexWidgetDetails() {
                                             {stock.change}
                                         </span></div>
                                     </div>
-                                    <div className={styles['row-text']}>
+                                    <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
                                         <div>{stock.sector}</div>
                                     </div>
                                 </div>
