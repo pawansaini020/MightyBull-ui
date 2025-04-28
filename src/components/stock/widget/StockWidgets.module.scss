@@ -5,6 +5,12 @@
   left: 0;
   display: flex;
   background: var(--background-grey);
+
+  @media (max-width: 768px) {
+    top: 4rem;
+    flex-direction: column;
+    padding: 0 0.5rem;
+  }
 }
 
 .stock-table-container {
@@ -14,6 +20,11 @@
   box-shadow: 0 0 4px rgba(0,0,0,0.05);
   padding: 0 2.4rem;
   font-family: 'Inter', sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 0 0.5rem;
+    border-radius: 8px;
+  }
 }
 
 .stock-header {
@@ -25,6 +36,16 @@
   h3 {
     font-size: var(--font-size-large);
     font-weight: 600;
+
+    @media (max-width: 768px) {
+      font-size: var(--text-base);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }
 
@@ -33,11 +54,21 @@
   gap: 1rem;
   margin-bottom: 1rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
 }
 
 .dropdown {
   position: relative;
   display: block;
+
+  @media (max-width: 768px) {
+    min-width: 120px;
+  }
 }
 
 .dropdownButton {
@@ -47,6 +78,11 @@
   color: var(--primary-text);
   font-weight: 600;
   font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 10px 14px;
+  }
 }
 
 .dropdownItem {
@@ -81,6 +117,11 @@
       font-size: 14px;
     }
   }
+
+  @media (max-width: 768px) {
+    min-width: 120px;
+    font-size: var(--text-base);
+  }
 }
 
 .search-box {
@@ -91,6 +132,11 @@
   background-color: var(--background-hover);
   color: var(--primary-text);
   font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 8px 10px 8px 32px;
+  }
 }
 
 .filter-text-div {
@@ -102,6 +148,10 @@
     background: var(--background-hover);
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
   }
 }
 
@@ -116,6 +166,10 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 0 4px 0 0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
   }
 }
 
@@ -132,6 +186,11 @@
   &:hover {
     background-color: var(--background-hover);
   }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 10px 14px;
+  }
 }
 
 .stock-total-search {
@@ -144,14 +203,26 @@
   color: var(--primary-text);
   margin-left: auto; // 👈 Pushes it to the right
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 0.5rem 1rem;
+  }
 }
 
 .stock-table {
   width: 100%;
   border-collapse: collapse; /* Ensures borders don't double up */
   border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--border-color); /* Optional outer border */
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  display: block;
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    min-width: 600px;
+  }
 }
 
 .stock-table-head {
@@ -167,6 +238,11 @@
     flex: 1;
     text-align: left;
   }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 0.5rem 1rem;
+  }
 }
 
 .stock-table-row {
@@ -180,22 +256,24 @@
   &:hover {
     background-color: var(--background-hover);
   }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 0.5rem 1rem;
+  }
 }
 
-.stock-company {
+.stock-company, .stock-sector, .stock-score, .stock-marketCap, .stock-dividend {
   flex: 1;
   display: flex;
   flex-direction: column;
   font-weight: 500;
   color: var(--primary-text);
-}
 
-.stock-sector {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 0.25rem;
+  }
 }
 
 .stock-price {
@@ -214,31 +292,12 @@
   }
 }
 
-.stock-score {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-}
-
-.stock-marketCap {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-}
-
-.stock-dividend {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-}
-
 .pagination_container {
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    margin-top: 0.5rem;
+  }
 }

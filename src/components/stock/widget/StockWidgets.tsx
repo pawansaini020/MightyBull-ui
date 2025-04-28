@@ -323,6 +323,8 @@ function StockWidgets() {
                                 <div className={styles['stock-price']}>
                                     <div>
                                         <span>{stock.price} </span>
+                                    </div>
+                                    <div>
                                         <span className={stock.isPositive ? styles.positive : styles.negative}>
                                             {stock.change}
                                         </span>
