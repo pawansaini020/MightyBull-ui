@@ -79,7 +79,7 @@ function Header() {
                          src={MIGHTYBULL_LOGO} alt="MIGHTYBULL-Logo"
                          onClick={handleDashboardClick}
                     />
-                    <span className={styles['logo-heading']} onClick={handleDashboardClick}>Mighty Bull</span>
+                    <span className={styles['logo-heading']} onClick={handleDashboardClick}>MightyBull</span>
                 </div>
                 {loggedInUser && (
                     <>
