@@ -1,128 +1,183 @@
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useNavigate } from 'react-router-dom';
 import Headers from "../../layout/header/Header.tsx";
 import styles from './StockWidgets.module.scss';
-import {useEffect, useState, useRef} from "react";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import Pagination from "../../global/pagination/Pagination.tsx";
-import { useNavigate } from 'react-router-dom';
 import { Routers } from '../../../constants/AppConstants.ts';
 
+// Types
+interface StockItem {
+    stockId: string;
+    name: string;
+    sector: string;
+    price: string;
+    change: string;
+    isPositive: boolean;
+    score: number;
+    marketCap: number;
+    dividend: number;
+}
+
+interface FilterState {
+    score: string[];
+    sortBy: string[];
+    sector: string[];
+}
+
+interface DropdownState {
+    score: boolean;
+    sortBy: boolean;
+    sector: boolean;
+}
+
+// Constants
+const SCORE_OPTIONS = [
+    { value: "600-1000", label: "600-1000" },
+    { value: "500-600", label: "500-600" },
+    { value: "400-500", label: "400-500" },
+    { value: "200-400", label: "200-400" },
+    { value: "0-200", label: "0-200" }
+];
+
+const SORT_OPTIONS = [
+    { value: "score", label: "Score" },
+    { value: "marketCap", label: "Market Cap" },
+    { value: "dividendYield", label: "Dividend" }
+];
+
+const SECTORS = [
+    "Finance", "Trading", "Textiles", "IT - Software", "Pharmaceuticals",
+    "Chemicals", "Steel", "Healthcare", "Stock/ Commodity Brokers",
+    "Power Generation & Distribution"
+];
+
+// Reusable Dropdown Component
+const FilterDropdown = ({ 
+    isOpen, 
+    onToggle, 
+    label, 
+    children,
+    dropdownRef
+}: { 
+    isOpen: boolean; 
+    onToggle: () => void; 
+    label: string; 
+    children: React.ReactNode;
+    dropdownRef: React.RefObject<HTMLDivElement>;
+}) => (
+    <div className={styles['dropdown']} ref={dropdownRef}>
+        <button 
+            className={styles['dropdownButton']}
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onToggle();
+            }}
+        >
+            {label} ▾
+        </button>
+        {isOpen && (
+            <div 
+                className={styles['dropdownItem']}
+                onClick={(e) => e.stopPropagation()}
+            >
+                {children}
+            </div>
+        )}
+    </div>
+);
+
 function StockWidgets() {
-
-    interface StockItem {
-        stockId: string;
-        name: string;
-        sector: string;
-        price: string;
-        change: string;
-        isPositive: boolean;
-        score: number;
-        marketCap: number;
-        dividend: number;
-    }
-
-    const sectors = [
-        "Finance", "Trading", "Textiles", "IT - Software", "Pharmaceuticals",
-        "Chemicals", "Steel", "Healthcare", "Stock/ Commodity Brokers",
-        "Power Generation & Distribution"
-    ];
-
     const navigate = useNavigate();
+    const [stockList, setStockList] = useState<StockItem[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageData, setPageData] = useState<any>({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const [stockList, setStockList] = useState<StockItem[]>([])
-    const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
-    const [pageData, setPageData] = useState<any>({})
+    // Filter states
+    const [filters, setFilters] = useState<FilterState>({
+        score: [],
+        sortBy: [],
+        sector: []
+    });
 
-    const [scoreFilters, setScoreFilters] = useState<string[]>([]);
-    const [scoreOpen, setScoreOpen] = useState(false);
-    const [sortByFilters, setSortByFilters] = useState<string[]>([]);
-    const [sortBy, setSortBy] = useState(false);
-    const [sectorFilters, setSectorFilters] = useState<string[]>([]);
-    const [sectorOpen, setSectorOpen] = useState(false);
+    // Dropdown states
+    const [dropdownStates, setDropdownStates] = useState<DropdownState>({
+        score: false,
+        sortBy: false,
+        sector: false
+    });
 
-    const scoreRef = useRef<HTMLDivElement>(null);
-    const sortRef = useRef<HTMLDivElement>(null);
-    const sectorRef = useRef<HTMLDivElement>(null);
-
+    // Search state
     const [sectorSearchText, setSectorSearchText] = useState("");
 
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            const target = event.target as Node;
-            if (
-                scoreRef.current && !scoreRef.current.contains(target) &&
-                sortRef.current && !sortRef.current.contains(target) &&
-                sectorRef.current && !sectorRef.current.contains(target)
-            ) {
-                setScoreOpen(false);
-                setSortBy(false);
-                setSectorOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+    // Refs for click outside handling
+    const refs = {
+        score: useRef<HTMLDivElement>(null),
+        sortBy: useRef<HTMLDivElement>(null),
+        sector: useRef<HTMLDivElement>(null)
+    };
+
+    // Memoized filter handlers
+    const handleFilterChange = useCallback((filterType: keyof FilterState) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setFilters(prev => ({
+            ...prev,
+            [filterType]: e.target.checked ? [value] : []
+        }));
     }, []);
 
+    // Memoized dropdown toggle handler
+    const handleDropdownToggle = useCallback((dropdownType: keyof DropdownState) => () => {
+        setDropdownStates(prev => {
+            const newState = {
+                score: false,
+                sortBy: false,
+                sector: false
+            };
+            newState[dropdownType] = !prev[dropdownType];
+            return newState;
+        });
+    }, []);
 
-    const handleScoreFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (e.target.checked) {
-            setScoreFilters([value]); // Only allow one selected
-        } else {
-            setScoreFilters([]);
-        }
-    };
+    // Memoized filtered sectors
+    const filteredSectors = useMemo(() => 
+        SECTORS.filter(sector => 
+            sector.toLowerCase().includes(sectorSearchText.toLowerCase())
+        ),
+        [sectorSearchText]
+    );
 
-    const handleSortByFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (e.target.checked) {
-            setSortByFilters([value]); // Only allow one selected
-        } else {
-            setSortByFilters([]);
-        }
-    };
+    // Memoized fetch function
+    const fetchFilteredStocks = useCallback(async (page: number) => {
+        setIsLoading(true);
+        setError(null);
 
-    const handleSectorByFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (e.target.checked) {
-            setSectorFilters([value]); // Only allow one selected
-        } else {
-            setSectorFilters([]);
-        }
-    };
-
-    const applyFilters = () => {
-        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
-    };
-
-    const handleClearFilters = () => {
-        setScoreFilters([]);
-        setSortByFilters([]);
-        setSectorFilters([]);
-        setSectorSearchText("");
-        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
-    };
-
-    const fetchFilteredStocks = async (page: number, scores: string[] = [], sortBys: string[] = [], sectors: string[] = []) => {
         try {
             const params = new URLSearchParams();
             params.append("page_number", String(page - 1));
             params.append("page_size", "10");
 
-            scores.forEach(score => params.append("score_range", score));
-            sortBys.forEach(sortBy => params.append("sort_by", sortBy));
-            sectors.forEach(sector => params.append("sector", sector));
-
-            const response = await axiosInstance.get(`/v1/api/stock/widgets?${params.toString()}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+            // Add filters to params
+            Object.entries(filters).forEach(([key, values]) => {
+                values.forEach(value => {
+                    if (value) {
+                        if (key === 'score') params.append("score_range", value);
+                        if (key === 'sortBy') params.append("sort_by", value);
+                        if (key === 'sector') params.append("sector", value);
+                    }
+                });
             });
 
-            console.log("Stock widget: " + scores+ " : " + sortBys + " : " + sectors + " : " + response.data);
+            const response = await axiosInstance.get(`/v1/api/stock/widgets?${params.toString()}`);
+            
+            if (!response?.data?.data) {
+                throw new Error("Invalid response from server");
+            }
 
-            const data = response.data.data;
-
-            const transformed: StockItem[] = data.data.map((item: any) => ({
+            const transformed: StockItem[] = response.data.data.data.map((item: any) => ({
                 stockId: item.stockId,
                 name: item.name,
                 sector: item.sector,
@@ -135,15 +190,59 @@ function StockWidgets() {
             }));
 
             setStockList(transformed);
-            setPageData(data.pagination);
-        } catch (error) {
+            setPageData(response.data.data.pagination);
+        } catch (error: any) {
             console.error("Error fetching stocks", error);
+            setError(error?.message || "Failed to fetch stocks");
+            setStockList([]);
+        } finally {
+            setIsLoading(false);
         }
-    };
+    }, [filters]);
 
+    // Click outside handler
     useEffect(() => {
-        fetchFilteredStocks(currentPage, scoreFilters, sortByFilters, sectorFilters);
-    }, [currentPage]);
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!event.target) return;
+            
+            const target = event.target as Node;
+            const isDropdownClick = Object.values(refs).some(ref => 
+                ref.current && ref.current.contains(target)
+            );
+            
+            if (!isDropdownClick) {
+                setDropdownStates({
+                    score: false,
+                    sortBy: false,
+                    sector: false
+                });
+            }
+        };
+        
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Fetch data when page or filters change
+    useEffect(() => {
+        fetchFilteredStocks(currentPage);
+    }, [currentPage, fetchFilteredStocks]);
+
+    // Add a clear filters function
+    const handleClearFilters = useCallback(() => {
+        setFilters({
+            score: [],
+            sortBy: [],
+            sector: []
+        });
+        setSectorSearchText("");
+        setCurrentPage(1);
+    }, []);
+
+    const handleStockClick = useCallback((stockId: string) => {
+        if (!stockId) return;
+        navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stockId)));
+    }, [navigate]);
 
     return (
         <>
@@ -155,147 +254,101 @@ function StockWidgets() {
                     </div>
 
                     <div className={styles['filterContainer']}>
-                        <div className={styles['dropdown']} ref={scoreRef}>
-                            <button className={styles['dropdownButton']}
-                                    onClick={() => {
-                                    setScoreOpen(!scoreOpen)
-                                    setSortBy(false); // Close other dropdown
-                                    setSectorOpen(false);
-                            }}>
-                                Score ▾
-                            </button>
-                            {scoreOpen && (
-                                <div className={styles['dropdownItem']}>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="600-1000"
-                                            onChange={handleScoreFilter}
-                                            checked={scoreFilters.includes("600-1000")}
-                                        /> 600-1000</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="500-600"
-                                            onChange={handleScoreFilter}
-                                            checked={scoreFilters.includes("500-600")}
-                                        /> 500 - 600</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="400-500"
-                                            onChange={handleScoreFilter}
-                                            checked={scoreFilters.includes("400-500")}
-                                        /> 400 - 500</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="200-400"
-                                            onChange={handleScoreFilter}
-                                            checked={scoreFilters.includes("200-400")}
-                                        /> 200 - 400</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="0-200"
-                                            onChange={handleScoreFilter}
-                                            checked={scoreFilters.includes("0-200")}
-                                        /> 0 - 200</label>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className={styles['dropdown']} ref={sectorRef}>
-                            <button className={styles['dropdownButton']}
-                                    onClick={() => {
-                                        setSectorOpen(!sectorOpen)
-                                        setScoreOpen(false);
-                                        setSortBy(false);
-                                    }}>
-                                Sector ▾
-                            </button>
-                            {sectorOpen && (
-                                <div className={styles['dropdownItem']}>
-                                    {/* Search Input */}
-                                    <div className={styles['filter-search']}>
+                        <FilterDropdown
+                            isOpen={dropdownStates.score}
+                            onToggle={handleDropdownToggle('score')}
+                            label="Score"
+                            dropdownRef={refs.score}
+                        >
+                            {SCORE_OPTIONS.map(({ value, label }) => (
+                                <div className={styles['filter-text']} key={value}>
+                                    <label>
                                         <input
-                                            type="text"
-                                            className={styles["search-box"]}
-                                            placeholder="Search sector..."
-                                            value={sectorSearchText}
-                                            onChange={(e) => setSectorSearchText(e.target.value)}
-                                        />
-                                    </div>
-
-                                    {/* Scrollable Filter List */}
-                                    {sectors
-                                        .filter((sector) =>
-                                            sector.toLowerCase().includes(sectorSearchText.toLowerCase())
-                                        )
-                                        .map((sector) => (
-                                            <div className={styles['filter-text']} key={sector}>
-                                                <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        value={sector}
-                                                        onChange={handleSectorByFilter}
-                                                        checked={sectorFilters.includes(sector)}
-                                                    />{" "}
-                                                    {sector}
-                                                </label>
-                                            </div>
-                                        ))}
+                                            type="checkbox"
+                                            value={value}
+                                            onChange={handleFilterChange('score')}
+                                            checked={filters.score.includes(value)}
+                                        /> {label}
+                                    </label>
                                 </div>
-                            )}
-                        </div>
+                            ))}
+                        </FilterDropdown>
 
-                        <div className={styles['dropdown']} ref={sortRef}>
-                            <button className={styles['dropdownButton']}
-                                    onClick={() => {
-                                    setSortBy(!sortBy)
-                                    setScoreOpen(false); // Close other dropdown
-                                    setSectorOpen(false);
-                            }}>
-                                Sort By ▾
-                            </button>
-                            {sortBy && (
-                                <div className={styles['dropdownItem']}>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="score"
-                                            onChange={handleSortByFilter}
-                                            checked={sortByFilters.includes("score")}
-                                        /> Score</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="marketCap"
-                                            onChange={handleSortByFilter}
-                                            checked={sortByFilters.includes("marketCap")}
-                                        /> Market Cap</label>
-                                    </div>
-                                    <div className={styles['filter-text']}>
-                                        <label><input
-                                            type="checkbox" value="dividendYield"
-                                            onChange={handleSortByFilter}
-                                            checked={sortByFilters.includes("dividendYield")}
-                                        /> Dividend</label>
-                                    </div>
+                        <FilterDropdown
+                            isOpen={dropdownStates.sector}
+                            onToggle={handleDropdownToggle('sector')}
+                            label="Sector"
+                            dropdownRef={refs.sector}
+                        >
+                            <div className={styles['filter-search']}>
+                                <input
+                                    type="text"
+                                    className={styles["search-box"]}
+                                    placeholder="Search sector..."
+                                    value={sectorSearchText}
+                                    onChange={(e) => setSectorSearchText(e.target.value)}
+                                />
+                            </div>
+                            {filteredSectors.map((sector) => (
+                                <div className={styles['filter-text']} key={sector}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value={sector}
+                                            onChange={handleFilterChange('sector')}
+                                            checked={filters.sector.includes(sector)}
+                                        /> {sector}
+                                    </label>
                                 </div>
-                            )}
-                        </div>
+                            ))}
+                        </FilterDropdown>
 
-                        <button className={styles['searchButton']} onClick={applyFilters}>Apply</button>
-                        <button 
+                        <FilterDropdown
+                            isOpen={dropdownStates.sortBy}
+                            onToggle={handleDropdownToggle('sortBy')}
+                            label="Sort By"
+                            dropdownRef={refs.sortBy}
+                        >
+                            {SORT_OPTIONS.map(({ value, label }) => (
+                                <div className={styles['filter-text']} key={value}>
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            value={value}
+                                            onChange={handleFilterChange('sortBy')}
+                                            checked={filters.sortBy.includes(value)}
+                                        /> {label}
+                                    </label>
+                                </div>
+                            ))}
+                        </FilterDropdown>
+
+                        <div className={styles['filter-buttons']}>
+                            {/* <button 
+                                className={styles['searchButton']} 
+                                onClick={() => fetchFilteredStocks(currentPage)}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Loading...' : 'Apply'}
+                            </button> */}
+                            <button 
                                 className={styles['searchButton']} 
                                 onClick={handleClearFilters}
+                                disabled={isLoading}
                             >
                                 Clear
                             </button>
-                        <div className={`${styles['stock-total-search']} ${styles['hide-mobile']}`}>
+                        </div>
+                        <div className={styles['stock-total-search']}>
                             Search results {pageData?.total_count || 0} Stocks
                         </div>
                     </div>
+
+                    {error && (
+                        <div className={styles['error-message']}>
+                            {error}
+                        </div>
+                    )}
 
                     <div className={styles['stock-table']}>
                         <div className={styles['stock-table-head']}>
@@ -307,55 +360,59 @@ function StockWidgets() {
                             <span className={styles['hide-mobile']}><strong>Dividend</strong></span>
                         </div>
 
-                        {stockList.map((stock, index) => (
-                            <div className={styles['stock-table-row']}
-                                 key={index}
-                                 onClick={() => navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))}
-                            >
-                                <div className={styles['stock-company']}>
-                                    <div>{stock.name}</div>
-                                </div>
-
-                                <div className={styles['stock-sector']}>
-                                    <div>{stock.sector}</div>
-                                </div>
-
-                                <div className={styles['stock-score']}>
-                                    <div>{stock.score.toFixed(2)}</div>
-                                </div>
-
-                                <div className={styles['stock-price']}>
-                                    <div>
-                                        <span>{stock.price} </span>
+                        {isLoading ? (
+                            <div className={styles['loading-message']}>Loading...</div>
+                        ) : stockList.length === 0 ? (
+                            <div className={styles['no-data-message']}>No stocks found</div>
+                        ) : (
+                            stockList.map((stock) => (
+                                <div 
+                                    className={styles['stock-table-row']}
+                                    key={stock.stockId}
+                                    onClick={() => handleStockClick(stock.stockId)}
+                                >
+                                    <div className={styles['stock-company']}>
+                                        <div>{stock.name}</div>
                                     </div>
-                                    <div>
-                                        <span className={stock.isPositive ? styles.positive : styles.negative}>
-                                            {stock.change}
-                                        </span>
+                                    <div className={styles['stock-sector']}>
+                                        <div>{stock.sector}</div>
+                                    </div>
+                                    <div className={styles['stock-score']}>
+                                        <div>{stock.score.toFixed(2)}</div>
+                                    </div>
+                                    <div className={styles['stock-price']}>
+                                        <div>
+                                            <span>{stock.price} </span>
+                                        </div>
+                                        <div>
+                                            <span className={stock.isPositive ? styles.positive : styles.negative}>
+                                                {stock.change}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className={`${styles['stock-marketCap']} ${styles['hide-mobile']}`}>
+                                        <div>{stock.marketCap.toFixed(2)}</div>
+                                    </div>
+                                    <div className={`${styles['stock-dividend']} ${styles['hide-mobile']}`}>
+                                        <div>{stock.dividend.toFixed(2)}</div>
                                     </div>
                                 </div>
-
-                                <div className={`${styles['stock-marketCap']} ${styles['hide-mobile']}`}>
-                                    <div>{stock.marketCap.toFixed(2)}</div>
-                                </div>
-                                <div className={`${styles['stock-dividend']} ${styles['hide-mobile']}`}>
-                                    <div>{stock.dividend.toFixed(2)}</div>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
 
-                    {/* Pagination */}
-                    <div className={styles['pagination_container']}>
-                        <Pagination
-                            className="pagination-bar"
-                            siblingCount={1}
-                            currentPage={currentPage}
-                            totalCount={pageData?.total_count || 0}
-                            pageSize={pageData?.page_size || 10}
-                            onPageChange={setCurrentPage}
-                        />
-                    </div>
+                    {!isLoading && stockList.length > 0 && (
+                        <div className={styles['pagination_container']}>
+                            <Pagination
+                                className="pagination-bar"
+                                siblingCount={1}
+                                currentPage={currentPage}
+                                totalCount={pageData?.total_count || 0}
+                                pageSize={pageData?.page_size || 10}
+                                onPageChange={setCurrentPage}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </>

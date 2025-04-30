@@ -45,7 +45,7 @@ function StockSearch({ onSearch } : {onSearch: any}) {
     };
 
     const handleSelect = (stock: any) => {
-        // setQuery(stock.name);
+        setQuery("");
         setShowSuggestions(false);
         onSearch(stock);
     };

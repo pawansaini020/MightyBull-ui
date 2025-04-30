@@ -58,7 +58,7 @@ const CATEGORY_OPTIONS = [
 
 const CAP_OPTIONS = [
     { value: "Small Cap", label: "Small Cap" },
-    { value: "marketCap", label: "Mid Cap" },
+    { value: "Mid Cap", label: "Mid Cap" },
     { value: "Large Cap", label: "Large Cap" },
     { value: "Flexi Cap", label: "Flexi Cap" },
     { value: "Multi Cap", label: "Multi Cap" }
@@ -344,13 +344,13 @@ function MutualFundWidgets() {
                         </FilterDropdown>
 
                         <div className={styles['filter-buttons']}>
-                            <button 
+                            {/* <button 
                                 className={styles['searchButton']} 
                                 onClick={() => fetchFilteredMutualFunds(currentPage)}
                                 disabled={isLoading}
                             >
                                 {isLoading ? 'Loading...' : 'Apply'}
-                            </button>
+                            </button> */}
                             <button 
                                 className={styles['searchButton']} 
                                 onClick={handleClearFilters}
