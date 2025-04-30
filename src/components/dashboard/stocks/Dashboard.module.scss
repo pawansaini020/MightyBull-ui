@@ -40,6 +40,7 @@
   @media (max-width: 768px) {
     width: 95%;
     border-radius: 8px;
+    overflow-x: auto;
   }
 }
 
@@ -53,10 +54,8 @@
   @media (max-width: 768px) {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 1rem;
-    padding-left: 2%;
-    padding-right: 3%;
-    margin: 0.5rem 0;
+    gap: 2.5%;
+    padding: 2% 2% 4.5% 2%;
   }
 }
 
@@ -76,7 +75,7 @@
   }
 
   @media (max-width: 768px) {
-    min-width: 90%;
+    min-width: 86%;
     padding: 0.75rem;
     font-size: var(--text-base);
   }
