@@ -30,6 +30,12 @@ interface FilterState {
     fundHouse: string[];
 }
 
+interface DropdownState {
+    category: boolean;
+    cap: boolean;
+    fundHouse: boolean;
+}
+
 // Constants
 const FUND_HOUSE_OPTIONS = [
     "Quant Small Cap Fund", 
@@ -42,6 +48,7 @@ const FUND_HOUSE_OPTIONS = [
     "Tata Mutual Fund",
     "HDFC Mutual Fund"
 ];
+
 const CATEGORY_OPTIONS = [
     { value: "Equity", label: "Equity" },
     { value: "Hybrid", label: "Hybrid" },
@@ -56,6 +63,12 @@ const CAP_OPTIONS = [
     { value: "Flexi Cap", label: "Flexi Cap" },
     { value: "Multi Cap", label: "Multi Cap" }
 ];
+
+// Default pagination state
+const DEFAULT_PAGE_STATE = {
+    total_count: 0,
+    page_size: 10
+};
 
 // Reusable Dropdown Component
 const FilterDropdown = ({ 
@@ -75,6 +88,7 @@ const FilterDropdown = ({
         <button 
             className={styles['dropdownButton']}
             onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 onToggle();
             }}
@@ -96,8 +110,10 @@ function MutualFundWidgets() {
     const navigate = useNavigate();
     const [mutualFundList, setMutualFundList] = useState<MutualFundItem[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageData, setPageData] = useState<any>({});
+    const [pageData, setPageData] = useState(DEFAULT_PAGE_STATE);
     const [fundHouseSearchText, setFundHouseSearchText] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     // Combined filter state
     const [filters, setFilters] = useState<FilterState>({
@@ -107,7 +123,7 @@ function MutualFundWidgets() {
     });
 
     // Dropdown states
-    const [dropdownStates, setDropdownStates] = useState({
+    const [dropdownStates, setDropdownStates] = useState<DropdownState>({
         category: false,
         cap: false,
         fundHouse: false
@@ -122,6 +138,8 @@ function MutualFundWidgets() {
 
     // Memoized filter handlers
     const handleFilterChange = useCallback((filterType: keyof FilterState) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target) return;
+        
         const value = e.target.value;
         setFilters(prev => ({
             ...prev,
@@ -130,65 +148,79 @@ function MutualFundWidgets() {
     }, []);
 
     // Memoized dropdown toggle handler
-    const handleDropdownToggle = useCallback((dropdownType: keyof typeof dropdownStates) => () => {
-        setDropdownStates(prev => ({
-            category: false,
-            cap: false,
-            fundHouse: false,
-            [dropdownType]: !prev[dropdownType]
-        }));
+    const handleDropdownToggle = useCallback((dropdownType: keyof DropdownState) => () => {
+        setDropdownStates(prev => {
+            // Create a new state where all dropdowns are closed
+            const newState = {
+                category: false,
+                cap: false,
+                fundHouse: false
+            };
+            // Only open the clicked dropdown if it was closed
+            newState[dropdownType] = !prev[dropdownType];
+            return newState;
+        });
     }, []);
 
     // Memoized filtered fundHouse
     const filteredFundHouses = useMemo(() => 
         FUND_HOUSE_OPTIONS.filter(fundHouse => 
-            fundHouse.toLowerCase().includes(fundHouseSearchText.toLowerCase())
+            fundHouse.toLowerCase().includes(fundHouseSearchText?.toLowerCase() ?? '')
         ),
         [fundHouseSearchText]
     );
 
     // Memoized fetch function
     const fetchFilteredMutualFunds = useCallback(async (page: number) => {
+        setIsLoading(true);
+        setError(null);
+
         try {
             const params = new URLSearchParams();
-            params.append("page_number", String(page - 1));
+            params.append("page_number", String(Math.max(0, page - 1)));
             params.append("page_size", "10");
 
+            // Add filters to params
             Object.entries(filters).forEach(([key, values]: [string, string[]]) => {
                 values?.forEach(value => {
-                    if (key === 'category') params.append("category", value);
-                    if (key === 'cap') params.append("cap", value);
-                    if (key === 'fundHouse') params.append("fund_house", value);
+                    if (value) {
+                        if (key === 'category') params.append("category", value);
+                        if (key === 'cap') params.append("cap", value);
+                        if (key === 'fundHouse') params.append("fund_house", value);
+                    }
                 });
             });
 
             const response = await axiosInstance.get(`v1/api/mutual-fund/widgets?${params.toString()}`);
             
-            // Check if response is valid
-            if (!response || !response.data) {
+            if (!response?.data) {
                 throw new Error("Invalid response from server");
             }
             
-            setMutualFundList(response?.data?.data || []);
-            setPageData(response?.data?.pagination || {});
+            setMutualFundList(response.data.data || []);
+            setPageData({
+                total_count: response.data.pagination?.total_count ?? 0,
+                page_size: response.data.pagination?.page_size ?? 10
+            });
         } catch (error: any) {
             console.error("Error fetching mutual fund", error);
+            setError(error?.message || "Failed to fetch mutual funds");
             
-            // Don't set empty states if the error is due to token expiration
-            // The axios interceptor will handle the redirect
             if (error?.response?.status !== 401) {
                 setMutualFundList([]);
-                setPageData({});
+                setPageData(DEFAULT_PAGE_STATE);
             }
+        } finally {
+            setIsLoading(false);
         }
     }, [filters]);
 
     // Click outside handler
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            const target = event.target as Node;
+            if (!event.target) return;
             
-            // Check if the click is on any of the dropdown elements
+            const target = event.target as Node;
             const isDropdownClick = Object.values(refs).some(ref => 
                 ref.current && ref.current.contains(target)
             );
@@ -219,9 +251,18 @@ function MutualFundWidgets() {
             fundHouse: []
         });
         setFundHouseSearchText("");
-        // Fetch data with cleared filters
-        fetchFilteredMutualFunds(currentPage);
-    }, [fetchFilteredMutualFunds, currentPage]);
+        setCurrentPage(1);
+    }, []);
+
+    const handleMutualFundClick = useCallback((mutualFundId: string | undefined) => {
+        if (!mutualFundId) return;
+        navigate(Routers.MutualFundWidgetDetails.replace(':mutualFundId', encodeURIComponent(mutualFundId)));
+    }, [navigate]);
+
+    const formatReturnValue = useCallback((value: number | undefined | null): string => {
+        if (value === undefined || value === null) return '0.00%';
+        return `${value.toFixed(2)}%`;
+    }, []);
 
     return (
         <>
@@ -233,17 +274,13 @@ function MutualFundWidgets() {
                     </div>
 
                     <div className={styles['filterContainer']}>
-
                         <FilterDropdown
                             isOpen={dropdownStates.fundHouse}
                             onToggle={handleDropdownToggle('fundHouse')}
                             label="Fund House"
                             dropdownRef={refs.fundHouse}
                         >
-                            <div 
-                                className={styles['filter-search']}
-                                onClick={(e) => e.stopPropagation()}
-                            >
+                            <div className={styles['filter-search']}>
                                 <input
                                     type="text"
                                     className={styles["search-box"]}
@@ -253,11 +290,7 @@ function MutualFundWidgets() {
                                 />
                             </div>
                             {filteredFundHouses.map((fundHouse) => (
-                                <div 
-                                    className={styles['filter-text']} 
-                                    key={fundHouse}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
+                                <div className={styles['filter-text']} key={fundHouse}>
                                     <label>
                                         <input
                                             type="checkbox"
@@ -277,11 +310,7 @@ function MutualFundWidgets() {
                             dropdownRef={refs.category}
                         >
                             {CATEGORY_OPTIONS.map(({ value, label }) => (
-                                <div 
-                                    className={styles['filter-text']} 
-                                    key={value}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
+                                <div className={styles['filter-text']} key={value}>
                                     <label>
                                         <input
                                             type="checkbox"
@@ -301,11 +330,7 @@ function MutualFundWidgets() {
                             dropdownRef={refs.cap}
                         >
                             {CAP_OPTIONS.map(({ value, label }) => (
-                                <div 
-                                    className={styles['filter-text']} 
-                                    key={value}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
+                                <div className={styles['filter-text']} key={value}>
                                     <label>
                                         <input
                                             type="checkbox"
@@ -322,20 +347,28 @@ function MutualFundWidgets() {
                             <button 
                                 className={styles['searchButton']} 
                                 onClick={() => fetchFilteredMutualFunds(currentPage)}
+                                disabled={isLoading}
                             >
-                                Apply
+                                {isLoading ? 'Loading...' : 'Apply'}
                             </button>
                             <button 
                                 className={styles['searchButton']} 
                                 onClick={handleClearFilters}
+                                disabled={isLoading}
                             >
                                 Clear
                             </button>
                         </div>
                         <div className={styles['mutual-fund-total-search']}>
-                            Search results {pageData?.total_count ?? 0} Stocks
+                            Search results {pageData.total_count} Stocks
                         </div>
                     </div>
+
+                    {error && (
+                        <div className={styles['error-message']}>
+                            {error}
+                        </div>
+                    )}
 
                     <div className={styles['mutual-fund-table']}>
                         <div className={styles['mutual-fund-table-head']}>
@@ -350,69 +383,81 @@ function MutualFundWidgets() {
                             <span><strong>Return(3 Year)</strong></span>
                         </div>
 
-                        {mutualFundList?.map((mutualFund) => (
-                            <div 
-                                className={styles['mutual-fund-table-row']}
-                                key={mutualFund?.mutualFundId}
-                                onClick={() => navigate(Routers.MutualFundWidgetDetails.replace(':mutualFundId', encodeURIComponent(mutualFund?.mutualFundId || '')))}
-                            >
-                                <div className={styles['mutual-fund-row-image']}>
-                                    <img 
-                                        src={mutualFund?.logoUrl || ''} 
-                                        alt={mutualFund?.name || 'Mutual Fund'} 
-                                        className={styles['name-img']} 
-                                    />
-                                </div>
-                                <div className={styles['mutual-fund-row-name']}>
-                                    <div>{mutualFund?.name || 'N/A'}</div>
-                                </div>
-                                <div className={styles['mutual-fund-row-text']}>
-                                    <div>{mutualFund?.category || 'N/A'}</div>
-                                </div>
-                                <div className={styles['mutual-fund-row-text']}>
-                                    <div>{mutualFund?.subCategory || 'N/A'}</div>
-                                </div>
-                                <div className={styles['mutual-fund-row-text']}>
-                                    <div>{mutualFund?.risk || 'N/A'}</div>
-                                </div>
-                                <div className={styles['mutual-fund-row-text']}>
-                                    <div>{mutualFund?.riskRating ?? 'N/A'}</div>
-                                </div>
-                                <div className={styles['mutual-fund-price']}>
-                                    <div>
-                                        <span className={getColoredStyle(mutualFund?.return1y ?? 0, styles)}>
-                                            {mutualFund?.return1y?.toFixed(2) ?? '0.00'}%
-                                        </span>
+                        {isLoading ? (
+                            <div className={styles['loading-message']}>Loading...</div>
+                        ) : mutualFundList.length === 0 ? (
+                            <div className={styles['no-data-message']}>No mutual funds found</div>
+                        ) : (
+                            mutualFundList.map((mutualFund) => (
+                                <div 
+                                    className={styles['mutual-fund-table-row']}
+                                    key={mutualFund?.mutualFundId}
+                                    onClick={() => handleMutualFundClick(mutualFund?.mutualFundId)}
+                                >
+                                    <div className={styles['mutual-fund-row-image']}>
+                                        <img 
+                                            src={mutualFund?.logoUrl || '/default-fund-logo.png'} 
+                                            alt={mutualFund?.name || 'Mutual Fund'} 
+                                            className={styles['name-img']}
+                                            onError={(e) => {
+                                                const img = e.target as HTMLImageElement;
+                                                img.src = '/default-fund-logo.png';
+                                            }}
+                                        />
+                                    </div>
+                                    <div className={styles['mutual-fund-row-name']}>
+                                        <div>{mutualFund?.name || 'N/A'}</div>
+                                    </div>
+                                    <div className={styles['mutual-fund-row-text']}>
+                                        <div>{mutualFund?.category || 'N/A'}</div>
+                                    </div>
+                                    <div className={styles['mutual-fund-row-text']}>
+                                        <div>{mutualFund?.subCategory || 'N/A'}</div>
+                                    </div>
+                                    <div className={styles['mutual-fund-row-text']}>
+                                        <div>{mutualFund?.risk || 'N/A'}</div>
+                                    </div>
+                                    <div className={styles['mutual-fund-row-text']}>
+                                        <div>{mutualFund?.riskRating ?? 'N/A'}</div>
+                                    </div>
+                                    <div className={styles['mutual-fund-price']}>
+                                        <div>
+                                            <span className={getColoredStyle(mutualFund?.return1y ?? 0, styles)}>
+                                                {formatReturnValue(mutualFund?.return1y)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className={styles['mutual-fund-price']}>
+                                        <div>
+                                            <span className={getColoredStyle(mutualFund?.return3y ?? 0, styles)}>
+                                                {formatReturnValue(mutualFund?.return3y)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className={styles['mutual-fund-price']}>
+                                        <div>
+                                            <span className={getColoredStyle(mutualFund?.return5y ?? 0, styles)}>
+                                                {formatReturnValue(mutualFund?.return5y)}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className={styles['mutual-fund-price']}>
-                                    <div>
-                                        <span className={getColoredStyle(mutualFund?.return3y ?? 0, styles)}>
-                                            {mutualFund?.return3y?.toFixed(2) ?? '0.00'}%
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className={styles['mutual-fund-price']}>
-                                    <div>
-                                        <span className={getColoredStyle(mutualFund?.return5y ?? 0, styles)}>
-                                            {mutualFund?.return5y?.toFixed(2) ?? '0.00'}%
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
 
-                    <div className={styles['pagination_container']}>
-                        <Pagination
-                            className="pagination-bar"
-                            siblingCount={1}
-                            currentPage={currentPage}
-                            totalCount={pageData?.total_count ?? 0}
-                            pageSize={pageData?.page_size ?? 10}
-                            onPageChange={setCurrentPage}
-                        />
-                    </div>
+                    {!isLoading && mutualFundList.length > 0 && (
+                        <div className={styles['pagination_container']}>
+                            <Pagination
+                                className="pagination-bar"
+                                siblingCount={1}
+                                currentPage={currentPage}
+                                totalCount={pageData.total_count}
+                                pageSize={pageData.page_size}
+                                onPageChange={setCurrentPage}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </>
