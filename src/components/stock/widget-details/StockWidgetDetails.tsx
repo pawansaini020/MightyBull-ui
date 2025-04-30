@@ -131,7 +131,7 @@ function StockWidgetDetails() {
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Market Cap</span>
-                                    <span className={styles.value}>₹ {formatNumber(stock.marketCap)} Cr.</span>
+                                    <span className={styles.value}>{formatNumber(stock.marketCap)} Cr</span>
                                 </div>
                             </div>
                         </div>
@@ -146,13 +146,13 @@ function StockWidgetDetails() {
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Low</span>
-                                    <span className={styles.value}>₹ {formatNumber(stock.low)}</span>
+                                    <span className={styles.value}>{formatNumber(stock.low)}</span>
                                 </div>
                             </div>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>High</span>
-                                    <span className={styles.value}>₹ {formatNumber(stock.high)}</span>
+                                    <span className={styles.value}>{formatNumber(stock.high)}</span>
                                 </div>
                             </div>
                         </div>

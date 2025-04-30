@@ -236,6 +236,13 @@
   border: 1px solid var(--border-color);
   overflow: hidden;
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    border-radius: 8px;
+    margin: 0.5rem 0;
+  }
 }
 
 .score-table-head {
@@ -250,6 +257,17 @@
   span {
     flex: 1;
     text-align: left;
+
+    @media (max-width: 768px) {
+      &.hide-mobile {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    font-size: var(--text-xs);
   }
 }
 
@@ -264,6 +282,11 @@
   &:hover {
     background-color: var(--background-hover);
   }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    font-size: var(--text-xs);
+  }
 }
 
 .score-row-text {
@@ -272,6 +295,12 @@
   flex-direction: column;
   font-weight: 500;
   color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    &.hide-mobile {
+      display: none;
+    }
+  }
 }
 
 .quarterly-results-container {
@@ -280,6 +309,14 @@
   border: 1px solid var(--border-color);
   overflow: hidden;
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    font-size: var(--text-xs);
+  }
 }
 
 .profit-loss-container {
@@ -288,6 +325,14 @@
   border: 1px solid var(--border-color);
   overflow: hidden;
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    font-size: var(--text-xs);
+  }
 }
 
 .shareholding-pattern-container {
@@ -296,4 +341,40 @@
   border: 1px solid var(--border-color);
   overflow: hidden;
   border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    font-size: var(--text-xs);
+  }
+}
+
+.balance-sheet-container {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    font-size: var(--text-xs);
+  }
+}
+
+.ratios-container {
+  width: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+
+  @media (max-width: 768px) {
+    border-radius: 8px;
+    margin: 0.5rem 0;
+    font-size: var(--text-xs);
+  }
 }
