@@ -162,7 +162,7 @@ function StockWidgets() {
 
             // Add filters to params
             Object.entries(filters).forEach(([key, values]) => {
-                values.forEach(value => {
+                values.forEach((value: any) => {
                     if (value) {
                         if (key === 'score') params.append("score_range", value);
                         if (key === 'sortBy') params.append("sort_by", value);
@@ -258,7 +258,7 @@ function StockWidgets() {
                             isOpen={dropdownStates.score}
                             onToggle={handleDropdownToggle('score')}
                             label="Score"
-                            dropdownRef={refs.score}
+                            dropdownRef={refs.score as React.RefObject<HTMLDivElement>}
                         >
                             {SCORE_OPTIONS.map(({ value, label }) => (
                                 <div className={styles['filter-text']} key={value}>
@@ -278,7 +278,7 @@ function StockWidgets() {
                             isOpen={dropdownStates.sector}
                             onToggle={handleDropdownToggle('sector')}
                             label="Sector"
-                            dropdownRef={refs.sector}
+                            dropdownRef={refs.sector as React.RefObject<HTMLDivElement>}
                         >
                             <div className={styles['filter-search']}>
                                 <input
@@ -307,7 +307,7 @@ function StockWidgets() {
                             isOpen={dropdownStates.sortBy}
                             onToggle={handleDropdownToggle('sortBy')}
                             label="Sort By"
-                            dropdownRef={refs.sortBy}
+                            dropdownRef={refs.sortBy as React.RefObject<HTMLDivElement>}
                         >
                             {SORT_OPTIONS.map(({ value, label }) => (
                                 <div className={styles['filter-text']} key={value}>
