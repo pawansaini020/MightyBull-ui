@@ -67,7 +67,7 @@ const Signup = () => {
 
     return (
         <>
-            <Headers currentTab={null}/>
+            <Headers />
             <div className={styles['container']}>
                 <h2>{otpSent ? "Verify OTP" : "Signup"}</h2>
                 {!otpSent ? (

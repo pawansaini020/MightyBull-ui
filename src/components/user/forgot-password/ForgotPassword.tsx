@@ -48,7 +48,7 @@ function ForgotPassword() {
 
     return (
         <>
-            <Headers currentTab={null} />
+            <Headers />
             <div className={styles['container']}>
                 <h2>{step === 1 ? "Forgot Password" : "Verify OTP"}</h2>
 

@@ -7,7 +7,7 @@ import {Routers} from "../../../constants/AppConstants.ts";
 import StockSearch from "../../global/search/StockSearch.tsx";
 import TabSwitcher from "../../global/tab-switch/TabSwitcher.tsx";
 
-function Header({currentTab}: {currentTab: string | null}) {
+function Header({currentTab}: {currentTab?: string | null}) {
 
     const TABS = [
         { key: 'STOCK', label: 'Stocks' },

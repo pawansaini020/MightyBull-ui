@@ -246,7 +246,7 @@ function StockWidgets() {
 
     return (
         <>
-            <Headers currentTab={null} />
+            <Headers />
             <div className={styles['main-div']}>
                 <div className={styles['stock-table-container']}>
                     <div className={styles['stock-header']}>

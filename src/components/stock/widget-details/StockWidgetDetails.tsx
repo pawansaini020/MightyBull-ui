@@ -108,7 +108,7 @@ function StockWidgetDetails() {
 
     return (
         <>
-            <Headers currentTab={null} />
+            <Headers />
             <div className={styles['main-div']}>
                 <div className={styles['stock-details']}>
                     <div className={styles['stock-title']}>

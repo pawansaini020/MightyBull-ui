@@ -17,7 +17,7 @@ function Home() {
 
     return (
         <>
-            <Header currentTab={null}/>
+            <Header />
             <div className={styles['main-div']}>
                 <div>
                     <h1>Welcome to MightyBull</h1>
