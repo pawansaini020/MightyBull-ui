@@ -144,7 +144,7 @@ function IndexWidgetDetails() {
                                     <span className={styles.value}>{formatNumber(index.open)}</span>
                                 </div>
                             </div>
-                            <div className={styles.card}>
+                            <div className={`${styles['card']} ${styles['hide-mobile']}`}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Prev. Close</span>
                                     <span className={styles.value}>{formatNumber(index.close)}</span>

@@ -1,5 +1,5 @@
 .main-div {
-  width: 100%;
+  width: 95.8%;
   position: absolute;
   top: 6rem;
   left: 0;
@@ -37,7 +37,7 @@
   padding: 0.7%;
 
   @media (max-width: 768px) {
-    width: 95%;
+    width: auto;
     border-radius: 8px;
     overflow-x: auto;
   }
@@ -45,15 +45,15 @@
 
 .row {
    display: grid;
-  justify-content: space-between;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  flex-wrap: wrap;
-  gap: 0.5%;
+    justify-content: space-between;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    flex-wrap: wrap;
+    gap: 0.5%;
 
   @media (max-width: 768px) {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 2.5%;
+    gap: 2.0%;
     padding: 1.5% 1.5% 4.5% 1.5%;
   }
 }
@@ -75,7 +75,7 @@
 
   @media (max-width: 768px) {
     min-width: auto;
-    padding: 0.75rem 0 0.75rem 0.75rem;
+    padding: 3% 0 3% 4%;
     font-size: var(--text-base);
   }
 }
@@ -164,7 +164,8 @@
 
   @media (max-width: 768px) {
     align-items: flex-start;
-    gap: 0.25rem;
+    padding: 2% 2%;
+    gap: 1%;
   }
 }
 
@@ -195,9 +196,9 @@
   }
 
   @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
+    padding: 4% 4%;
     font-size: var(--text-base);
-    gap: 0.25rem;
+    gap: 1%;
   }
 }
 
@@ -214,9 +215,9 @@
   }
 
   @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
+    padding: 2% 4%;
     font-size: var(--text-base);
-    gap: 0.25rem;
+    gap: 1%;
   }
 }
 
