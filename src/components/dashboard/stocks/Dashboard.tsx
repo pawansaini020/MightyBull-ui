@@ -179,7 +179,7 @@ function Dashboard() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>NIFTY</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['nifty']?.value || 0)} | <span className={getColoredStyle(indexes['nifty']?.dayChange || 0, styles)}>
+                                        {formatNumber(indexes['nifty']?.value || 0)} <span className={getColoredStyle(indexes['nifty']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['nifty']?.dayChange || 0)} ({formatNumber(indexes['nifty']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
@@ -191,7 +191,7 @@ function Dashboard() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>SENSEX</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['sp-bse-sensex']?.value || 0)} | <span className={getColoredStyle(indexes['sp-bse-sensex']?.dayChange || 0, styles)}>
+                                        {formatNumber(indexes['sp-bse-sensex']?.value || 0)} <span className={getColoredStyle(indexes['sp-bse-sensex']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['sp-bse-sensex']?.dayChange || 0)} ({formatNumber(indexes['sp-bse-sensex']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
@@ -203,7 +203,7 @@ function Dashboard() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>BANKNIFTY</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['nifty-bank']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-bank']?.dayChange || 0, styles)}>
+                                        {formatNumber(indexes['nifty-bank']?.value || 0)} <span className={getColoredStyle(indexes['nifty-bank']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['nifty-bank']?.dayChange || 0)} ({formatNumber(indexes['nifty-bank']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
@@ -215,7 +215,7 @@ function Dashboard() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>FINNIFTY</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['nifty-financial-services']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-financial-services']?.dayChange || 0, styles)}>
+                                        {formatNumber(indexes['nifty-financial-services']?.value || 0)} <span className={getColoredStyle(indexes['nifty-financial-services']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['nifty-financial-services']?.dayChange || 0)} ({formatNumber(indexes['nifty-financial-services']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
@@ -227,7 +227,7 @@ function Dashboard() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>BANKEX</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['sp-bse-bankex']?.value || 0)} | <span className={getColoredStyle(indexes['sp-bse-bankex']?.dayChange || 0, styles)}>
+                                        {formatNumber(indexes['sp-bse-bankex']?.value || 0)} <span className={getColoredStyle(indexes['sp-bse-bankex']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['sp-bse-bankex']?.dayChange || 0)} ({formatNumber(indexes['sp-bse-bankex']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>
@@ -239,7 +239,7 @@ function Dashboard() {
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>NIFTYMIDSELECT</span>
                                     <span className={styles.value}>
-                                        {formatNumber(indexes['nifty-midcap-select']?.value || 0)} | <span className={getColoredStyle(indexes['nifty-midcap-select']?.dayChange || 0, styles)}>
+                                        {formatNumber(indexes['nifty-midcap-select']?.value || 0)} <span className={getColoredStyle(indexes['nifty-midcap-select']?.dayChange || 0, styles)}>
                                                 {formatNumber(indexes['nifty-midcap-select']?.dayChange || 0)} ({formatNumber(indexes['nifty-midcap-select']?.dayChangePerc || 0)}%)
                                             </span>
                                     </span>

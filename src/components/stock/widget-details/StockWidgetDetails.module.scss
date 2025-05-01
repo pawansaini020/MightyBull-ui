@@ -52,9 +52,19 @@
 }
 
 .row {
-  display: flex;
+  width: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 2 columns */
   justify-content: space-between;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 2.5%;
+    padding: 2% 2% 2% 2%;
+    overflow-y: auto;
+  }
 }
 
 .card {
@@ -62,9 +72,15 @@
   min-width: 10%;
   margin: 1%;
   background-color: var(--background-hover);
-  padding: 1%;
+  padding: 3%;
   border-radius: 8px;
   text-align: left;
+
+  @media (max-width: 768px) {
+    min-width: auto;
+    padding: 0.75rem 0 0.75rem 0.75rem;
+    font-size: var(--text-base);
+  }
 }
 
 .flexRow {
@@ -84,12 +100,20 @@
 .label {
   font-size: var(--font-size-small);
   color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-sm);
+  }
 }
 
 .value {
   font-size: var(--font-size-small);
   color: var(--primary-text);
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: var(--text-xs);
+  }
 }
 
 .pros-cons-container-title {

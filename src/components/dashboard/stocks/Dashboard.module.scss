@@ -74,8 +74,8 @@
   }
 
   @media (max-width: 768px) {
-    min-width: 86%;
-    padding: 0.75rem;
+    min-width: auto;
+    padding: 0.75rem 0 0.75rem 0.75rem;
     font-size: var(--text-base);
   }
 }

@@ -8,17 +8,17 @@
   border: none;
   font-weight: 500;
   cursor: pointer;
-  color: #666;
+  color: var(--primary-text);
   transition: all 0.3s ease;
 
   &:hover {
-    color: #000;
+    color: var(--bull-text);
   }
 }
 
 .active {
-  border-bottom: 3px solid #007aff;
-  color: #007aff;
+  // border-bottom: 3px solid #007aff;
+  color: var(--bull-text);
   font-weight: 600;
-  background-color: var(--background-grey);
+  // background-color: var(--background-grey);
 }
