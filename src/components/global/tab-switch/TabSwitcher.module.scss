@@ -10,15 +10,20 @@
   cursor: pointer;
   color: var(--primary-text);
   transition: all 0.3s ease;
+  font-weight: 600;
 
   &:hover {
     color: var(--bull-text);
+  }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    padding: 5px;
   }
 }
 
 .active {
   // border-bottom: 3px solid #007aff;
   color: var(--bull-text);
-  font-weight: 600;
   // background-color: var(--background-grey);
 }

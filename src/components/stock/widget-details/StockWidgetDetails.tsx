@@ -78,7 +78,7 @@ function StockWidgetDetails() {
     if (loading) {
         return (
             <>
-                <Headers />
+                <Headers currentTab={null} />
                 <div>Loading...</div>
             </>
         );
@@ -86,7 +86,7 @@ function StockWidgetDetails() {
     if (!stock) {
         return (
             <>
-                <Headers />
+                <Headers currentTab={null} />
                 <div className={styles['main-div']}>
                     Stock data not found.
                 </div>
@@ -108,7 +108,7 @@ function StockWidgetDetails() {
 
     return (
         <>
-            <Headers />
+            <Headers currentTab={null} />
             <div className={styles['main-div']}>
                 <div className={styles['stock-details']}>
                     <div className={styles['stock-title']}>

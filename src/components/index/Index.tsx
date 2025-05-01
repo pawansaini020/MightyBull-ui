@@ -58,7 +58,7 @@ function Index() {
 
     return (
         <>
-            <Headers />
+            <Headers currentTab={null} />
             <div className={styles['main-div']}>
                 <div className={styles['index-container']}>
                     <div className={styles['tabs-container']}>

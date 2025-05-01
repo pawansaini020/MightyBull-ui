@@ -7,7 +7,7 @@ import {Routers} from "../../../constants/AppConstants.ts";
 import StockSearch from "../../global/search/StockSearch.tsx";
 import TabSwitcher from "../../global/tab-switch/TabSwitcher.tsx";
 
-function Header() {
+function Header({currentTab}: {currentTab: string | null}) {
 
     const TABS = [
         { key: 'STOCK', label: 'Stocks' },
@@ -18,7 +18,7 @@ function Header() {
     const navigate = useNavigate();
     const dropdownOpenRef = useRef<HTMLDivElement>(null);
     const loggedInUser = localStorage.getItem('name') ? localStorage.getItem('name') : '';
-    const [activeTab, setActiveTab] = useState(TABS[0].key);
+    const [activeTab, setActiveTab] = useState(currentTab);
 
     const handleProfileClick = () => {
         setDropdownOpen(!dropdownOpen);
@@ -54,22 +54,14 @@ function Header() {
         navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))
     };
 
-    const handleTabsClick = () => {
+    useEffect(() => {
+        console.log("Active tab: ", activeTab);
         if(activeTab == TABS[0].key) {
             navigate(Routers.Dashboard);
         } else if(activeTab == TABS[1].key) {
             navigate(Routers.MutualFundDashboard);
         }
-    }
-
-    // useEffect(() => {
-    //     console.log("Active tab: ", activeTab);
-    //     if(activeTab == TABS[0].key) {
-    //         navigate(Routers.Dashboard);
-    //     } else if(activeTab == TABS[1].key) {
-    //         navigate(Routers.Indices);
-    //     }
-    // }, [activeTab]);
+    }, [activeTab]);
 
     return (
         <div className={styles['main-div']}>
@@ -83,8 +75,10 @@ function Header() {
                 </div>
                 {loggedInUser && (
                     <>
-                        <div className={styles['tabs-section']} onClick={handleTabsClick}>
-                            <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} tabs={TABS} />
+                        <div className={styles['tabs-section']}>
+                            {activeTab && (
+                                <TabSwitcher activeTab={activeTab || ''} setActiveTab={setActiveTab} tabs={TABS} />
+                            )}
                         </div>
                         <StockSearch onSearch={handleStockSearch} />
                     </>

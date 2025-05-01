@@ -102,7 +102,7 @@ function MutualFundWidgetDetails() {
     if (loading) {
         return (
             <>
-                <Headers />
+                <Headers currentTab={null} />
                 <div className={styles['index-title']}>Loading...</div>
             </>
         );
@@ -112,7 +112,7 @@ function MutualFundWidgetDetails() {
     if (!mutualFund || !mutualFund.mutualFundId) {
         return (
             <>
-                <Headers />
+                <Headers currentTab={null} />
                 <div className={styles['main-div']}>
                     <div className={styles['index-details']}>
                         <div className={styles['not-found-div']}>
@@ -126,7 +126,7 @@ function MutualFundWidgetDetails() {
 
     return (
         <>
-            <Headers />
+            <Headers currentTab={null} />
             <div className={styles['main-div']}>
                 {/* Mutual Fund Overview Section */}
                 <div className={styles['index-details']}>

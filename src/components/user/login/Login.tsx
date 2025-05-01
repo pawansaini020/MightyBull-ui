@@ -46,7 +46,7 @@ function Login() {
 
     return (
         <>
-            <Headers/>
+            <Headers currentTab={null}/>
             <div className={styles['auth-container']}>
                 <h2 className={styles['auth-title']}>Login</h2>
                 <form onSubmit={handleLogin} className={styles['auth-form']}>

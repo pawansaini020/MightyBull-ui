@@ -104,7 +104,7 @@ function IndexWidgetDetails() {
     if (loading) {
         return (
             <>
-                <Headers />
+                <Headers currentTab={null} />
                 <div className={styles['index-title']}>Loading...</div>
             </>
         );
@@ -112,7 +112,7 @@ function IndexWidgetDetails() {
     if (!index || !index.indexId) {
         return (
             <>
-                <Headers />
+                <Headers currentTab={null} />
                 <div className={styles['main-div']}>
                     Stock data not found.
                 </div>
@@ -122,7 +122,7 @@ function IndexWidgetDetails() {
 
     return (
         <>
-            <Headers />
+            <Headers currentTab={null} />
             <div className={styles['main-div']}>
                 <div className={styles['index-details']}>
                     <div className={styles['index-title']}>

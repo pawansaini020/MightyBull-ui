@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ForgotPassword.module.scss";
-import Header from '../../layout/header/Header.tsx';
+import Headers from '../../layout/header/Header.tsx';
 import {Routers} from "../../../constants/AppConstants.ts"
 
 function ForgotPassword() {
@@ -48,7 +48,7 @@ function ForgotPassword() {
 
     return (
         <>
-            <Header/>
+            <Headers currentTab={null} />
             <div className={styles['container']}>
                 <h2>{step === 1 ? "Forgot Password" : "Verify OTP"}</h2>
 

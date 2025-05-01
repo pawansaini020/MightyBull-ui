@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.module.scss";
-import Header from '../../layout/header/Header.tsx';
+import Headers from '../../layout/header/Header.tsx';
 import styles from "../forgot-password/ForgotPassword.module.scss";
 import {Routers} from "../../../constants/AppConstants.ts"
 
@@ -67,7 +67,7 @@ const Signup = () => {
 
     return (
         <>
-            <Header/>
+            <Headers currentTab={null}/>
             <div className={styles['container']}>
                 <h2>{otpSent ? "Verify OTP" : "Signup"}</h2>
                 {!otpSent ? (

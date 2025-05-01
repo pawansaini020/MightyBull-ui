@@ -156,9 +156,14 @@ function Dashboard() {
         fetchStocks(1);
     }, []);
 
+    const TABS = [
+        { key: 'STOCK', label: 'Stocks' },
+        { key: 'MUTUAL_FUND', label: 'Mutual Fund' },
+    ];
+
     return (
         <>
-            <Headers />
+            <Headers currentTab={TABS[0].key} />
             <div className={styles['main-div']}>
                 {/* Index Details*/}
                 <div className={styles['index-container']}>

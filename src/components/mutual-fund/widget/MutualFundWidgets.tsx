@@ -266,7 +266,7 @@ function MutualFundWidgets() {
 
     return (
         <>
-            <Headers />
+            <Headers currentTab={null} />
             <div className={styles['main-div']}>
                 <div className={styles['mutual-fund-table-container']}>
                     <div className={styles['mutual-fund-header']}>

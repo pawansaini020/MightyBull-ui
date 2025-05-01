@@ -63,9 +63,14 @@ function MutualFundDashboard() {
         fetchMutualFunds();
     }, []);
 
+    const TABS = [
+        { key: 'STOCK', label: 'Stocks' },
+        { key: 'MUTUAL_FUND', label: 'Mutual Fund' },
+    ];
+
     return (
         <>
-            <Headers />
+            <Headers currentTab={TABS[1].key} />
             <div className={styles['main-div']}>
                 <div className={styles['popular-funds']}>
                     <div className={styles['popular-funds-header']}>
