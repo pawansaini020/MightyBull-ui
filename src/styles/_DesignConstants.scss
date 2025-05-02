@@ -145,6 +145,9 @@
     color: #666;
     padding: 1.0rem 2.5rem;
     border-bottom: 1px solid #eee;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   
     span {
       flex: 1;
@@ -255,6 +258,9 @@
     flex-direction: column;
     font-weight: 500;
     color: var(--primary-text);
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   
     @media (max-width: 768px) {
       font-size: var(--text-base);

@@ -81,6 +81,10 @@
 .popular-funds-card-name {
   font-size: var(--font-size-small);
   color: var(--primary-text);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
 }
 
 .popular-funds-card-return {
@@ -97,6 +101,10 @@
     color: var(--primary-text);
     //font-weight: 400;
   }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
 }
 
 .loading-message,
@@ -108,6 +116,6 @@
   
   @media (max-width: 768px) {
     padding: 1.5rem;
-    font-size: calc(var(--font-size-medium) * 0.9);
+    font-size: var(--text-base);
   }
 }

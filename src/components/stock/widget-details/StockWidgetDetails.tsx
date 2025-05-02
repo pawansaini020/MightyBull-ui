@@ -4,7 +4,8 @@ import {useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import { formatNumber } from "../../../helpers/StringTransform.ts";
-// import {Routers} from "../../../constants/AppConstants.ts";
+
+const isMobile = () => window.innerWidth <= 768;
 
 function StockWidgetDetails() {
 
@@ -49,9 +50,23 @@ function StockWidgetDetails() {
         score: number;
     }
 
+    const allQuarters = [
+        "Jun 2022", "Sep 2022", "Dec 2022", "Mar 2023", 
+        "Jun 2023", "Sep 2023", "Dec 2023", "Mar 2024", 
+        "Jun 2024", "Sep 2024", "Dec 2024", "Mar 2025"
+    ];
+
+    const allYears = [
+        "Mar 2014", "Mar 2015", "Mar 2016", "Mar 2017", 
+        "Mar 2018", "Mar 2019", "Mar 2020", "Mar 2021", 
+        "Mar 2022", "Mar 2023", "Mar 2024", "Mar 2025"
+    ];
+
     const { stockId } = useParams();
     const [stock, setStock] = useState<StockWidget | null>(null);
     const [loading, setLoading] = useState(true);
+    const [quarters, setQuarters] = useState<string[]>([]);
+    const [years, setYears] = useState<string[]>([]);
 
     const fetchStockDetails = async (stockId: string | undefined) => {
         try {
@@ -73,6 +88,13 @@ function StockWidgetDetails() {
 
     useEffect(() => {
         fetchStockDetails(stockId);
+        if (isMobile()) {
+            setQuarters(allQuarters.slice(-3));
+            setYears(allYears.slice(-3));
+          } else {
+            setQuarters(allQuarters);
+            setYears(allYears);
+          }
     }, [stockId]);
 
     if (loading) {
@@ -93,18 +115,6 @@ function StockWidgetDetails() {
             </>
         );
     }
-
-    const quarters = [
-        "Mar 2022", "Jun 2022", "Sep 2022", "Dec 2022",
-        "Mar 2023", "Jun 2023", "Sep 2023", "Dec 2023",
-        "Mar 2024", "Jun 2024", "Sep 2024", "Dec 2024"
-    ];
-
-    const years = [
-        "Mar 2013", "Mar 2014", "Mar 2015", "Mar 2016",
-        "Mar 2017", "Mar 2018", "Mar 2019", "Mar 2020",
-        "Mar 2021", "Mar 2022", "Mar 2023", "Mar 2024"
-    ];
 
     return (
         <>
@@ -216,162 +226,162 @@ function StockWidgetDetails() {
                     <div className={styles['container-border']}>
                         <div className={styles['score-table-head']}>
                             <span><strong>Score Parameter</strong></span>
-                            <span><strong>Score</strong></span>
-                            <span><strong>Remark</strong></span>
+                            <span className={styles['span-50']}><strong>Score</strong></span>
+                            {/* <span><strong>Remark</strong></span> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Market Cap</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.marketCapScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Price</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.priceScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Pe</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.peScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Dividend Yield</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.dividendYieldScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Roce</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.roceScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Roc</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.rocScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Quarterly Profit</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.quarterlyProfitScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Profit And Loss</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.profitAndLossScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Balance Sheet</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.balanceSheetScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Cash Flow</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.cashFlowScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Debtor Days</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.debtorDaysScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Yearly Roce</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.yearlyRoceScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Shareholding Pattern</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.shareholdingPatternScore)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className={styles['score-table-row']}>
                             <div className={styles['score-row-text']}>
                                 <div>Total</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            <div className={styles['row-items-50']}>
                                 <div>{formatNumber(stock.scoreDTO.score)}</div>
                             </div>
-                            <div className={styles['score-row-text']}>
+                            {/* <div className={styles['score-row-text']}>
                                 <div>NA</div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
