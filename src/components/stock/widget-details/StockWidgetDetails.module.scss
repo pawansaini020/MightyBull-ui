@@ -53,11 +53,11 @@
 .card-grid {
   width: auto;
   display: grid;
-  grid-template-columns: 1fr; // default: stacked vertically
+  grid-template-columns: repeat(2, 1fr); // side by side on medium+ screens
   gap: 3%;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr); // side by side on medium+ screens
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; // default: stacked vertically
   }
 }
 
@@ -161,6 +161,14 @@
     border-width: 5px;
     border-style: solid;
     border-color: #1f2937 transparent transparent transparent;
+  }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-s);
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: auto;
   }
 }
 
