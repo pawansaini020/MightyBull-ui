@@ -157,10 +157,7 @@ function MutualFundWidgetDetails() {
                                     <span className={styles.value}>{formatNumber(mutualFund.aum)}</span>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Category Info Row */}
-                        <div className={styles.row}>
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Category</span>
@@ -179,10 +176,7 @@ function MutualFundWidgetDetails() {
                                     <span className={styles.value}>{formateString(mutualFund.risk)} ({formateString(mutualFund.riskRating)})</span>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Returns Info Row */}
-                        <div className={styles.row}>
+                        
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Return 1M</span>
@@ -207,10 +201,7 @@ function MutualFundWidgetDetails() {
                                     </span>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Additional Info Row */}
-                        <div className={styles.row}>
+                        
                             <div className={styles.card}>
                                 <div className={styles.flexRow}>
                                     <span className={styles.label}>Stamp Duty</span>
@@ -240,12 +231,12 @@ function MutualFundWidgetDetails() {
                     </div>
                     <div className={styles['stock-table']}>
                         <div className={styles['stock-table-head']}>
-                            <span><strong>Company</strong></span>
-                            <span><strong>Sector</strong></span>
+                            <span className={styles['span-150']}><strong>Company</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             <span><strong>Portfolio Date</strong></span>
-                            <span><strong>Instrument Name</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Instrument Name</strong></span>
                             <span><strong>Market Price</strong></span>
-                            <span><strong>Corpus %</strong></span>
+                            <span className={styles['span-50']}><strong>Corpus %</strong></span>
                         </div>
 
                         {paginatedHoldings.map((stock, index) => (
@@ -254,23 +245,23 @@ function MutualFundWidgetDetails() {
                                 key={index}
                                 onClick={() => handleStockClick(stock.stock_id)}
                             >
-                                <div className={styles['row-text']}>
+                                <div className={styles['row-items-150']}>
                                     <div>{formateString(stock.company_name)}</div>
                                 </div>
-                                <div className={styles['row-text']}>
+                                <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
                                     <div>{formateString(stock.sector_name)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
                                     <div>{formatDate(stock.portfolio_date)}</div>
                                 </div>
-                                <div className={styles['row-text']}>
+                                <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
                                     <div>{formateString(stock.instrument_name)}</div>
                                 </div>
                                 <div className={styles['row-text']}>
                                     <div>{formatNumber(stock.market_value)}</div>
                                 </div>
-                                <div className={styles['row-text']}>
-                                    <div>{formatNumber(stock.corpus_per)} %</div>
+                                <div className={styles['row-items-50']}>
+                                    <div>{formatNumber(stock.corpus_per)}</div>
                                 </div>
                             </div>
                         ))}

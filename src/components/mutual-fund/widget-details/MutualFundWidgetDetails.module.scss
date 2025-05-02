@@ -1,79 +1,39 @@
+@import '../../../styles/_DesignConstants.scss';
+
 .main-div {
-  width: 94%;
-  position: absolute;
-  padding: 1.5% 3%;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  flex-direction: column; /* stack containers vertically */
-  gap: 1.5rem; /* spacing between each container */
-  background: var(--background-grey);
+  @include main-div;
 }
 
 .index-details {
-  width: auto;
-  background-color: var(--background-white);
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 2% 2% 2%;
-  font-family: 'Inter', sans-serif;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--background-grey); /* Optional outer border */
+  @include div-container;
 }
 
 .index-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-text);
-
-  h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
+  @include container-header;
 }
 
 .index-info-div {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid #ccc; /* Optional outer border */
+  @include border-container;
 }
 
 .row {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  @include row;
 }
 
 .card {
-  flex: 1;
-  min-width: 10%;
-  margin: 1%;
-  background-color: var(--background-hover);
-  padding: 1%;
-  border-radius: 8px;
-  text-align: left;
+  @include card;
 }
 
 .flexRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 97%;
+  @include flexRow;
 }
 
 .label {
-  font-size: var(--font-size-small);
-  color: var(--primary-text);
+  @include label;
 }
 
 .value {
-  font-size: var(--font-size-small);
-  color: var(--primary-text);
-  font-weight: 700;
+  @include value;
 }
 
 .not-found-div {
@@ -85,59 +45,27 @@
 }
 
 .stock-table {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid  var(--border-color); /* Optional outer border */
+  @include border-container;
 }
 
 .stock-table-head {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: var(--font-size-small);
-  color: #666;
-  padding: 1.0rem 2.5rem;
-  border-bottom: 1px solid #eee;
-
-  span {
-    flex: 1;
-    text-align: left;
-  }
+  @include table-columns;
 }
 
 .stock-table-row {
-  display: flex;
-  text-align: left;
-  padding: 1.0rem 2.5rem;
-  font-size: var(--font-size-small);
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--background-hover);
-  }
+  @include table-rows;
 }
 
 .row-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-
-  .positive {
-    color: var(--bull-text);
-    font-size: var(--font-size-small);
-  }
-  .negative {
-    color: var(--bear-text);
-    font-size: var(--font-size-small);
-  }
+  @include row-items;
 }
 
 .pagination_container {
-  display: flex;
-  justify-content: center;
+  @include pagination-container;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
 }
