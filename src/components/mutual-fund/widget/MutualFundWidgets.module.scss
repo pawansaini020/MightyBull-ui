@@ -1,31 +1,15 @@
+@import '../../../styles/_DesignConstants.scss';
+
 .main-div {
-  width: 100%;
-  position: absolute;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  background: var(--background-grey);
+  @include main-div;
 }
 
 .mutual-fund-table-container {
-  width: 100%;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 2.4rem;
-  font-family: 'Inter', sans-serif;
+  @include div-container;
 }
 
 .mutual-fund-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-text);
-
-  h3 {
-    font-size: var(--font-size-large);
-    font-weight: 600;
-  }
+  @include container-header;
 }
 
 .filterContainer {
@@ -34,6 +18,11 @@
   margin-bottom: 1rem;
   align-items: center;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 3%;
+    margin-bottom: 5%;
+  }
 }
 
 .dropdown {
@@ -48,6 +37,11 @@
   color: var(--primary-text);
   font-weight: 600;
   font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+    margin-bottom: 10%;
+  }
 }
 
 .dropdownItem {
@@ -82,6 +76,10 @@
       font-size: 14px;
     }
   }
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
 }
 
 .search-box {
@@ -92,6 +90,10 @@
   background-color: var(--background-hover);
   color: var(--primary-text);
   font-size: var(--font-size-small);
+
+  @media (max-width: 768px) {
+    font-size: var(--text-base);
+  }
 }
 
 .filter-text-div {
@@ -155,26 +157,12 @@
 }
 
 .mutual-fund-table {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--border-color); /* Optional outer border */
+  @include border-container;
 }
 
 .mutual-fund-table-head {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: var(--font-size-small);
-  color: #666;
-  padding: 1.0rem 2rem;
-  border-bottom: 1px solid #eee;
+  @include table-columns;
 
-  span {
-    flex: 1;
-    text-align: left;
-  }
   .span-name {
     flex: 2;
     text-align: left;
@@ -186,55 +174,45 @@
 }
 
 .mutual-fund-table-row {
-  display: flex;
-  text-align: left;
-  padding: 1.0rem 2rem;
-  font-size: var(--font-size-small);
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--background-hover);
-  }
+  @include table-rows;
 }
 
 .mutual-fund-row-image {
+  @include row-items;
   flex: 0.4;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
 }
 
 .mutual-fund-row-name {
+  @include row-items;
   flex: 2;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
 }
 
 .mutual-fund-row-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
+  @include row-items;
 }
 
 .mutual-fund-price {
-  flex: 1;
-  font-size: var(--font-size-small);
-  color: var(--primary-text);
+  @include row-items;
 
   .positive {
-    color: var(--bull-text);
-    font-size: var(--font-size-small);
+    @include positive;
   }
 
   .negative {
-    color: var(--bear-text);
-    font-size: var(--font-size-small);
+    @include negative;
+  }
+}
+
+.mutual-fund-price-right {
+  @include row-items;
+  text-align: right;
+
+  .positive {
+    @include positive;
+  }
+
+  .negative {
+    @include negative;
   }
 }
 
@@ -251,6 +229,11 @@
 }
 
 .pagination_container {
-  display: flex;
-  justify-content: center;
+  @include pagination-container;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
 }

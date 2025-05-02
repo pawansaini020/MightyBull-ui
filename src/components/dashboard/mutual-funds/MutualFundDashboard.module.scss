@@ -5,54 +5,21 @@
 }
 
 .popular-funds {
-  width: auto;
-  background-color: var(--background-white);
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 3% 2% 3%;
-  font-family: 'Inter', sans-serif;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--background-grey); /* Optional outer border */
+  @include div-container;
 }
 
 .popular-funds-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-
-  h2 {
-    font-size: var(--font-size-large);
-    font-weight: 600;
-    color: var(--primary-text);
-  }
-
-  a {
-    color: #059669; // emerald-600
-    font-weight: 500;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  @include container-header;
 }
 
 .popular-funds-div {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid #ccc; /* Optional outer border */
-  align-items: center;
-  overflow-x: auto;
+  @include border-container;
 }
 
 .popular-funds-grid {
   display: grid;
-  gap: 1.5rem;
-  padding: 1.5rem;
+  gap: 1.7%;
+  padding: 1%;
   overflow-x: auto;
   text-align: left;
   grid-template-columns: repeat(10, 1fr);
@@ -60,6 +27,8 @@
   @media (max-width: 768px) {
     overflow-x: auto;
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.45% 3.7%;
+    padding: 3%;
   }
 }
 
@@ -68,6 +37,11 @@
   color: var(--bull-text);
   text-decoration: none;
   font-weight: 500;
+
+  &:hover {
+    color: var(--bull-text);
+    text-decoration: underline;
+  }
 }
 
 .popular-funds-card {

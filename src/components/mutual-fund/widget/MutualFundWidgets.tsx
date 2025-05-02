@@ -374,13 +374,13 @@ function MutualFundWidgets() {
                         <div className={styles['mutual-fund-table-head']}>
                             <span className={styles['span-logo']}><strong></strong></span>
                             <span className={styles['span-name']}><strong>Name</strong></span>
-                            <span><strong>Category</strong></span>
-                            <span><strong>Cap</strong></span>
-                            <span><strong>Risk</strong></span>
-                            <span><strong>Risk Rating</strong></span>
-                            <span><strong>Return(1 Year)</strong></span>
-                            <span><strong>Return(2 Year)</strong></span>
-                            <span><strong>Return(3 Year)</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Category</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Cap</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Risk</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Risk Rating</strong></span>
+                            <span className={styles['span-right']}><strong>Return(1 Yr)</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Return(2 Year)</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Return(3 Year)</strong></span>
                         </div>
 
                         {isLoading ? (
@@ -408,33 +408,33 @@ function MutualFundWidgets() {
                                     <div className={styles['mutual-fund-row-name']}>
                                         <div>{mutualFund?.name || 'N/A'}</div>
                                     </div>
-                                    <div className={styles['mutual-fund-row-text']}>
+                                    <div className={`${styles['mutual-fund-row-text']} ${styles['hide-mobile']}`}>
                                         <div>{mutualFund?.category || 'N/A'}</div>
                                     </div>
-                                    <div className={styles['mutual-fund-row-text']}>
+                                    <div className={`${styles['mutual-fund-row-text']} ${styles['hide-mobile']}`}>
                                         <div>{mutualFund?.subCategory || 'N/A'}</div>
                                     </div>
-                                    <div className={styles['mutual-fund-row-text']}>
+                                    <div className={`${styles['mutual-fund-row-text']} ${styles['hide-mobile']}`}>
                                         <div>{mutualFund?.risk || 'N/A'}</div>
                                     </div>
-                                    <div className={styles['mutual-fund-row-text']}>
+                                    <div className={`${styles['mutual-fund-row-text']} ${styles['hide-mobile']}`}>
                                         <div>{mutualFund?.riskRating ?? 'N/A'}</div>
                                     </div>
-                                    <div className={styles['mutual-fund-price']}>
+                                    <div className={styles['mutual-fund-price-right']}>
                                         <div>
                                             <span className={getColoredStyle(mutualFund?.return1y ?? 0, styles)}>
                                                 {formatReturnValue(mutualFund?.return1y)}
                                             </span>
                                         </div>
                                     </div>
-                                    <div className={styles['mutual-fund-price']}>
+                                    <div className={`${styles['mutual-fund-price']} ${styles['hide-mobile']}`}>
                                         <div>
                                             <span className={getColoredStyle(mutualFund?.return3y ?? 0, styles)}>
                                                 {formatReturnValue(mutualFund?.return3y)}
                                             </span>
                                         </div>
                                     </div>
-                                    <div className={styles['mutual-fund-price']}>
+                                    <div className={`${styles['mutual-fund-price']} ${styles['hide-mobile']}`}>
                                         <div>
                                             <span className={getColoredStyle(mutualFund?.return5y ?? 0, styles)}>
                                                 {formatReturnValue(mutualFund?.return5y)}

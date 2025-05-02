@@ -75,9 +75,11 @@ function MutualFundDashboard() {
                 <div className={styles['popular-funds']}>
                     <div className={styles['popular-funds-header']}>
                         <h2>Popular Funds</h2>
-                        <a href="#" className={styles['all-mutual-funds']} onClick={handleAllMutualFundsClick}>
-                            All Mutual Funds
-                        </a>
+                        <h2>
+                            <a href="#" className={styles['all-mutual-funds']} onClick={handleAllMutualFundsClick}>
+                                All Mutual Funds
+                            </a>
+                        </h2>
                     </div>
 
                     <div className={styles['popular-funds-div']}>
