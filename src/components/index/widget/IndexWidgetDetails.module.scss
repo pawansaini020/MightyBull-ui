@@ -1,68 +1,19 @@
-.main-div {
-  width: 100%;
-  position: absolute;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  flex-direction: column; /* stack containers vertically */
-  gap: 0.8rem; /* spacing between each container */
-  background: var(--background-grey);
+@import '../../../styles/DesignConstants.scss';
 
-  @media (max-width: 768px) {
-    width: 100%;
-    top: 4rem;
-    gap: 0.5rem;
-  }
+.main-div {
+  @include main-div;
 }
 
 .index-details {
-  width: auto;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 3% 1.5% 3%;
-  font-family: 'Inter', sans-serif;
-
-  @media (max-width: 768px) {
-    padding: 0 2% 1% 2%;
-  }
+  @include div-container;
 }
 
 .index-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-text);
-
-  h3 {
-    font-size: var(--font-size-large);
-    font-weight: 600;
-
-    @media (max-width: 768px) {
-      font-size: var(--text-sm);
-    }
-  }
-
-  @media (max-width: 768px) {
-    align-items: flex-start;
-    padding: 2% 2%;
-    gap: 1%;
-  }
+  @include container-header;
 }
 
 .index-info-div {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-  padding: 0.7%;
-
-  @media (max-width: 768px) {
-    width: auto;
-    border-radius: 8px;
-    overflow-x: auto;
-  }
+  @include border-container;
 }
 
 .range-row {
@@ -109,189 +60,56 @@
 }
 
 .row {
-  display: grid;
- justify-content: space-between;
- grid-template-columns: repeat(3, 1fr); /* 3 columns */
- flex-wrap: wrap;
- gap: 0.5%;
-
- @media (max-width: 768px) {
-   display: grid;
-   grid-template-columns: repeat(2, 1fr); /* 2 columns */
-   gap: 2.0%;
-   padding: 1.5% 1.5% 4.5% 1.5%;
- }
+  @include row;
 }
 
 .card {
- flex: 1;
- min-width: 10%;
- margin: 1%;
- margin-bottom: 2%;
- background-color: var(--background-hover);
- padding: 1%;
- border-radius: 8px;
- text-align: left;
-
- &:hover {
-   background-color: var(--background-disabled);
-   cursor: pointer;
- }
-
- @media (max-width: 768px) {
-   min-width: auto;
-   padding: 3% 0 3% 4%;
-   font-size: var(--text-base);
- }
+  @include card;
 }
 
 .flexRow {
- display: flex;
- justify-content: space-between;
- align-items: center;
- width: 97%;
- padding: 2%;
-
- @media (max-width: 768px) {
-   align-items: flex-start;
-   flex-direction: column;
-   width: 100%;
-   gap: 0.2rem;
- }
+  @include flexRow;
 }
 
 .label {
- font-size: var(--font-size-small);
- color: var(--primary-text);
-
- @media (max-width: 768px) {
-   font-size: var(--text-sm);
- }
+  @include label;
 }
 
 .value {
- font-size: var(--font-size-small);
- color: var(--primary-text);
- font-weight: 700;
-
- @media (max-width: 768px) {
-   font-size: var(--text-xs);
- }
+  @include value;
 }
 
 .stock-table {
-  width: auto;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid  var(--border-color); /* Optional outer border */
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-  }
+  @include border-container;
 }
 
 .stock-table-head {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: var(--font-size-small);
-  color: #666;
-  padding: 1.0rem 2.5rem;
-  border-bottom: 1px solid #eee;
-
-  span {
-    flex: 1;
-    text-align: left;
-  }
-
-  .span-right {
-    flex: 1;
-    text-align: right;
-  }
-
-  @media (max-width: 768px) {
-    padding: 4% 4%;
-    font-size: var(--text-base);
-    gap: 1%;
-  }
+  @include table-columns;
 }
 
 .stock-table-row {
-  display: flex;
-  text-align: left;
-  padding: 1.0rem 2.5rem;
-  font-size: var(--font-size-small);
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-
-  &:hover {
-    background: var(--background-hover);
-  }
-
-  @media (max-width: 768px) {
-    padding: 2% 4%;
-    font-size: var(--text-base);
-    gap: 1%;
-  }
+  @include table-rows;
 }
 
 .row-text {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
+  @include row-items;
 
   .positive {
-    color: var(--bull-text);
-    font-size: var(--font-size-small);
-
-    @media (max-width: 768px) {
-      font-size: var(--text-xs);
-      margin-bottom: 0.25rem;
-    }
+    @include positive;
   }
   .negative {
-    color: var(--bear-text);
-    font-size: var(--font-size-small);
-
-    @media (max-width: 768px) {
-      font-size: var(--text-xs);
-      margin-bottom: 0.25rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
+    @include negative;
   }
 }
 
 .row-text-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
+  @include row-items;
 
   .positive {
-    color: var(--bull-text);
-    font-size: var(--font-size-small);
-
-    @media (max-width: 768px) {
-      font-size: var(--text-xs);
-      margin-bottom: 0.25rem;
-    }
+    @include positive;
   }
   .negative {
-    color: var(--bear-text);
-    font-size: var(--font-size-small);
-
-    @media (max-width: 768px) {
-      font-size: var(--text-xs);
-      margin-bottom: 0.25rem;
-    }
+    @include negative;
   }
 
   @media (max-width: 768px) {
@@ -302,8 +120,7 @@
 }
 
 .pagination_container {
-  display: flex;
-  justify-content: center;
+  @include pagination-container;
 }
 
 @media (max-width: 768px) {

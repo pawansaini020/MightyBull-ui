@@ -1,141 +1,52 @@
+@import '../../../styles/_DesignConstants.scss';
+
 .main-div {
-  width: 94%;
-  position: absolute;
-  padding: 1.5% 3%;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  flex-direction: column; /* stack containers vertically */
-  gap: 1.5rem; /* spacing between each container */
-  background: var(--background-grey);
+  @include main-div;
 }
 
 
 .stock-details {
-  width: auto;
-  background-color: var(--background-white);
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 2% 2% 2%;
-  font-family: 'Inter', sans-serif;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--background-grey); /* Optional outer border */
+  @include div-container;
 }
 
 .stock-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-text);
-
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
+  @include container-header;
 }
 
 .stock-info-div {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid #ccc; /* Optional outer border */
-}
-
-.container {
-  border: 1px solid #e3e8ef;
-  border-radius: 10px;
-  padding: 20px;
-  background: var(--background-grey);
-  font-family: 'Inter', sans-serif;
+  @include border-container;
 }
 
 .row {
-  width: auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 2 columns */
-  justify-content: space-between;
-  flex-wrap: wrap;
-
-  @media (max-width: 768px) {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 2.5%;
-    padding: 2% 2% 2% 2%;
-    overflow-y: auto;
-  }
+  @include row; 
 }
 
 .card {
-  flex: 1;
-  min-width: 10%;
-  margin: 1%;
-  background-color: var(--background-hover);
-  padding: 3%;
-  border-radius: 8px;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    min-width: auto;
-    padding: 0.75rem 0 0.75rem 0.75rem;
-    font-size: var(--text-base);
-  }
+  @include card;
 }
 
 .flexRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 97%;
-
-  @media (max-width: 768px) {
-    align-items: flex-start;
-    flex-direction: column;
-    width: 100%;
-    gap: 0.2rem;
-  }
+  @include flexRow;
 }
 
 .label {
-  font-size: var(--font-size-small);
-  color: var(--primary-text);
-
-  @media (max-width: 768px) {
-    font-size: var(--text-sm);
-  }
+  @include label;
 }
 
 .value {
-  font-size: var(--font-size-small);
-  color: var(--primary-text);
-  font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: var(--text-xs);
-  }
+  @include value;
 }
 
-.pros-cons-container-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-text);
-
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
+.container-div {
+  @include div-container;
 }
 
-.pros-cons-container {
-  background-color: var(--background-white);
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 2% 1% 2%;
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
-  border: 1px solid #ccc;
+.container-title {
+  @include container-header;
+}
+
+.container-border {
+  @include border-container;
 }
 
 
@@ -253,64 +164,12 @@
   }
 }
 
-// Stock score
-.score-details {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-  display: block;
-  overflow-x: auto;
-
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    margin: 0.5rem 0;
-  }
-}
-
 .score-table-head {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: var(--font-size-small);
-  color: #666;
-  padding: 1.0rem 2.5rem;
-  border-bottom: 1px solid #eee;
-
-  span {
-    flex: 1;
-    text-align: left;
-
-    @media (max-width: 768px) {
-      &.hide-mobile {
-        display: none;
-      }
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.75rem 1rem;
-    font-size: var(--text-xs);
-  }
+  @include table-columns;
 }
 
 .score-table-row {
-  display: flex;
-  text-align: left;
-  padding: 1.0rem 2.5rem;
-  font-size: var(--font-size-small);
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--background-hover);
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.75rem 1rem;
-    font-size: var(--text-xs);
-  }
+  @include table-rows;
 }
 
 .score-row-text {
@@ -324,81 +183,5 @@
     &.hide-mobile {
       display: none;
     }
-  }
-}
-
-.quarterly-results-container {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-  display: block;
-  overflow-x: auto;
-
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    margin: 0.5rem 0;
-    font-size: var(--text-xs);
-  }
-}
-
-.profit-loss-container {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-  display: block;
-  overflow-x: auto;
-
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    margin: 0.5rem 0;
-    font-size: var(--text-xs);
-  }
-}
-
-.shareholding-pattern-container {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-  display: block;
-  overflow-x: auto;
-
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    margin: 0.5rem 0;
-    font-size: var(--text-xs);
-  }
-}
-
-.balance-sheet-container {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    margin: 0.5rem 0;
-    font-size: var(--text-xs);
-  }
-}
-
-.ratios-container {
-  width: auto;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-  border-collapse: collapse;
-
-  @media (max-width: 768px) {
-    border-radius: 8px;
-    margin: 0.5rem 0;
-    font-size: var(--text-xs);
   }
 }

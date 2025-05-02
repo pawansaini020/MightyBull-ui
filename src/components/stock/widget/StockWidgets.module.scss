@@ -1,52 +1,15 @@
-.main-div {
-  width: 100%;
-  position: absolute;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  background: var(--background-grey);
+@import '../../../styles/_DesignConstants.scss';
 
-  // @media (max-width: 768px) {
-  //   top: 4rem;
-  //   flex-direction: column;
-  //   padding: 0 0.5rem;
-  // }
+.main-div { 
+  @include main-div;
 }
 
 .stock-table-container {
-  width: 100%;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 0 2.4rem;
-  font-family: 'Inter', sans-serif;
-
-  @media (max-width: 768px) {
-    padding: 0 0.5rem;
-    border-radius: 8px;
-  }
+  @include div-container;
 }
 
 .stock-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--primary-text);
-
-  h3 {
-    font-size: var(--font-size-large);
-    font-weight: 600;
-
-    @media (max-width: 768px) {
-      font-size: var(--text-base);
-    }
-  }
-
-  // @media (max-width: 768px) {
-  //   flex-direction: column;
-  //   align-items: flex-start;
-  //   gap: 0.5rem;
-  // }
+  @include container-header;
 }
 
 .filterContainer {
@@ -210,38 +173,11 @@
 }
 
 .stock-table {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  display: block;
-  overflow-x: auto;
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    min-width: auto;
-  }
+  @include border-container;
 }
 
 .stock-table-head {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: var(--font-size-small);
-  color: #666;
-  padding: 1.0rem 2.5rem;
-  border-bottom: 1px solid #eee;
-
-  span {
-    flex: 1;
-    text-align: left;
-  }
-
-  .span-right {
-    flex: 1;
-    text-align: left;
-  }
+  @include table-columns;
 
   .span-company {
     flex: 1.4;
@@ -252,103 +188,44 @@
     flex: 0.6;
     text-align: left;
   }
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    padding: 0.5rem 1rem;
-
-    .span-right {
-      flex: 1;
-      text-align: right;
-    }
-  }
 }
 
 .stock-table-row {
-  display: flex;
-  text-align: left;
-  padding: 1.0rem 2.5rem;
-  font-size: var(--font-size-small);
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--background-hover);
-  }
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    padding: 0.5rem 1rem;
-  }
+  @include table-rows;
 }
 
 .stock-company, .stock-sector, .stock-score, .stock-marketCap, .stock-dividend {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
+  @include row-items;
 }
 
 .stock-company {
+  @include row-items;
   flex: 1.4;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
 }
 
 .stock-score {
+  @include row-items;
   flex: 0.6;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  color: var(--primary-text);
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
 }
 
 .stock-price {
-  flex: 1;
-  font-size: var(--font-size-small);
-  color: var(--primary-text);
-
-  .positive {
-    color: var(--bull-text);
-    font-size: var(--font-size-small);
-  }
-
-  .negative {
-    color: var(--bear-text);
-    font-size: var(--font-size-small);
-  }
+  @include row-items;
 
   @media (max-width: 768px) {
     text-align: right;
   }
 }
 
-.pagination_container {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
+.positive {
+  @include positive;
+}
 
-  @media (max-width: 768px) {
-    margin-top: 0.5rem;
-  }
+.negative {
+  @include negative;
+}
+
+.pagination_container {
+  @include pagination-container;
 }
 
 

@@ -174,8 +174,8 @@ function StockWidgetDetails() {
                         </div>
                     </div>
                 </div>
-                <div className={styles['pros-cons-container']}>
-                    <div className={styles['pros-cons-container-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Fundamental Analysis</h3>
                     </div>
                     <div className={styles['card-grid']}>
@@ -209,11 +209,11 @@ function StockWidgetDetails() {
                         </div>
                     </p>
                 </div>
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Score Analysis</h3>
                     </div>
-                    <div className={styles['score-details']}>
+                    <div className={styles['container-border']}>
                         <div className={styles['score-table-head']}>
                             <span><strong>Score Parameter</strong></span>
                             <span><strong>Score</strong></span>
@@ -376,11 +376,11 @@ function StockWidgetDetails() {
                     </div>
                 </div>
                 {/*quarterly results*/}
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Quarterly Results</h3>
                     </div>
-                    <div className={styles['quarterly-results-container']}>
+                    <div className={styles['container-border']}>
                         {/* Table Head - Quarters */}
                         <div className={styles['score-table-head']}>
                             <span><strong>Metric</strong></span>
@@ -413,11 +413,11 @@ function StockWidgetDetails() {
                 </div>
 
                 {/*Profit Loss*/}
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Profit And Loss</h3>
                     </div>
-                    <div className={styles['profit-loss-container']}>
+                    <div className={styles['container-border']}>
                         {/* Table Head - Years */}
                         <div className={styles['score-table-head']}>
                             <span><strong>Metric</strong></span>
@@ -450,11 +450,11 @@ function StockWidgetDetails() {
                 </div>
 
                 {/*Balance Sheet*/}
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Balance Sheet</h3>
                     </div>
-                    <div className={styles['balance-sheet-container']}>
+                    <div className={styles['container-border']}>
                         {/* Table Head - Years */}
                         <div className={styles['score-table-head']}>
                             <span><strong>Metric</strong></span>
@@ -487,11 +487,11 @@ function StockWidgetDetails() {
                 </div>
 
                 {/*Rations*/}
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Rations</h3>
                     </div>
-                    <div className={styles['ratios-container']}>
+                    <div className={styles['container-border']}>
                         {/* Table Head - Years */}
                         <div className={styles['score-table-head']}>
                             <span><strong>Metric</strong></span>
@@ -524,11 +524,11 @@ function StockWidgetDetails() {
                 </div>
 
                 {/*shareholding pattern*/}
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
+                <div className={styles['container-div']}>
+                    <div className={styles['container-title']}>
                         <h3>Shareholding Pattern</h3>
                     </div>
-                    <div className={styles['shareholding-pattern-container']}>
+                    <div className={styles['container-border']}>
                         {/* Table Head - Quarters */}
                         <div className={styles['score-table-head']}>
                             <span><strong>Metric</strong></span>

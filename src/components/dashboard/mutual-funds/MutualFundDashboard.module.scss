@@ -1,13 +1,7 @@
+@import '../../../styles/DesignConstants.scss';
+
 .main-div {
-  width: 94%;
-  position: absolute;
-  padding: 1.5% 3%;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  flex-direction: column; /* stack containers vertically */
-  gap: 1.5rem; /* spacing between each container */
-  background: var(--background-grey);
+  @include main-div;
 }
 
 .popular-funds {

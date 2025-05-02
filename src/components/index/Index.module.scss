@@ -1,81 +1,43 @@
+@import '../../styles/_DesignConstants.scss';
 .main-div {
-  width: 94%;
-  position: absolute;
-  padding: 1.5% 3%;
-  top: 6rem;
-  left: 0;
-  display: flex;
-  flex-direction: column; /* stack containers vertically */
-  gap: 1.5rem; /* spacing between each container */
-  background: var(--background-grey);
+  @include main-div;
 }
 
 
 .index-container {
-  width: auto;
-  background-color: var(--background-white);
-  border-radius: 10px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.05);
-  padding: 1% 2% 2% 2%;
-  font-family: 'Inter', sans-serif;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--background-grey); /* Optional outer border */
-
-  @media (max-width: 768px) {
-    padding: 0 1% 1% 1%;
-  }
+  @include div-container;
 }
 
 .tabs-container {
-  margin-bottom: 16px;
+  margin: 16px 0 16px 0;
   border-bottom: 2px solid #ddd;
 
   @media (max-width: 768px) {
-    margin-top: 2%;
+    margin: 16px 0 10px 0;
     font-size: var(--text-base);
   }
 }
 
 .index-table {
-  width: 100%;
-  border-collapse: collapse; /* Ensures borders don't double up */
-  border-radius: 10px;
-  overflow: hidden; /* Ensures rounded corners apply properly */
-  border: 1px solid var(--border-color); /* Optional outer border */
-
-  @media (max-width: 768px) {
-    padding: 0 1% 1% 1%;
-  }
+  @include border-container;
 }
 
 .index-table-head {
-  display: flex;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: var(--font-size-small);
-  color: #666;
-  padding: 1.0rem 2.5rem;
-  border-bottom: 1px solid #eee;
+  @include table-columns;
 
-  span {
-    flex: 1;
-    text-align: left;
-  }
   .span-logo {
-    flex: 0.1;
+    flex: 0.12;
     text-align: left;
-  }
 
-  .span-right {
-    flex: 1;
-    text-align: left;
+    @media (max-width: 768px) {
+      flex: 0.2;
+    }
   }
 
   @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
+    padding: 4% 4%;
     font-size: var(--text-base);
-    gap: 0.25rem;
+    gap: 1%;
 
     .span-right {
       flex: 1;
@@ -85,67 +47,33 @@
 }
 
 .index-table-row {
-  display: flex;
-  text-align: left;
-  padding: 1.0rem 2.5rem;
-  font-size: var(--font-size-small);
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--background-hover);
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
-    font-size: var(--text-base);
-    gap: 0.25rem;
-  }
+    @include table-rows;
 }
 
 .index-row {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center vertically */
-  font-weight: 500;
-  color: var(--primary-text);
-
-  @media (max-width: 768px) {
-    padding-top: 0.2rem;
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
+  @include row-items;
 }
 
 .index-row-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center vertically */
-  font-weight: 500;
-  color: var(--primary-text);
+  @include row-items;
 
   @media (max-width: 768px) {
-    padding-top: 0.2rem;
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
     text-align: right;
   }
 }
 
 .index-row-logo {
-  flex: 0.1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center vertically */
-  font-weight: 500;
-  color: var(--primary-text);
+  @include row-items;
+  flex: 0.12;
+
+  @media (max-width: 768px) {
+    flex: 0.2;
+  }
 }
 
 .index-logo {
-  width: 12px;
-  height: 12px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   align-items: center;
   border-collapse: collapse; /* Ensures borders don't double up */
@@ -155,33 +83,15 @@
 }
 
 .neutral {
-  color: var(--primary-text);
-  font-size: var(--font-size-small);
-
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
+  @include neutral;
 }
 
 .positive {
-  color: var(--bull-text);
-  font-size: var(--font-size-small);
-  
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
+  @include positive;
 }
   
 .negative {
-  color: var(--bear-text);
-  font-size: var(--font-size-small);
-  
-  @media (max-width: 768px) {
-    font-size: var(--text-base);
-    margin-bottom: 0.25rem;
-  }
+  @include negative;
 }
 
 @media (max-width: 768px) {
