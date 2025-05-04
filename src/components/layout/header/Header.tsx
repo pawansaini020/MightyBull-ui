@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState, useCallback, useMemo} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Header.module.scss'
 import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
@@ -7,85 +7,105 @@ import {Routers} from "../../../constants/AppConstants.ts";
 import StockSearch from "../../global/search/StockSearch.tsx";
 import TabSwitcher from "../../global/tab-switch/TabSwitcher.tsx";
 
+const isMobile = () => window.innerWidth <= 768;
+
+interface Tab {
+    key: string;
+    label: string;
+}
+
+interface Stock {
+    name: string;
+    stockId: string;
+}
+
+const TABS: Tab[] = [
+    { key: 'STOCK', label: 'Stock' },
+    { key: 'MUTUAL_FUND', label: isMobile() ? 'MF' : 'Mutual Fund' },
+];
+
 function Header({currentTab}: {currentTab?: string | null}) {
-
-    const TABS = [
-        { key: 'STOCK', label: 'Stocks' },
-        { key: 'MUTUAL_FUND', label: 'Mutual Fund' },
-    ];
-
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const dropdownOpenRef = useRef<HTMLDivElement>(null);
-    const loggedInUser = localStorage.getItem('name') ? localStorage.getItem('name') : '';
     const [activeTab, setActiveTab] = useState(currentTab);
 
-    const handleProfileClick = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
+    const loggedInUser = useMemo(() => localStorage.getItem('name') || '', []);
 
-    const handleLogin = () => navigate(Routers.Login);
-    const handleSignup = () => navigate(Routers.Signup);
+    const handleProfileClick = useCallback(() => {
+        setDropdownOpen(prev => !prev);
+    }, []);
 
-    const handleLogout = () => {
-        localStorage.clear() // Clear token
-        navigate(Routers.Home); // Redirect to login page
-    };
+    const handleLogin = useCallback(() => navigate(Routers.Login), [navigate]);
+    const handleSignup = useCallback(() => navigate(Routers.Signup), [navigate]);
+    const handleDashboardClick = useCallback(() => navigate(Routers.Dashboard), [navigate]);
 
-    const handleDashboardClick = () => {
-        navigate(Routers.Dashboard);
-    }
+    const handleLogout = useCallback(() => {
+        localStorage.clear();
+        navigate(Routers.Home);
+    }, [navigate]);
+
+    const handleStockSearch = useCallback((stock: Stock) => {
+        navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)));
+    }, [navigate]);
 
     useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
+        const handleClickOutside = (event: MouseEvent) => {
             const target = event.target as Node;
-            if (
-                dropdownOpenRef.current && !dropdownOpenRef.current.contains(target)
-            ) {
+            if (dropdownOpenRef.current && !dropdownOpenRef.current.contains(target)) {
                 setDropdownOpen(false);
             }
-        }
+        };
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const handleStockSearch = (stock: { name: string; stockId: string; }) => {
-        console.log("Search triggered for redirecting ot this stock page: ", stock);
-        navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stock.stockId)))
-    };
-
     useEffect(() => {
-        console.log("Active tab: ", activeTab);
-        if(activeTab == TABS[0].key) {
+        if (activeTab === TABS[0].key) {
             navigate(Routers.Dashboard);
-        } else if(activeTab == TABS[1].key) {
+        } else if (activeTab === TABS[1].key) {
             navigate(Routers.MutualFundDashboard);
         }
-    }, [activeTab]);
+    }, [activeTab, navigate]);
+
+    const userInitials = useMemo(() => getTwoCapitalChars(loggedInUser || 'U'), [loggedInUser]);
 
     return (
         <div className={styles['main-div']}>
             <div className={styles['header']}>
-                <div className={styles['logo-options']}>
-                    <img className={styles['logo-img']}
-                         src={MIGHTYBULL_LOGO} alt="MIGHTYBULL-Logo"
-                         onClick={handleDashboardClick}
+                <div className={styles['logo-section']}>
+                    <img 
+                        className={styles['logo-img']}
+                        src={MIGHTYBULL_LOGO} 
+                        alt="MIGHTYBULL-Logo"
+                        onClick={handleDashboardClick}
                     />
-                    <span className={styles['logo-heading']} onClick={handleDashboardClick}>MightyBull</span>
+                    <span className={styles['logo-heading']} onClick={handleDashboardClick}>
+                        MightyBull
+                    </span>
                 </div>
-                {loggedInUser && (
-                    <>
-                        <div className={styles['tabs-section']}>
-                            {activeTab && (
-                                <TabSwitcher activeTab={activeTab || ''} setActiveTab={setActiveTab} tabs={TABS} />
-                            )}
-                        </div>
-                        <StockSearch onSearch={handleStockSearch} />
-                    </>
-                )}
-                <div className={styles['profile-options']}>
+                <div className={styles['logged-in-section']}>
+                    {loggedInUser && (
+                        <>
+                            <div className={styles['tabs-section']}>
+                                {activeTab && (
+                                    <TabSwitcher 
+                                        activeTab={activeTab} 
+                                        setActiveTab={setActiveTab} 
+                                        tabs={TABS} 
+                                    />
+                                )}
+                            </div>
+                            <div className={styles['stock-search-section']}>
+                                <StockSearch onSearch={handleStockSearch} />
+                            </div>
+                        </>
+                    )}
+                </div>
+                <div className={styles['profile-section']}>
                     <span className={styles['profile-icon']} onClick={handleProfileClick}>
-                        {getTwoCapitalChars(loggedInUser || 'U')}
+                        {userInitials}
                     </span>
                     {dropdownOpen && (
                         <div className={styles['dropdown']} ref={dropdownOpenRef}>
@@ -105,7 +125,7 @@ function Header({currentTab}: {currentTab?: string | null}) {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Header;

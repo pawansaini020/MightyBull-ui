@@ -1,3 +1,12 @@
+$header-height: 6rem;
+$header-height-mobile: 4rem;
+$logo-height: 45px;
+$logo-height-mobile: 35px;
+$profile-icon-size: 45px;
+$profile-icon-size-mobile: 38px;
+$dropdown-width: 160px;
+$dropdown-width-mobile: 140px;
+
 .main-div {
   width: 100%;
   position: fixed;
@@ -6,15 +15,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 6rem;
+  height: $header-height;
   border-bottom: 1px solid var(--primary-border);
   background-color: var(--text-white);
   z-index: 999;
 
   @media (max-width: 768px) {
     height: auto;
-    min-height: 4rem;
-    // padding: 0.5rem;
+    min-height: $header-height-mobile;
   }
 }
 
@@ -26,34 +34,33 @@
 }
 
 // Logo Block
-.logo-options {
+.logo-section {
   width: 15%;
   display: flex;
   align-items: center;
+  justify-content: left;
   padding: 0 0 0 2%;
-  gap: 1.2rem; // Adjusted for better spacing
+  gap: 1.2rem;
   font-size: var(--text-4xl);
   font-weight: 100;
 
   @media (max-width: 768px) {
-    padding: 0 0 0 1%;
-    width: 45%;
-    justify-content: center;
+    padding: 0 0 0 2%;
+    width: 32%;
     gap: 0.5rem;
-    order: 1;
-    font-size: var(--text-xl);
+    font-size: var(--text-sm);
   }
 }
 
 .logo-img {
-  height: 45px; // Adjust height as needed
-  width: auto;  // Maintain aspect ratio
-  max-width: 30%; // Prevent logo from being too large
-  object-fit: contain; // Ensures logo scales properly
+  height: $logo-height;
+  width: auto;
+  max-width: 30%;
+  object-fit: contain;
   cursor: pointer;
 
   @media (max-width: 768px) {
-    height: 35px;
+    height: $logo-height-mobile;
   }
 }
 
@@ -107,20 +114,27 @@
 //   }
 // }
 
+.logged-in-section {
+  width: 77%;
+  display: flex;
+  align-items: center;
+  font-weight: 100;
+
+  @media (max-width: 768px) {
+    width: 58%;
+  }
+}
+
 // Profile Block
-.profile-options {
+.profile-section {
   width: 7%;
   display: flex;
-  justify-content: flex-end; // Moves the icon to the right
+  justify-content: flex-end;
   align-items: center;
-  padding-right: 2%; // Optional: add some padding if needed
+  padding-right: 2%;
 
   @media (max-width: 768px) {
     width: 10%;
-    position: absolute;
-    top: 1.0rem;
-    right: 4%;
-    order: 4;
   }
 }
 
@@ -128,8 +142,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 45px;
-  height: 45px;
+  width: $profile-icon-size;
+  height: $profile-icon-size;
   background: var(--primary-bubble-background);
   color: var(--primary-bubble-text);
   font-size: var(--text-xl);
@@ -138,8 +152,8 @@
   cursor: pointer;
 
   @media (max-width: 768px) {
-    width: 38px;
-    height: 38px;
+    width: $profile-icon-size-mobile;
+    height: $profile-icon-size-mobile;
     font-size: var(--text-base);
   }
 }
@@ -152,13 +166,13 @@
   border: 1px solid var(--primary-border);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 160px;
+  width: $dropdown-width;
   z-index: 9999;
 
   @media (max-width: 768px) {
     top: 2.7rem;
     right: 0.5rem;
-    width: 140px;
+    width: $dropdown-width-mobile;
   }
 }
 
@@ -170,6 +184,7 @@
   font-size: var(--text-base);
   cursor: pointer;
   color: var(--primary-text);
+  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: var(--background-hover);
@@ -181,13 +196,27 @@
   }
 }
 
+// Tabs Block
 .tabs-section {
-  width: 53%;
+  padding-left: 2%;
+  width: 40%;
   font-size: var(--font-size-medium);
 
   @media (max-width: 768px) {
-    width: 60%;
-    order: 2;
-    font-size: var(--text-base);
+    width: 35%;
+    font-size: var(--text-xs);
+  }
+}
+
+.stock-search-section {
+  width: 60%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 65%;
+    padding-right: 2%;
+    font-size: var(--text-xs);
   }
 }
