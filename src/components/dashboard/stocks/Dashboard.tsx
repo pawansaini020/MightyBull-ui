@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 import Headers from "../../layout/header/Header.tsx";
 import styles from './Dashboard.module.scss';
-// import Pagination from '../global/pagination/Pagination.tsx';
+// import Pagination from '../global/pagination/Pagination.tsx'1;
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import {Page} from '../../../constants/AppConstants.ts'
 import {Routers} from '../../../constants/AppConstants.ts'
