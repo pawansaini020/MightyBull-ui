@@ -16,4 +16,5 @@ export const Routers = {
     MutualFundDashboard: '/mutual-fund/dashboard',
     MutualFundWidgets: '/mutual-fund/widgets',
     MutualFundWidgetDetails: '/mutual-fund/widget/:mutualFundId',
+    UserProfilePage: '/user-profile/basic-details'
 }

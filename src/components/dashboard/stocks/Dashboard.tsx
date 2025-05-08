@@ -8,35 +8,41 @@ import {Page} from '../../../constants/AppConstants.ts'
 import {Routers} from '../../../constants/AppConstants.ts'
 import {formatNumber, getColoredStyle} from "../../../helpers/StringTransform.ts";
 
-function Dashboard() {
-    interface StockItem {
-        stockId: string;
-        name: string;
-        sector: string;
-        price: string;
-        change: string;
-        isPositive: boolean;
-        score: number;
-        marketCap: number;
-        dividend: number;
-    }
+const TABS = [
+    { key: 'STOCK', label: 'Stocks' },
+    { key: 'MUTUAL_FUND', label: 'Mutual Fund' },
+];
 
-    interface IndexData {
-        name: string;
-        symbol: string;
-        indexId: string;
-        country: string;
-        logoUrl: string;
-        value: number;
-        open: number;
-        close: number;
-        dayChange: number;
-        dayChangePerc: number;
-        low: number;
-        high: number;
-        yearLowPrice: number;
-        yearHighPrice: number;
-    }
+interface StockItem {
+    stockId: string;
+    name: string;
+    sector: string;
+    price: string;
+    change: string;
+    isPositive: boolean;
+    score: number;
+    marketCap: number;
+    dividend: number;
+}
+
+interface IndexData {
+    name: string;
+    symbol: string;
+    indexId: string;
+    country: string;
+    logoUrl: string;
+    value: number;
+    open: number;
+    close: number;
+    dayChange: number;
+    dayChangePerc: number;
+    low: number;
+    high: number;
+    yearLowPrice: number;
+    yearHighPrice: number;
+}
+
+function Dashboard() {
 
     const [stockList, setStockList] = useState<StockItem[]>([])
     // const [currentPage, setCurrentPage] = useState(1) // 1-based for UI
@@ -58,7 +64,7 @@ function Dashboard() {
 
     const handleRefreshIndexClick = () => {
         setIsRotatingIndex(true);
-        fetchIndexItemsFromSource()
+        fetchIndexItemsFromSource();
 
         // Reset rotation after animation ends (400ms matches the CSS duration)
         setTimeout(() => {
@@ -140,7 +146,7 @@ function Dashboard() {
             if (response.status) {
                 const map: Record<string, IndexData> = {};
                 json.data.forEach((idx: IndexData) => {
-                    map[idx.name] = idx;
+                    map[idx.indexId] = idx;
                 });
                 setIndexes(map);
             }
@@ -155,11 +161,6 @@ function Dashboard() {
         fetchIndexItems();
         fetchStocks(1);
     }, []);
-
-    const TABS = [
-        { key: 'STOCK', label: 'Stocks' },
-        { key: 'MUTUAL_FUND', label: 'Mutual Fund' },
-    ];
 
     return (
         <>
@@ -272,7 +273,7 @@ function Dashboard() {
                             <span className={styles['hide-mobile']}><strong>Sector</strong></span>
                             <span><strong>Score</strong></span>
                             <span><strong>Market Price</strong></span>
-                            <span className={styles['hide-mobile']}><strong>Market Cap (In Cr)</strong></span>
+                            <span className={styles['hide-mobile']}><strong>Market Cap (Cr)</strong></span>
                             <span className={styles['hide-mobile']}><strong>Dividend</strong></span>
                         </div>
 

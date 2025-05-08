@@ -1,0 +1,148 @@
+@import '../../../styles/DesignConstants.scss';
+
+.main-div {
+  @include main-div;
+  // margin-top: 3%;
+}
+
+.profile-page {
+  @include div-container;
+  display: flex;
+  height: 100%;
+  padding-top: 3%;
+
+  @media (max-width: 768px) {
+    padding-top: 3%;
+  }
+}
+  
+.sidebar {
+  width: 240px;
+  background-color: #fff;
+  // margin-left: 3%;
+  padding: 2% 1%;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  border-collapse: collapse;
+  color: var(--primary-text);
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: #4e5ba6;
+      color: white;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @media (max-width: 768px) {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+      }
+    }
+
+    h3 {
+      margin-top: 10%;
+      font-size: var(--font-size-medium);
+      color: var(--primary-text);
+
+      @media (max-width: 768px) {
+        font-size: var(--text-s);
+      }
+    }
+  }
+
+  .menu {
+    text-align: left;
+    font-size: var(--font-size-small);
+    .menu-item {
+      padding: 3% 10%;
+      color: var(--primary-text);
+      cursor: pointer;
+      border-radius: 3px;
+
+      &:hover, &.active {
+        background-color: #e5e7eb;
+        font-weight: 500;
+      }
+    }
+
+    @media (max-width: 768px) {
+      font-size: var(--text-s);
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
+}
+  
+.profile-details {
+  @include border-container;
+  border-radius: 6px;
+  flex: 1;
+  margin-left: 3%;
+  padding: 5% 10%;
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    text-align: left;
+
+    .field {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+
+        @media (max-width: 768px) {
+          font-size: var(--text-s);
+        }
+      }
+
+      span {
+        font-size: 0.95rem;
+        color: #1f2937;
+
+        @media (max-width: 768px) {
+          font-size: var(--text-s);
+        }
+      }
+
+      .edit {
+        margin-left: 1rem;
+        font-size: 0.75rem;
+        color: #10b981;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        font-size: var(--text-s);
+      }
+    }
+
+    .full {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 10% 5%;
+  }
+}
+  

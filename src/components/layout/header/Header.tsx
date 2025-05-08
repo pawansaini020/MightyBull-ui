@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState, useCallback, useMemo} from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Header.module.scss'
-import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png'
-import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts'
+import styles from './Header.module.scss';
+import MIGHTYBULL_LOGO from '../../../assets/mightybull2.png';
+import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts';
 import {Routers} from "../../../constants/AppConstants.ts";
 import StockSearch from "../../global/search/StockSearch.tsx";
 import TabSwitcher from "../../global/tab-switch/TabSwitcher.tsx";
@@ -43,6 +43,10 @@ function Header({currentTab}: {currentTab?: string | null}) {
     const handleLogout = useCallback(() => {
         localStorage.clear();
         navigate(Routers.Home);
+    }, [navigate]);
+
+    const handleUserDetails = useCallback(() => {
+        navigate(Routers.UserProfilePage);
     }, [navigate]);
 
     const handleStockSearch = useCallback((stock: Stock) => {
@@ -111,7 +115,7 @@ function Header({currentTab}: {currentTab?: string | null}) {
                         <div className={styles['dropdown']} ref={dropdownOpenRef}>
                             {loggedInUser ? (
                                 <>
-                                    <div className={styles['dropdown-item']}>User Details</div>
+                                    <div className={styles['dropdown-item']} onClick={handleUserDetails}>User Details</div>
                                     <div className={styles['dropdown-item']} onClick={handleLogout}>Logout</div>
                                 </>
                             ) : (
