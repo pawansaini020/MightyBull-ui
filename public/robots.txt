@@ -1,0 +1,18 @@
+User-agent: Mediapartners-Google
+Disallow:
+
+User-agent: Adsbot-Google
+Disallow:
+
+User-agent: Googlebot-Image
+Disallow:
+
+# cart
+User-agent: *
+Disallow: /mutual-fund
+
+# URL parameters blocking for SEO
+User-agent: *
+Allow: /login
+Allow: /signup
+Allow: /forgot-password
