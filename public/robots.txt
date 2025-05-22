@@ -16,3 +16,6 @@ User-agent: *
 Allow: /login
 Allow: /signup
 Allow: /forgot-password
+
+# Sitemaps 
+Sitemap: https://mightybull.netlify.app/sitemap.xml
