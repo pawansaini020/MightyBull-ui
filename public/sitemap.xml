@@ -1,19 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://mightybull.netlify.app/</loc>
+    <loc>https://mightybull.netlify.app</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app"/>
+    <lastmod>2025-05-22</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://mightybull.netlify.app/login</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/login"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/login"/>
+    <lastmod>2025-05-22</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mightybull.netlify.app/signup</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/signup"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/signup"/>
+    <lastmod>2025-05-22</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://mightybull.netlify.app/forgot-password</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/forgot-password"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/forgot-password"/>
+    <lastmod>2025-05-22</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>
