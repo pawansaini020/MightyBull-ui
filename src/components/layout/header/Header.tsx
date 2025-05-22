@@ -77,7 +77,6 @@ function Header({currentTab}: {currentTab?: string | null}) {
 
     return (
         <div className={styles['main-div']}>
-            <meta name="google-site-verification" content="pJG6OpKcfTEVOqwOKEf9Wh-zKFiSEhZdXYNYgHUXHKQ" />
             <div className={styles['header']}>
                 <div className={styles['logo-section']}>
                     <img 
