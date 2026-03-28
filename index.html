@@ -1,10 +1,63 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/mightybull2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MightyBull</title>
+
+    <!-- Primary SEO: Google uses meta description + title for search snippets (not robots.txt) -->
+    <title>MightyBull — Stocks, mutual funds &amp; Indian markets</title>
+    <meta
+      name="description"
+      content="MightyBull helps you explore Indian stocks, mutual funds, and indices on NSE &amp; BSE—clear dashboards, scores, and fund tools. Sign in to track your watchlist and research."
+    />
+    <link rel="canonical" href="https://mightybull.netlify.app/" />
+
+    <!-- Open Graph / social & many crawlers -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MightyBull" />
+    <meta property="og:title" content="MightyBull — Stocks, mutual funds &amp; Indian markets" />
+    <meta
+      property="og:description"
+      content="Explore Indian stocks, mutual funds, and indices—dashboards, scores, and research. Log in to access your MightyBull workspace."
+    />
+    <meta property="og:url" content="https://mightybull.netlify.app/" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MightyBull — Stocks, mutual funds &amp; Indian markets" />
+    <meta
+      name="twitter:description"
+      content="Explore Indian stocks, mutual funds, and indices on NSE &amp; BSE. Log in to use MightyBull."
+    />
+
+    <!-- Hint crawlers to main entry + auth pages -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://mightybull.netlify.app/#organization",
+            "name": "MightyBull",
+            "url": "https://mightybull.netlify.app/",
+            "description": "MightyBull is a web platform for researching and tracking Indian stocks, mutual funds, and market indices (NSE & BSE), with sign-in for personalised dashboards."
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://mightybull.netlify.app/#website",
+            "url": "https://mightybull.netlify.app/",
+            "name": "MightyBull",
+            "description": "Stocks, mutual funds, and Indian market indices—research tools and dashboards. Log in at /login to access your account.",
+            "publisher": { "@id": "https://mightybull.netlify.app/#organization" },
+            "inLanguage": "en-IN"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

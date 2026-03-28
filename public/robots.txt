@@ -1,21 +1,12 @@
-User-agent: Mediapartners-Google
-Disallow:
+# MightyBull — allow indexing of public pages; use meta tags in index.html for search snippets.
+# (Google does not take the site "description" from robots.txt — it uses <meta name="description"> and page content.)
 
-User-agent: Adsbot-Google
-Disallow:
-
-User-agent: Googlebot-Image
-Disallow:
-
-# cart
 User-agent: *
-Disallow: /mutual-fund
+Allow: /
 
-# URL parameters blocking for SEO
-User-agent: *
+# Auth & marketing entry points (explicit; redundant with Allow: / but documents intent)
 Allow: /login
 Allow: /signup
 Allow: /forgot-password
 
-# Sitemaps 
 Sitemap: https://mightybull.netlify.app/sitemap.xml
