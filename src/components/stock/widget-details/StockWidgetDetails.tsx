@@ -1,574 +1,445 @@
-import Headers from "../../layout/header/Header.tsx";
-import styles from "./StockWidgetDetails.module.scss";
-import {useEffect, useState} from "react";
-import {useParams} from 'react-router-dom';
-import axiosInstance from "../../../helpers/axiosInstance.ts";
-import { formatNumber } from "../../../helpers/StringTransform.ts";
+import Headers from '../../layout/header/Header.tsx';
+import Footer from '../../layout/footer/Footer.tsx';
+import styles from './StockWidgetDetails.module.scss';
+import { useEffect, useState, useMemo, type ReactNode } from 'react';
+import { useParams } from 'react-router-dom';
+import axiosInstance from '../../../helpers/axiosInstance.ts';
+import { formatNumber } from '../../../helpers/StringTransform.ts';
+import {
+    MdShowChart,
+    MdTrendingUp,
+    MdTrendingDown,
+    MdInfoOutline,
+    MdAssessment,
+    MdTableChart,
+} from 'react-icons/md';
 
-const isMobile = () => window.innerWidth <= 768;
+interface StockScore {
+    stockId: string;
+    marketCapScore: number;
+    priceScore: number;
+    peScore: number;
+    dividendYieldScore: number;
+    roceScore: number;
+    rocScore: number;
+    quarterlyProfitScore: number;
+    profitAndLossScore: number;
+    balanceSheetScore: number;
+    cashFlowScore: number;
+    debtorDaysScore: number;
+    yearlyRoceScore: number;
+    shareholdingPatternScore: number;
+    score: number;
+}
+
+interface StockWidget {
+    stockId: string;
+    name: string;
+    sector: string;
+    marketCap: number;
+    currentPrice: number;
+    high: number;
+    low: number;
+    stockPE: number;
+    dividendYield: number;
+    roce: number;
+    roe: number;
+    score: number;
+    prosList: string[];
+    consList: string[];
+    scoreDTO: StockScore;
+    quarterlyResults: Record<string, Record<string, number | null>> | null;
+    profitAndLoss: Record<string, Record<string, number | null>> | null;
+    balanceSheet: Record<string, Record<string, number | null>> | null;
+    ratios: Record<string, Record<string, number | null>> | null;
+    shareholdingPattern: Record<string, Record<string, number | null>> | null;
+}
+
+const ALL_QUARTERS = [
+    'Jun 2022',
+    'Sep 2022',
+    'Dec 2022',
+    'Mar 2023',
+    'Jun 2023',
+    'Sep 2023',
+    'Dec 2023',
+    'Mar 2024',
+    'Jun 2024',
+    'Sep 2024',
+    'Dec 2024',
+    'Mar 2025',
+];
+
+const ALL_YEARS = [
+    'Mar 2014',
+    'Mar 2015',
+    'Mar 2016',
+    'Mar 2017',
+    'Mar 2018',
+    'Mar 2019',
+    'Mar 2020',
+    'Mar 2021',
+    'Mar 2022',
+    'Mar 2023',
+    'Mar 2024',
+    'Mar 2025',
+];
+
+type ScoreComponentKey = Exclude<keyof StockScore, 'stockId' | 'score'>;
+
+const SCORE_BREAKDOWN: { key: ScoreComponentKey; label: string }[] = [
+    { key: 'marketCapScore', label: 'Market cap' },
+    { key: 'priceScore', label: 'Price' },
+    { key: 'peScore', label: 'P/E' },
+    { key: 'dividendYieldScore', label: 'Dividend yield' },
+    { key: 'roceScore', label: 'ROCE' },
+    { key: 'rocScore', label: 'ROC' },
+    { key: 'quarterlyProfitScore', label: 'Quarterly profit' },
+    { key: 'profitAndLossScore', label: 'Profit & loss' },
+    { key: 'balanceSheetScore', label: 'Balance sheet' },
+    { key: 'cashFlowScore', label: 'Cash flow' },
+    { key: 'debtorDaysScore', label: 'Debtor days' },
+    { key: 'yearlyRoceScore', label: 'Yearly ROCE' },
+    { key: 'shareholdingPatternScore', label: 'Shareholding pattern' },
+];
+
+function isMobileWidth() {
+    return typeof window !== 'undefined' && window.innerWidth <= 768;
+}
+
+function safeObjectKeys(obj: Record<string, unknown> | null | undefined): string[] {
+    if (!obj || typeof obj !== 'object') return [];
+    return Object.keys(obj);
+}
+
+function DataTableBlock({
+    title,
+    icon,
+    columns,
+    rowKeys,
+    getCell,
+}: {
+    title: string;
+    icon: ReactNode;
+    columns: string[];
+    rowKeys: string[];
+    getCell: (metric: string, col: string) => string;
+}) {
+    if (rowKeys.length === 0 || columns.length === 0) return null;
+
+    const gridCols = `minmax(10rem, 14rem) repeat(${columns.length}, minmax(5.25rem, 1fr))`;
+    const sectionId = `tbl-${title.replace(/[^a-zA-Z0-9]+/g, '-').toLowerCase()}`;
+
+    return (
+        <section className={styles.section} aria-labelledby={sectionId}>
+            <div className={styles.sectionHead}>
+                <span className={styles.sectionIcon} aria-hidden>
+                    {icon}
+                </span>
+                <h2 id={sectionId} className={styles.sectionTitle}>
+                    {title}
+                </h2>
+            </div>
+            <div className={styles.tableScroll}>
+                <div className={styles.dataTableWrap}>
+                    <div className={styles.dataTableRow} style={{ gridTemplateColumns: gridCols }}>
+                        <span className={styles.dataTableSticky}>Metric</span>
+                        {columns.map((c) => (
+                            <span key={c} className={`${styles.dataTableNumHead} ${styles.dataTableHeadCell}`}>
+                                {c}
+                            </span>
+                        ))}
+                    </div>
+                    {rowKeys.map((metric) => (
+                        <div key={metric} className={styles.dataTableRow} style={{ gridTemplateColumns: gridCols }}>
+                            <span className={`${styles.dataTableSticky} ${styles.dataTableMetric}`}>{metric}</span>
+                            {columns.map((col) => (
+                                <span key={col} className={styles.dataTableCell}>
+                                    {getCell(metric, col)}
+                                </span>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
 
 function StockWidgetDetails() {
-
-    interface StockWidget {
-        stockId: string;
-        name: string;
-        sector: string;
-        marketCap: number;
-        currentPrice: number;
-        high: number;
-        low: number;
-        stockPE: number;
-        dividendYield: number;
-        roce: number;
-        roe: number;
-        score: number;
-        prosList: string[];
-        consList: string[];
-        scoreDTO: StockScore;
-        quarterlyResults: any;
-        profitAndLoss: any;
-        balanceSheet: any;
-        ratios: any;
-        shareholdingPattern: any;
-    }
-
-    interface StockScore {
-        stockId: string;
-        marketCapScore: number;
-        priceScore: number;
-        peScore: number;
-        dividendYieldScore: number;
-        roceScore: number;
-        rocScore: number;
-        quarterlyProfitScore: number;
-        profitAndLossScore: number;
-        balanceSheetScore: number;
-        cashFlowScore: number;
-        debtorDaysScore: number;
-        yearlyRoceScore: number;
-        shareholdingPatternScore: number;
-        score: number;
-    }
-
-    const allQuarters = [
-        "Jun 2022", "Sep 2022", "Dec 2022", "Mar 2023", 
-        "Jun 2023", "Sep 2023", "Dec 2023", "Mar 2024", 
-        "Jun 2024", "Sep 2024", "Dec 2024", "Mar 2025"
-    ];
-
-    const allYears = [
-        "Mar 2014", "Mar 2015", "Mar 2016", "Mar 2017", 
-        "Mar 2018", "Mar 2019", "Mar 2020", "Mar 2021", 
-        "Mar 2022", "Mar 2023", "Mar 2024", "Mar 2025"
-    ];
-
     const { stockId } = useParams();
     const [stock, setStock] = useState<StockWidget | null>(null);
     const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState<string | null>(null);
     const [quarters, setQuarters] = useState<string[]>([]);
     const [years, setYears] = useState<string[]>([]);
 
-    const fetchStockDetails = async (stockId: string | undefined) => {
-        try {
-            const response = await axiosInstance.get(`${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/widget-details/${stockId}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            });
-
-            console.log("Stock widget details: " + response.data);
-            const stockWidget: StockWidget = response.data.data;
-            setStock(stockWidget);
-        } catch (error) {
-            console.error('Failed to fetch stock details:', error);
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        if (isMobileWidth()) {
+            setQuarters(ALL_QUARTERS.slice(-3));
+            setYears(ALL_YEARS.slice(-3));
+        } else {
+            setQuarters(ALL_QUARTERS);
+            setYears(ALL_YEARS);
         }
-    };
+    }, []);
 
     useEffect(() => {
-        fetchStockDetails(stockId);
-        if (isMobile()) {
-            setQuarters(allQuarters.slice(-3));
-            setYears(allYears.slice(-3));
-          } else {
-            setQuarters(allQuarters);
-            setYears(allYears);
-          }
+        let cancelled = false;
+        const run = async () => {
+            if (!stockId) {
+                setLoading(false);
+                setStock(null);
+                setFetchError('Missing stock id');
+                return;
+            }
+            setLoading(true);
+            setFetchError(null);
+            try {
+                const response = await axiosInstance.get(
+                    `${import.meta.env.VITE_MIGHTYBULL_BASE_URL}/v1/api/stock/widget-details/${encodeURIComponent(stockId)}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('token')}`,
+                        },
+                    }
+                );
+                const data = response?.data?.data;
+                if (!cancelled) {
+                    setStock(data ?? null);
+                    if (!data) setFetchError('No data returned');
+                }
+            } catch {
+                if (!cancelled) {
+                    setStock(null);
+                    setFetchError('Could not load stock details.');
+                }
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        };
+        run();
+        return () => {
+            cancelled = true;
+        };
     }, [stockId]);
 
-    if (loading) {
-        return (
-            <>
-                <Headers currentTab={null} />
-                <div>Loading...</div>
-            </>
-        );
-    }
-    if (!stock) {
-        return (
-            <>
-                <Headers currentTab={null} />
-                <div className={styles['main-div']}>
-                    Stock data not found.
-                </div>
-            </>
-        );
-    }
+    const metricCards = useMemo(() => {
+        if (!stock) return [];
+        return [
+            { label: 'Score', value: formatNumber(stock.score), accent: 'primary' as const },
+            { label: 'Stock P/E', value: formatNumber(stock.stockPE), accent: 'default' as const },
+            { label: 'Market cap', value: `${formatNumber(stock.marketCap)} Cr`, accent: 'default' as const },
+            { label: 'Current price', value: `₹${formatNumber(stock.currentPrice)}`, accent: 'default' as const },
+            { label: 'Day low', value: formatNumber(stock.low), accent: 'bear' as const },
+            { label: 'Day high', value: formatNumber(stock.high), accent: 'bull' as const },
+            { label: 'ROCE', value: `${formatNumber(stock.roce)}%`, accent: 'default' as const },
+            { label: 'ROE', value: `${formatNumber(stock.roe)}%`, accent: 'default' as const },
+            { label: 'Dividend yield', value: `${formatNumber(stock.dividendYield)}%`, accent: 'default' as const },
+        ];
+    }, [stock]);
+
+    const sectorLabel = stock?.sector?.trim() ? stock.sector : '—';
 
     return (
         <>
             <Headers />
-            <div className={styles['main-div']}>
-                <div className={styles['stock-details']}>
-                    <div className={styles['stock-title']}>
-                        <h3>{stock.name}</h3>
-                    </div>
-                    <div className={styles['stock-info-div']}>
-                        <div className={styles.row}>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Score</span>
-                                    <span className={styles.value}>{formatNumber(stock.score)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Stock P/E</span>
-                                    <span className={styles.value}>{formatNumber(stock.stockPE)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Market Cap</span>
-                                    <span className={styles.value}>{formatNumber(stock.marketCap)} Cr</span>
-                                </div>
-                            </div>
-                        
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Current Price</span>
-                                    <span className={styles.value}>{formatNumber(stock.currentPrice)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Low</span>
-                                    <span className={styles.value}>{formatNumber(stock.low)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>High</span>
-                                    <span className={styles.value}>{formatNumber(stock.high)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>ROCE</span>
-                                    <span className={styles.value}>{formatNumber(stock.roce)} %</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>ROE</span>
-                                    <span className={styles.value}>{formatNumber(stock.roe)} %</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Dividend Yield</span>
-                                    <span className={styles.value}>{formatNumber(stock.dividendYield)} %</span>
-                                </div>
-                            </div>
+            <div className={styles.mainDiv}>
+                <div className={styles.shell}>
+                    {loading ? (
+                        <div className={styles.loadingBlock}>
+                            <span className={styles.loadingDot} aria-hidden />
+                            Loading stock details…
                         </div>
-                    </div>
-                </div>
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Fundamental Analysis</h3>
-                    </div>
-                    <div className={styles['card-grid']}>
-                        {/* Pros */}
-                        <div className={styles['card-pros']}>
-                            <h3 className={styles['card-heading']}>PROS</h3>
-                            <ul className={styles['card-list']}>
-                                {stock.prosList.map((item, index) => (
-                                    <li key={index}>{item}</li>
-                                ))}
-                            </ul>
+                    ) : !stock ? (
+                        <div className={styles.emptyBlock}>
+                            <MdInfoOutline className={styles.emptyIcon} aria-hidden />
+                            <p className={styles.emptyTitle}>{fetchError || 'Stock not found'}</p>
+                            <p className={styles.emptyHint}>Check the link or return to the stock list.</p>
                         </div>
-
-                        {/* Cons */}
-                        <div className={styles['card-cons']}>
-                            <h3 className={styles['card-heading']}>CONS</h3>
-                            <ul className={styles['card-list']}>
-                                {stock.consList.map((item, index) => (
-                                    <li key={index}>{item}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                    <p className={styles['disclaimer']}>
-                        * The pros and cons are machine generated.{" "}
-                        <div className={styles["tooltip-wrapper"]}>
-                            <span className={styles["tooltip-icon"]}>ⓘ</span>
-                            <div className={styles["custom-tooltip"]}>
-                                These are AI generated insights. Please exercise caution and do your own analysis.
-                            </div>
-                        </div>
-                    </p>
-                </div>
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Score Analysis</h3>
-                    </div>
-                    <div className={styles['container-border']}>
-                        <div className={styles['score-table-head']}>
-                            <span><strong>Score Parameter</strong></span>
-                            <span className={styles['span-50']}><strong>Score</strong></span>
-                            {/* <span><strong>Remark</strong></span> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Market Cap</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.marketCapScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Price</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.priceScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Pe</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.peScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Dividend Yield</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.dividendYieldScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Roce</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.roceScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Roc</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.rocScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Quarterly Profit</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.quarterlyProfitScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Profit And Loss</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.profitAndLossScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Balance Sheet</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.balanceSheetScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Cash Flow</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.cashFlowScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Debtor Days</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.debtorDaysScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Yearly Roce</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.yearlyRoceScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Shareholding Pattern</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.shareholdingPatternScore)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                        <div className={styles['score-table-row']}>
-                            <div className={styles['score-row-text']}>
-                                <div>Total</div>
-                            </div>
-                            <div className={styles['row-items-50']}>
-                                <div>{formatNumber(stock.scoreDTO.score)}</div>
-                            </div>
-                            {/* <div className={styles['score-row-text']}>
-                                <div>NA</div>
-                            </div> */}
-                        </div>
-                    </div>
-                </div>
-                {/*quarterly results*/}
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Quarterly Results</h3>
-                    </div>
-                    <div className={styles['container-border']}>
-                        {/* Table Head - Quarters */}
-                        <div className={styles['score-table-head']}>
-                            <span><strong>Metric</strong></span>
-                            {quarters.map((quarter, index) => (
-                                <span key={index}><strong>{quarter}</strong></span>
-                            ))}
-                        </div>
-
-                        {/* Table Rows - One per Metric */}
-                        {Object.keys(stock.quarterlyResults).map((metric, i) => (
-                            <div key={i} className={styles['score-table-row']}>
-                                <div className={styles['score-row-text']}>
-                                    <div>{metric}</div>
-                                </div>
-                                {quarters.map((q, index) => (
-                                    <div key={index} className={styles['score-row-text']}>
-                                        <div>
-                                            {
-                                                stock.quarterlyResults[metric][q] !== null &&
-                                                stock.quarterlyResults[metric][q] !== undefined
-                                                    ? formatNumber(stock.quarterlyResults[metric][q])
-                                                    : "-"
-                                            }
-                                        </div>
+                    ) : (
+                        <>
+                            <section className={styles.hero} aria-label="Stock overview">
+                                <div className={styles.heroGlow} aria-hidden />
+                                <div className={styles.heroInner}>
+                                    <div className={styles.heroIcon} aria-hidden>
+                                        <MdShowChart />
                                     </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/*Profit Loss*/}
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Profit And Loss</h3>
-                    </div>
-                    <div className={styles['container-border']}>
-                        {/* Table Head - Years */}
-                        <div className={styles['score-table-head']}>
-                            <span><strong>Metric</strong></span>
-                            {years.map((year, index) => (
-                                <span key={index}><strong>{year}</strong></span>
-                            ))}
-                        </div>
-
-                        {/* Table Rows - One per Metric */}
-                        {Object.keys(stock.profitAndLoss).map((metric, i) => (
-                            <div key={i} className={styles['score-table-row']}>
-                                <div className={styles['score-row-text']}>
-                                    <div>{metric}</div>
-                                </div>
-                                {years.map((q, index) => (
-                                    <div key={index} className={styles['score-row-text']}>
-                                        <div>
-                                            {
-                                                stock.profitAndLoss[metric][q] !== null &&
-                                                stock.profitAndLoss[metric][q] !== undefined
-                                                    ? formatNumber(stock.profitAndLoss[metric][q])
-                                                    : "-"
-                                            }
-                                        </div>
+                                    <div className={styles.heroText}>
+                                        <p className={styles.heroEyebrow}>{sectorLabel}</p>
+                                        <h1 className={styles.heroTitle}>{stock.name}</h1>
+                                        <p className={styles.heroMeta}>
+                                            <span className={styles.ticker}>{stock.stockId}</span>
+                                        </p>
                                     </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/*Balance Sheet*/}
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Balance Sheet</h3>
-                    </div>
-                    <div className={styles['container-border']}>
-                        {/* Table Head - Years */}
-                        <div className={styles['score-table-head']}>
-                            <span><strong>Metric</strong></span>
-                            {years.map((year, index) => (
-                                <span key={index}><strong>{year}</strong></span>
-                            ))}
-                        </div>
-
-                        {/* Table Rows - One per Metric */}
-                        {Object.keys(stock.balanceSheet).map((metric, i) => (
-                            <div key={i} className={styles['score-table-row']}>
-                                <div className={styles['score-row-text']}>
-                                    <div>{metric}</div>
-                                </div>
-                                {years.map((q, index) => (
-                                    <div key={index} className={styles['score-row-text']}>
-                                        <div>
-                                            {
-                                                stock.balanceSheet[metric][q] !== null &&
-                                                stock.balanceSheet[metric][q] !== undefined
-                                                    ? formatNumber(stock.balanceSheet[metric][q])
-                                                    : "-"
-                                            }
-                                        </div>
+                                    <div className={styles.heroScore}>
+                                        <span className={styles.heroScoreLabel}>MightyBull score</span>
+                                        <span className={styles.heroScoreValue}>{formatNumber(stock.score)}</span>
                                     </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/*Rations*/}
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Rations</h3>
-                    </div>
-                    <div className={styles['container-border']}>
-                        {/* Table Head - Years */}
-                        <div className={styles['score-table-head']}>
-                            <span><strong>Metric</strong></span>
-                            {years.map((year, index) => (
-                                <span key={index}><strong>{year}</strong></span>
-                            ))}
-                        </div>
-
-                        {/* Table Rows - One per Metric */}
-                        {Object.keys(stock.ratios).map((metric, i) => (
-                            <div key={i} className={styles['score-table-row']}>
-                                <div className={styles['score-row-text']}>
-                                    <div>{metric}</div>
                                 </div>
-                                {years.map((q, index) => (
-                                    <div key={index} className={styles['score-row-text']}>
-                                        <div>
-                                            {
-                                                stock.ratios[metric][q] !== null &&
-                                                stock.ratios[metric][q] !== undefined
-                                                    ? formatNumber(stock.ratios[metric][q])
-                                                    : "-"
-                                            }
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                            </section>
 
-                {/*shareholding pattern*/}
-                <div className={styles['container-div']}>
-                    <div className={styles['container-title']}>
-                        <h3>Shareholding Pattern</h3>
-                    </div>
-                    <div className={styles['container-border']}>
-                        {/* Table Head - Quarters */}
-                        <div className={styles['score-table-head']}>
-                            <span><strong>Metric</strong></span>
-                            {quarters.map((quarter, index) => (
-                                <span key={index}><strong>{quarter}</strong></span>
-                            ))}
-                        </div>
-
-                        {/* Table Rows - One per Metric */}
-                        {Object.keys(stock.shareholdingPattern).map((metric, i) => (
-                            <div key={i} className={styles['score-table-row']}>
-                                <div className={styles['score-row-text']}>
-                                    <div>{metric}</div>
+                            <section className={styles.section} aria-labelledby="metrics-heading">
+                                <div className={styles.sectionHead}>
+                                    <span className={styles.sectionIcon} aria-hidden>
+                                        <MdAssessment />
+                                    </span>
+                                    <h2 id="metrics-heading" className={styles.sectionTitle}>
+                                        Key metrics
+                                    </h2>
                                 </div>
-                                {quarters.map((q, index) => (
-                                    <div key={index} className={styles['score-row-text']}>
-                                        <div>
-                                            {
-                                                stock.shareholdingPattern[metric][q] !== null &&
-                                                stock.shareholdingPattern[metric][q] !== undefined
-                                                    ? formatNumber(stock.shareholdingPattern[metric][q])
-                                                    : "-"
-                                            }
+                                <div className={styles.metricsGrid}>
+                                    {metricCards.map(({ label, value, accent }) => (
+                                        <div
+                                            key={label}
+                                            className={`${styles.metricCard} ${styles[`metricAccent_${accent}`]}`}
+                                        >
+                                            <span className={styles.metricLabel}>{label}</span>
+                                            <span className={styles.metricValue}>{value}</span>
                                         </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section className={styles.section} aria-labelledby="fundamentals-heading">
+                                <div className={styles.sectionHead}>
+                                    <span className={styles.sectionIcon} aria-hidden>
+                                        <MdTrendingUp />
+                                    </span>
+                                    <h2 id="fundamentals-heading" className={styles.sectionTitle}>
+                                        Fundamental view
+                                    </h2>
+                                </div>
+                                <div className={styles.prosConsGrid}>
+                                    <div className={styles.prosCard}>
+                                        <h3 className={styles.prosConsTitle}>
+                                            <MdTrendingUp className={styles.prosConsTitleIcon} aria-hidden />
+                                            Pros
+                                        </h3>
+                                        <ul className={styles.prosConsList}>
+                                            {(stock.prosList ?? []).map((item, index) => (
+                                                <li key={index}>{item}</li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
+                                    <div className={styles.consCard}>
+                                        <h3 className={styles.prosConsTitle}>
+                                            <MdTrendingDown className={styles.prosConsTitleIcon} aria-hidden />
+                                            Cons
+                                        </h3>
+                                        <ul className={styles.prosConsList}>
+                                            {(stock.consList ?? []).map((item, index) => (
+                                                <li key={index}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className={styles.disclaimer} role="note">
+                                    <span>
+                                        * Pros and cons are machine-generated. Hover the icon for more detail.
+                                    </span>
+                                    <span className={styles.tooltipWrap}>
+                                        <MdInfoOutline className={styles.tooltipIcon} aria-label="More info" />
+                                        <span className={styles.tooltipBubble} role="tooltip">
+                                            These are AI-generated insights. Do your own research before investing.
+                                        </span>
+                                    </span>
+                                </div>
+                            </section>
+
+                            {stock.scoreDTO && (
+                                <section className={styles.section} aria-labelledby="score-breakdown-heading">
+                                    <div className={styles.sectionHead}>
+                                        <span className={styles.sectionIcon} aria-hidden>
+                                            <MdTableChart />
+                                        </span>
+                                        <h2 id="score-breakdown-heading" className={styles.sectionTitle}>
+                                            Score breakdown
+                                        </h2>
+                                    </div>
+                                    <div className={styles.scoreTableCard}>
+                                        <div className={styles.scoreTableHead}>
+                                            <span>Parameter</span>
+                                            <span>Score</span>
+                                        </div>
+                                        <ul className={styles.scoreTableBody}>
+                                            {SCORE_BREAKDOWN.map(({ key, label }) => (
+                                                <li key={key} className={styles.scoreTableRow}>
+                                                    <span className={styles.scoreParam}>{label}</span>
+                                                    <span className={styles.scoreVal}>
+                                                        {formatNumber(stock.scoreDTO[key] as number)}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                            <li className={`${styles.scoreTableRow} ${styles.scoreTableRowTotal}`}>
+                                                <span className={styles.scoreParam}>Total</span>
+                                                <span className={styles.scoreVal}>
+                                                    {formatNumber(stock.scoreDTO.score)}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </section>
+                            )}
+
+                            <DataTableBlock
+                                title="Quarterly results"
+                                icon={<MdTableChart />}
+                                columns={quarters}
+                                rowKeys={safeObjectKeys(stock.quarterlyResults as Record<string, unknown>)}
+                                getCell={(metric, q) => {
+                                    const v = stock.quarterlyResults?.[metric]?.[q];
+                                    return v != null ? formatNumber(v as number) : '—';
+                                }}
+                            />
+
+                            <DataTableBlock
+                                title="Profit & loss"
+                                icon={<MdTableChart />}
+                                columns={years}
+                                rowKeys={safeObjectKeys(stock.profitAndLoss as Record<string, unknown>)}
+                                getCell={(metric, y) => {
+                                    const v = stock.profitAndLoss?.[metric]?.[y];
+                                    return v != null ? formatNumber(v as number) : '—';
+                                }}
+                            />
+
+                            <DataTableBlock
+                                title="Balance sheet"
+                                icon={<MdTableChart />}
+                                columns={years}
+                                rowKeys={safeObjectKeys(stock.balanceSheet as Record<string, unknown>)}
+                                getCell={(metric, y) => {
+                                    const v = stock.balanceSheet?.[metric]?.[y];
+                                    return v != null ? formatNumber(v as number) : '—';
+                                }}
+                            />
+
+                            <DataTableBlock
+                                title="Ratios"
+                                icon={<MdTableChart />}
+                                columns={years}
+                                rowKeys={safeObjectKeys(stock.ratios as Record<string, unknown>)}
+                                getCell={(metric, y) => {
+                                    const v = stock.ratios?.[metric]?.[y];
+                                    return v != null ? formatNumber(v as number) : '—';
+                                }}
+                            />
+
+                            <DataTableBlock
+                                title="Shareholding pattern"
+                                icon={<MdTableChart />}
+                                columns={quarters}
+                                rowKeys={safeObjectKeys(stock.shareholdingPattern as Record<string, unknown>)}
+                                getCell={(metric, q) => {
+                                    const v = stock.shareholdingPattern?.[metric]?.[q];
+                                    return v != null ? formatNumber(v as number) : '—';
+                                }}
+                            />
+                        </>
+                    )}
                 </div>
+                <Footer />
             </div>
         </>
     );

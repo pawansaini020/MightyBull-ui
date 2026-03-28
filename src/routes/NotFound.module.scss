@@ -1,0 +1,302 @@
+@import '../styles/_DesignConstants.scss';
+
+/* Page stack: same top offset + bottom padding rhythm as Dashboard */
+.page {
+  @include main-div;
+  position: relative;
+  background: linear-gradient(
+    165deg,
+    #eef2ff 0%,
+    var(--background-grey) 40%,
+    #f0f7ff 100%
+  );
+  min-height: calc(100vh - 6rem);
+  padding-bottom: 2rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    min-height: calc(100vh - 4rem);
+  }
+}
+
+.bgMesh {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(9, 55, 178, 0.07) 0%, transparent 50%),
+    radial-gradient(at 100% 30%, rgba(37, 99, 235, 0.06) 0%, transparent 45%),
+    radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Identical content column to Header.module `.bar` */
+.shell {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2.5vw, 1.25rem) var(--layout-padding-inline) 0;
+  box-sizing: border-box;
+  min-height: 0;
+
+  @media (max-width: 768px) {
+    padding: clamp(0.5rem, 2vw, 1rem) var(--layout-padding-inline-sm) 0;
+  }
+}
+
+.panel {
+  --pad: clamp(1.1rem, 2.8vw, 1.5rem);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--background-white);
+  border: 1px solid rgba(9, 55, 178, 0.1);
+  box-shadow:
+    0 4px 24px rgba(15, 23, 42, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.85) inset;
+  box-sizing: border-box;
+
+  @media (min-width: 768px) {
+    grid-template-columns: minmax(11.5rem, 0.42fr) minmax(0, 1fr);
+    min-height: min(22rem, calc(100vh - 10rem));
+  }
+}
+
+.panelAside {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: calc(var(--pad) + 0.25rem) var(--pad);
+  min-height: 11rem;
+  background: linear-gradient(
+    145deg,
+    #082878 0%,
+    var(--background-blue) 48%,
+    #1d4ed8 100%
+  );
+  color: var(--text-white);
+  text-align: center;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    min-height: 0;
+    text-align: center;
+  }
+}
+
+.asideGlow {
+  position: absolute;
+  inset: -20% -30% auto 20%;
+  height: 80%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.18) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.code {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(3.25rem, 14vw, 4.75rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.asideIcon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 1.5rem;
+  opacity: 0.95;
+}
+
+.panelMain {
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--background-blue);
+}
+
+.title {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+  font-weight: 800;
+  color: var(--text-black);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  max-width: 28rem;
+}
+
+.sub {
+  margin: 0 0 1.35rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  max-width: 32rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.62rem 1.2rem;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-white);
+  cursor: pointer;
+  background: linear-gradient(
+    135deg,
+    var(--background-blue) 0%,
+    #1d4ed8 100%
+  );
+  box-shadow: 0 6px 20px rgba(9, 55, 178, 0.22);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(9, 55, 178, 0.28);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--background-blue);
+    outline-offset: 2px;
+  }
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.62rem 1.1rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--background-blue);
+  cursor: pointer;
+  background: rgba(9, 55, 178, 0.07);
+  border: 1px solid rgba(9, 55, 178, 0.22);
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba(9, 55, 178, 0.11);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--background-blue);
+    outline-offset: 2px;
+  }
+}
+
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.62rem 1rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--primary-text);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+
+  &:hover {
+    background: rgba(15, 23, 42, 0.04);
+    border-color: rgba(15, 23, 42, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--background-blue);
+    outline-offset: 2px;
+  }
+}
+
+.hint {
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  width: 100%;
+  border-top: 1px solid rgba(9, 55, 178, 0.08);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.hintKbd {
+  display: inline-block;
+  padding: 0.12rem 0.4rem;
+  margin-right: 0.35rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: inherit;
+  vertical-align: middle;
+  background: rgba(9, 55, 178, 0.07);
+  border: 1px solid rgba(9, 55, 178, 0.1);
+  color: var(--primary-text);
+}

@@ -1,31 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!--
+    Sitemap helps Google discover URLs. The text shown under your link in Google
+    comes mainly from <meta name="description"> and title in index.html (and page copy).
+    Standard sitemap entries do not include a separate description field for snippets.
+  -->
   <url>
-    <loc>https://mightybull.netlify.app</loc>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app"/>
-    <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app"/>
-    <lastmod>2025-05-22</lastmod>
+    <loc>https://mightybull.netlify.app/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/"/>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/"/>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://mightybull.netlify.app/login</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/login"/>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/login"/>
-    <lastmod>2025-05-22</lastmod>
-    <priority>0.8</priority>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://mightybull.netlify.app/signup</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/signup"/>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/signup"/>
-    <lastmod>2025-05-22</lastmod>
-    <priority>0.8</priority>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://mightybull.netlify.app/forgot-password</loc>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mightybull.netlify.app/forgot-password"/>
     <xhtml:link rel="alternate" hreflang="en-IN" href="https://mightybull.netlify.app/forgot-password"/>
-    <lastmod>2025-05-22</lastmod>
-    <priority>0.7</priority>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>
