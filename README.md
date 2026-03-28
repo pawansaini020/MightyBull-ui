@@ -53,3 +53,14 @@ export default tseslint.config({
 })
 ```
 # MightyBull-ui
+
+Installation steps
+
+```angular2html
+1. Download WebStorm from jetbrains
+2. brew install node
+3. node -v
+4. npm -v
+5. npm install
+6. npm run dev
+```
