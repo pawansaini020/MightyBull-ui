@@ -2,6 +2,7 @@
 
 .page {
     @include main-div;
+    top: 5rem;
     min-height: calc(100vh - 6rem);
     height: auto;
     overflow-x: hidden;
@@ -18,15 +19,17 @@
 }
 
 .main {
-    max-width: 1120px;
+    max-width: var(--layout-max-width);
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: clamp(0.25rem, 2.5vw, 0.25rem) var(--layout-padding-inline) 0;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 1.75rem;
 
-    @media (min-width: 768px) {
-        padding: 0 1.75rem;
+    @media (max-width: 768px) {
+        padding: clamp(0.5rem, 2vw, 1rem) var(--layout-padding-inline-sm) 0;
     }
 }
 
@@ -453,7 +456,7 @@
 
 /* Trust */
 .trust {
-    padding: 2rem 0 3rem;
+    padding: 0 0 1rem;
 }
 
 .trustGrid {

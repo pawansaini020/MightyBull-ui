@@ -27,6 +27,7 @@ function ForgotPassword() {
 
         if (response.ok) {
             alert("OTP sent to your email.");
+            setOtp("");
             setStep(2);
         } else {
             alert("Failed to send OTP. Check email & try again.");
@@ -106,9 +107,10 @@ function ForgotPassword() {
                                             className={styles.input}
                                             type="email"
                                             placeholder="you@example.com"
+                                            value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             autoComplete="email"
-                                            name="email"
+                                            name="forgot-reset-email"
                                         />
                                     </div>
                                     <div className={styles.field}>
@@ -120,9 +122,10 @@ function ForgotPassword() {
                                             className={styles.input}
                                             type="password"
                                             placeholder="New password"
+                                            value={newPassword}
                                             onChange={(e) => setNewPassword(e.target.value)}
                                             autoComplete="new-password"
-                                            name="password"
+                                            name="forgot-new-password"
                                         />
                                     </div>
                                     <button
@@ -143,14 +146,19 @@ function ForgotPassword() {
                                             One-time password
                                         </label>
                                         <input
+                                            key="forgot-otp-verify-step"
                                             id="forgot-otp"
                                             className={styles.input}
                                             type="text"
+                                            autoCapitalize="off"
                                             placeholder="Enter OTP"
+                                            value={otp}
                                             onChange={(e) => setOtp(e.target.value)}
                                             autoComplete="one-time-code"
-                                            name="otp"
+                                            name="one-time-code"
                                             spellCheck={false}
+                                            data-lpignore="true"
+                                            data-1p-ignore="true"
                                         />
                                     </div>
                                     <button
