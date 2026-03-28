@@ -6,7 +6,7 @@ import styles from './Dashboard.module.scss';
 import axiosInstance from '../../../helpers/axiosInstance.ts';
 import { Page, Routers } from '../../../constants/AppConstants.ts';
 import { formatNumber, getColoredStyle } from '../../../helpers/StringTransform.ts';
-import { MdRefresh, MdShowChart, MdTrendingUp, MdChevronRight } from 'react-icons/md';
+import { MdShowChart, MdTrendingUp, MdChevronRight } from 'react-icons/md';
 
 const TABS = [
     { key: 'STOCK', label: 'Stocks' },
@@ -57,6 +57,9 @@ function Dashboard() {
     const [isRotatingStock, setIsRotatingStock] = useState(false);
     const [indexes, setIndexes] = useState<Record<string, IndexData>>({});
     const [isRotatingIndex, setIsRotatingIndex] = useState(false);
+    /** Remount glyph so the spin animation runs on every click */
+    const [indexSpinKey, setIndexSpinKey] = useState(0);
+    const [stockSpinKey, setStockSpinKey] = useState(0);
 
     const todayLabel = useMemo(
         () =>
@@ -69,16 +72,20 @@ function Dashboard() {
         []
     );
 
+    const SPIN_MS = 650;
+
     const handleRefreshStockClick = () => {
+        setStockSpinKey((k) => k + 1);
         setIsRotatingStock(true);
         fetchStocks(1);
-        setTimeout(() => setIsRotatingStock(false), 400);
+        window.setTimeout(() => setIsRotatingStock(false), SPIN_MS);
     };
 
     const handleRefreshIndexClick = () => {
+        setIndexSpinKey((k) => k + 1);
         setIsRotatingIndex(true);
         fetchIndexItemsFromSource();
-        setTimeout(() => setIsRotatingIndex(false), 400);
+        window.setTimeout(() => setIsRotatingIndex(false), SPIN_MS);
     };
 
     const handleSeeMoreButtonClick = () => navigate(Routers.StockWidgets);
@@ -211,11 +218,13 @@ function Dashboard() {
                                 </button>
                                 <button
                                     type="button"
-                                    className={`${styles.iconBtn} ${isRotatingIndex ? styles.iconBtnSpin : ''}`}
+                                    className={`${styles.iconBtn} ${isRotatingIndex ? styles.refreshSpinning : ''}`}
                                     onClick={handleRefreshIndexClick}
                                     aria-label="Refresh indices"
                                 >
-                                    <MdRefresh />
+                                    <span key={indexSpinKey} className={styles.refreshGlyph} aria-hidden>
+                                        🔄
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -267,11 +276,13 @@ function Dashboard() {
                                 </button>
                                 <button
                                     type="button"
-                                    className={`${styles.iconBtn} ${isRotatingStock ? styles.iconBtnSpin : ''}`}
+                                    className={`${styles.iconBtn} ${isRotatingStock ? styles.refreshSpinning : ''}`}
                                     onClick={handleRefreshStockClick}
                                     aria-label="Refresh stock list"
                                 >
-                                    <MdRefresh />
+                                    <span key={stockSpinKey} className={styles.refreshGlyph} aria-hidden>
+                                        🔄
+                                    </span>
                                 </button>
                             </div>
                         </div>
