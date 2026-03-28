@@ -4,7 +4,7 @@ import Header from '../components/layout/header/Header.tsx';
 import Footer from '../components/layout/footer/Footer.tsx';
 import { Routers } from '../constants/AppConstants.ts';
 import styles from './NotFound.module.scss';
-import { MdHome, MdDashboard, MdArrowBack } from 'react-icons/md';
+import { MdHome, MdDashboard, MdArrowBack, MdSearchOff } from 'react-icons/md';
 
 function NotFound() {
     const navigate = useNavigate();
@@ -18,74 +18,55 @@ function NotFound() {
         <>
             <Header />
             <div className={styles.page}>
-                <div className={styles.mesh} aria-hidden />
+                <div className={styles.bgMesh} aria-hidden />
                 <main
                     className={styles.shell}
                     role="main"
                     aria-labelledby="not-found-heading"
                 >
-                    <div className={styles.content}>
-                        <div className={styles.layout}>
-                            <div className={styles.art} aria-hidden>
-                                <div className={styles.artFrame}>
-                                    <span className={styles.artOrb} />
-                                    <span className={styles.artOrb} />
-                                    <span className={styles.artRing} />
-                                    <span className={styles.art404}>404</span>
-                                </div>
+                    <div className={styles.panel}>
+                        <aside className={styles.panelAside} aria-hidden>
+                            <div className={styles.asideGlow} />
+                            <span className={styles.code}>404</span>
+                            <span className={styles.asideIcon}>
+                                <MdSearchOff />
+                            </span>
+                        </aside>
+                        <div className={styles.panelMain}>
+                            <p className={styles.eyebrow}>Page not found</p>
+                            <h1 id="not-found-heading" className={styles.title}>
+                                This address isn&apos;t on the map
+                            </h1>
+                            <p className={styles.sub}>
+                                Double-check the URL, or use the shortcuts below to get back into
+                                MightyBull.
+                            </p>
+                            <div className={styles.actions}>
+                                <button type="button" className={styles.btnPrimary} onClick={goHome}>
+                                    <MdHome aria-hidden />
+                                    Home
+                                </button>
+                                {hasSession ? (
+                                    <button
+                                        type="button"
+                                        className={styles.btnSecondary}
+                                        onClick={goDashboard}
+                                    >
+                                        <MdDashboard aria-hidden />
+                                        Dashboard
+                                    </button>
+                                ) : null}
+                                <button type="button" className={styles.btnGhost} onClick={goBack}>
+                                    <MdArrowBack aria-hidden />
+                                    Go back
+                                </button>
                             </div>
-
-                            <div className={styles.card}>
-                                <div className={styles.cardAccent} aria-hidden />
-                                <div className={styles.cardBody}>
-                                    <div className={styles.cardGlow} aria-hidden />
-                                    <span className={styles.badge}>
-                                        <span className={styles.badgeDot} />
-                                        Page missing
-                                    </span>
-                                    <h1 id="not-found-heading" className={styles.title}>
-                                        We couldn&apos;t find that page
-                                    </h1>
-                                    <p className={styles.sub}>
-                                        The URL may be mistyped, or the page was moved. Pick a
-                                        destination below to continue in MightyBull.
-                                    </p>
-                                    <div className={styles.actions}>
-                                        <button
-                                            type="button"
-                                            className={styles.btnPrimary}
-                                            onClick={goHome}
-                                        >
-                                            <MdHome aria-hidden />
-                                            Home
-                                        </button>
-                                        {hasSession ? (
-                                            <button
-                                                type="button"
-                                                className={styles.btnGhost}
-                                                onClick={goDashboard}
-                                            >
-                                                <MdDashboard aria-hidden />
-                                                Dashboard
-                                            </button>
-                                        ) : null}
-                                        <button
-                                            type="button"
-                                            className={styles.btnGhost}
-                                            onClick={goBack}
-                                        >
-                                            <MdArrowBack aria-hidden />
-                                            Back
-                                        </button>
-                                    </div>
-                                    <p className={styles.hint}>
-                                        Tip: use your browser&apos;s{' '}
-                                        <span className={styles.hintKbd}>←</span> button or{' '}
-                                        <span className={styles.hintKbd}>Back</span> above to return
-                                        where you were.
-                                    </p>
-                                </div>
-                            </div>
+                            <p className={styles.hint}>
+                                <span className={styles.hintKbd} aria-hidden>
+                                    ←
+                                </span>
+                                You can also use your browser&apos;s back control.
+                            </p>
                         </div>
                     </div>
                 </main>
