@@ -14,11 +14,11 @@
     }
 }
 
-/* Match Header.module.scss `.bar`: max-width 1400px + same horizontal padding */
+/* Same column as Header `.bar` + Dashboard `.shell` — variables.scss */
 .inner {
-    max-width: 1400px;
+    max-width: var(--layout-max-width);
     margin: 0 auto;
-    padding: 1.25rem clamp(1rem, 3vw, 1.75rem) 0;
+    padding: 1.25rem var(--layout-padding-inline) 0;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -27,9 +27,7 @@
     text-align: left;
 
     @media (max-width: 768px) {
-        padding-left: clamp(0.75rem, 3vw, 1.25rem);
-        padding-right: clamp(0.75rem, 3vw, 1.25rem);
-        padding-top: 1rem;
+        padding: 1rem var(--layout-padding-inline-sm) 0;
     }
 }
 
