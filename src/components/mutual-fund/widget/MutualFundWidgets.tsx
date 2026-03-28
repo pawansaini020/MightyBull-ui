@@ -2,6 +2,7 @@ import {useEffect, useState, useRef, useCallback, useMemo} from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './MutualFundWidgets.module.scss';
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import Pagination from "../../global/pagination/Pagination.tsx";
 import { Routers } from '../../../constants/AppConstants.ts';
@@ -459,6 +460,7 @@ function MutualFundWidgets() {
                         </div>
                     )}
                 </div>
+                <Footer />
             </div>
         </>
     );

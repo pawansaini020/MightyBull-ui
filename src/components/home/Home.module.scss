@@ -549,20 +549,3 @@
         outline-offset: 3px;
     }
 }
-
-/* Disclaimer */
-.disclaimer {
-    padding-top: 0.5rem;
-    border-top: 1px solid var(--primary-border);
-
-    p {
-        margin: 0;
-        font-size: 0.7rem;
-        line-height: 1.5;
-        color: var(--text-muted);
-        text-align: center;
-        max-width: 52rem;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}

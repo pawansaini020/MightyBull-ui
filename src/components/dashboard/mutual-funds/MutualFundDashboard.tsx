@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import styles from './MutualFundDashboard.module.scss';
 import Headers from '../../layout/header/Header.tsx';
+import Footer from '../../layout/footer/Footer.tsx';
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import {Routers} from "../../../constants/AppConstants.ts";
 
@@ -118,6 +119,7 @@ function MutualFundDashboard() {
                         )}
                     </div>
                 </div>
+                <Footer />
             </div>
         </>
     )

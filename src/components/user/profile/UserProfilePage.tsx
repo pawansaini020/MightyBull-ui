@@ -1,5 +1,6 @@
 import styles from './UserProfilePage.module.scss';
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import {useMemo, useState} from 'react';
 import { getTwoCapitalChars } from '../../../helpers/StringTransform.ts';
 
@@ -53,6 +54,7 @@ function UserProfilePage() {
                         </div>
                     </section>
                 </div>
+                <Footer />
             </div>
         </>
     );

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from 'react-router-dom';
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import styles from './StockWidgets.module.scss';
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import Pagination from "../../global/pagination/Pagination.tsx";
@@ -414,6 +415,7 @@ function StockWidgets() {
                         </div>
                     )}
                 </div>
+                <Footer />
             </div>
         </>
     );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import styles from './Dashboard.module.scss';
 // import Pagination from '../global/pagination/Pagination.tsx'1;
 import axiosInstance from "../../../helpers/axiosInstance.ts";
@@ -327,6 +328,7 @@ function Dashboard() {
                     {/*    />*/}
                     {/*</div>*/}
                 </div>
+                <Footer />
             </div>
         </>
     );

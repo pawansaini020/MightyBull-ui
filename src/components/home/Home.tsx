@@ -1,4 +1,5 @@
 import Header from '../layout/header/Header.tsx';
+import Footer from '../layout/footer/Footer.tsx';
 import styles from './Home.module.scss';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -199,14 +200,8 @@ function Home() {
                         </div>
                     </section>
 
-                    <footer className={styles.disclaimer}>
-                        <p>
-                            Investments in securities markets are subject to market risks. Read all
-                            related documents carefully before investing. MightyBull does not
-                            guarantee returns; past performance is not indicative of future results.
-                        </p>
-                    </footer>
                 </main>
+                <Footer />
             </div>
         </>
     );

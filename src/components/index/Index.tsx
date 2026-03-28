@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Headers from "../layout/header/Header.tsx";
+import Footer from "../layout/footer/Footer.tsx";
 import styles from "./Index.module.scss";
 import TabSwitcher from "../global/tab-switch/TabSwitcher.tsx";
 import axiosInstance from "../../helpers/axiosInstance.ts";
@@ -111,6 +112,7 @@ function Index() {
                         ))}
                     </div>
                 </div>
+                <Footer />
             </div>
         </>
     )

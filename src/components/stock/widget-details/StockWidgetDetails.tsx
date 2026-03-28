@@ -1,4 +1,5 @@
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import styles from "./StockWidgetDetails.module.scss";
 import {useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
@@ -102,6 +103,7 @@ function StockWidgetDetails() {
             <>
                 <Headers currentTab={null} />
                 <div>Loading...</div>
+                <Footer />
             </>
         );
     }
@@ -111,6 +113,7 @@ function StockWidgetDetails() {
                 <Headers currentTab={null} />
                 <div className={styles['main-div']}>
                     Stock data not found.
+                    <Footer />
                 </div>
             </>
         );
@@ -569,6 +572,7 @@ function StockWidgetDetails() {
                         ))}
                     </div>
                 </div>
+                <Footer />
             </div>
         </>
     );

@@ -1,5 +1,6 @@
 import styles from "./IndexWidgetDetails.module.scss";
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {formatNumber} from "../../../helpers/StringTransform.ts";
@@ -106,6 +107,7 @@ function IndexWidgetDetails() {
             <>
                 <Headers />
                 <div className={styles['index-title']}>Loading...</div>
+                <Footer />
             </>
         );
     }
@@ -115,6 +117,7 @@ function IndexWidgetDetails() {
                 <Headers />
                 <div className={styles['main-div']}>
                     Stock data not found.
+                    <Footer />
                 </div>
             </>
         );
@@ -238,6 +241,7 @@ function IndexWidgetDetails() {
                         </div>
                     </div>
                 )}
+                <Footer />
             </div>
         </>
     )

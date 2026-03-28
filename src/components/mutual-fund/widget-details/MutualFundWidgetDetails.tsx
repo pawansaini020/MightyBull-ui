@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./MutualFundWidgetDetails.module.scss";
 import Headers from "../../layout/header/Header.tsx";
+import Footer from "../../layout/footer/Footer.tsx";
 import { formatNumber, formateString, formatDate } from "../../../helpers/StringTransform.ts";
 import axiosInstance from "../../../helpers/axiosInstance.ts";
 import { Routers } from "../../../constants/AppConstants.ts";
@@ -104,6 +105,7 @@ function MutualFundWidgetDetails() {
             <>
                 <Headers />
                 <div className={styles['index-title']}>Loading...</div>
+                <Footer />
             </>
         );
     }
@@ -119,6 +121,7 @@ function MutualFundWidgetDetails() {
                             Mutual fund data not found.
                         </div>
                     </div>
+                    <Footer />
                 </div>
             </>
         );
@@ -279,6 +282,7 @@ function MutualFundWidgetDetails() {
                         />
                     </div>
                 </div>
+                <Footer />
             </div>
         </>
     );
