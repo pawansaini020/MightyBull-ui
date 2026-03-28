@@ -251,8 +251,8 @@
 }
 
 .indexScroll {
-  margin: 0 -0.25rem;
-  padding: 0.25rem;
+  margin: 0;
+  padding: 0.25rem 0;
 
   @media (max-width: 900px) {
     overflow-x: auto;
