@@ -47,16 +47,6 @@ function Header({ currentTab }: { currentTab?: string | null }) {
         setDropdownOpen((prev) => !prev);
     }, []);
 
-    const handleLogin = useCallback(() => {
-        setDropdownOpen(false);
-        navigate(Routers.Login);
-    }, [navigate]);
-
-    const handleSignup = useCallback(() => {
-        setDropdownOpen(false);
-        navigate(Routers.Signup);
-    }, [navigate]);
-
     const handleLogout = useCallback(() => {
         setDropdownOpen(false);
         localStorage.clear();
@@ -135,93 +125,70 @@ function Header({ currentTab }: { currentTab?: string | null }) {
                     )}
                 </div>
 
-                <div className={styles.center}>
-                    {loggedInUser && (
-                        <>
-                            <div className={styles.tabsWrap}>
-                                {activeTab && (
-                                    <TabSwitcher
-                                        activeTab={activeTab}
-                                        setActiveTab={setActiveTab}
-                                        tabs={TABS}
-                                    />
-                                )}
-                            </div>
-                            <div className={styles.searchWrap}>
-                                <StockSearch onSearch={handleStockSearch} />
-                            </div>
-                        </>
-                    )}
-                </div>
-
-                <div className={styles.actions}>
-                    <div className={styles.profileWrap} ref={profileMenuRef}>
-                        <button
-                            type="button"
-                            className={styles.avatarBtn}
-                            onClick={toggleDropdown}
-                            aria-expanded={dropdownOpen}
-                            aria-haspopup="menu"
-                            aria-label="Account menu"
-                        >
-                            <span className={styles.avatarRing}>
-                                <span className={styles.avatar}>{userInitials}</span>
-                            </span>
-                            <MdExpandMore
-                                className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ''}`}
-                                aria-hidden
-                            />
-                        </button>
-                        {dropdownOpen && (
-                            <div className={styles.dropdown} role="menu" aria-label="Account">
-                                {loggedInUser ? (
-                                    <>
-                                        <div className={styles.dropdownMeta}>
-                                            <span className={styles.dropdownHello}>Signed in</span>
-                                            <span className={styles.dropdownName}>{loggedInUser}</span>
-                                        </div>
-                                        <div className={styles.dropdownDivider} />
-                                        <button
-                                            type="button"
-                                            role="menuitem"
-                                            className={styles.dropdownItem}
-                                            onClick={handleUserDetails}
-                                        >
-                                            Profile
-                                        </button>
-                                        <button
-                                            type="button"
-                                            role="menuitem"
-                                            className={styles.dropdownItem}
-                                            onClick={handleLogout}
-                                        >
-                                            Log out
-                                        </button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <button
-                                            type="button"
-                                            role="menuitem"
-                                            className={styles.dropdownItem}
-                                            onClick={handleLogin}
-                                        >
-                                            Log in
-                                        </button>
-                                        <button
-                                            type="button"
-                                            role="menuitem"
-                                            className={`${styles.dropdownItem} ${styles.dropdownItemPrimary}`}
-                                            onClick={handleSignup}
-                                        >
-                                            Sign up
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        )}
+                {loggedInUser && (
+                    <div className={styles.center}>
+                        <div className={styles.tabsWrap}>
+                            {activeTab && (
+                                <TabSwitcher
+                                    activeTab={activeTab}
+                                    setActiveTab={setActiveTab}
+                                    tabs={TABS}
+                                />
+                            )}
+                        </div>
+                        <div className={styles.searchWrap}>
+                            <StockSearch onSearch={handleStockSearch} />
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {loggedInUser && (
+                    <div className={styles.actions}>
+                        <div className={styles.profileWrap} ref={profileMenuRef}>
+                            <button
+                                type="button"
+                                className={styles.avatarBtn}
+                                onClick={toggleDropdown}
+                                aria-expanded={dropdownOpen}
+                                aria-haspopup="menu"
+                                aria-label="Account menu"
+                            >
+                                <span className={styles.avatarRing}>
+                                    <span className={styles.avatar}>{userInitials}</span>
+                                </span>
+                                <MdExpandMore
+                                    className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ''}`}
+                                    aria-hidden
+                                />
+                            </button>
+                            {dropdownOpen && (
+                                <div className={styles.dropdown} role="menu" aria-label="Account">
+                                    <div className={styles.dropdownMeta}>
+                                        <span className={styles.dropdownHello}>Signed in</span>
+                                        <span className={styles.dropdownName}>{loggedInUser}</span>
+                                    </div>
+                                    <div className={styles.dropdownDivider} />
+                                    <button
+                                        type="button"
+                                        role="menuitem"
+                                        className={styles.dropdownItem}
+                                        onClick={handleUserDetails}
+                                    >
+                                        Profile
+                                    </button>
+                                    <button
+                                        type="button"
+                                        role="menuitem"
+                                        className={styles.dropdownItem}
+                                        onClick={handleLogout}
+                                    >
+                                        Log out
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
         </header>
     );
