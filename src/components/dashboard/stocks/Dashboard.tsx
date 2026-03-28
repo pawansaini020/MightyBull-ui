@@ -6,6 +6,7 @@ import styles from './Dashboard.module.scss';
 import axiosInstance from '../../../helpers/axiosInstance.ts';
 import { Page, Routers } from '../../../constants/AppConstants.ts';
 import { formatNumber, getColoredStyle } from '../../../helpers/StringTransform.ts';
+import { toFiniteNumber, formatScoreCell } from '../../../helpers/stockRowNormalize.ts';
 import { MdShowChart, MdTrendingUp, MdChevronRight } from 'react-icons/md';
 
 const TABS = [
@@ -29,7 +30,7 @@ interface StockItem {
     price: string;
     change: string;
     isPositive: boolean;
-    score: number;
+    score: number | null;
     marketCap: number;
     dividend: number;
 }
@@ -105,17 +106,28 @@ function Dashboard() {
             );
 
             const data = response.data.data;
-            const transformed: StockItem[] = data.data.map((item: any) => ({
-                stockId: item.stockId,
-                name: item.name,
-                sector: item.sector,
-                price: item.closePrice.toFixed(2),
-                change: `(${item.yearlyLowPrice} - ${item.yearlyHighPrice})`,
-                isPositive: item.closePrice >= (item.yearlyHighPrice + item.yearlyLowPrice) / 2,
-                score: item.score,
-                marketCap: item.marketCap,
-                dividend: item.dividend,
-            }));
+            const rows = Array.isArray(data.data) ? data.data : [];
+            const transformed: StockItem[] = rows.map((item: any) => {
+                const close = toFiniteNumber(item.closePrice) ?? 0;
+                const yh = toFiniteNumber(item.yearlyHighPrice) ?? 0;
+                const yl = toFiniteNumber(item.yearlyLowPrice) ?? 0;
+                const mc = toFiniteNumber(item.marketCap) ?? 0;
+                const div = toFiniteNumber(item.dividend) ?? 0;
+                return {
+                    stockId: String(item.stockId ?? ''),
+                    name: String(item.name ?? ''),
+                    sector:
+                        item.sector == null || item.sector === ''
+                            ? '—'
+                            : String(item.sector),
+                    price: close.toFixed(2),
+                    change: `(${yl} - ${yh})`,
+                    isPositive: close >= (yh + yl) / 2,
+                    score: toFiniteNumber(item.score),
+                    marketCap: mc,
+                    dividend: div,
+                };
+            });
 
             setStockList(transformed);
         } catch (error) {
@@ -315,7 +327,7 @@ function Dashboard() {
                                             <span className={`${styles.cellMuted} ${styles.hideMobile}`}>
                                                 {stock.sector}
                                             </span>
-                                            <span className={styles.cellScore}>{stock.score.toFixed(2)}</span>
+                                            <span className={styles.cellScore}>{formatScoreCell(stock.score)}</span>
                                             <span className={styles.cellPrice}>
                                                 <span className={styles.priceMain}>₹{stock.price}</span>
                                                 <span

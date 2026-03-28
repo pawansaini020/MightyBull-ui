@@ -53,7 +53,8 @@ export const usePagination = ({
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
     }
 
-    return []; // fallback to avoid undefined
+    /* Rare edge cases left all branches false — still show all pages */
+    return range(1, Math.max(totalPageCount, 1));
   }, [totalCount, pageSize, siblingCount, currentPage]);
 
   return paginationRange;
