@@ -1,11 +1,5 @@
 @import '../../../styles/_DesignConstants.scss';
 
-/* Stable column height: viewport minus fixed header & hero stack (stops layout jump on tab change) */
-$profile-header-h: 6rem;
-$profile-header-h-mobile: 4rem;
-$profile-above-layout: 13.75rem;
-$profile-above-layout-mobile: 15.25rem;
-
 .mainDiv {
     @include main-div;
     min-height: calc(100vh - 6rem);
@@ -183,14 +177,12 @@ $profile-above-layout-mobile: 15.25rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Layout — equal-height columns; min-height keeps sidebar + card stable when switching tabs */
+/* Layout — sidebar scales slightly on wide viewports; main fills rest */
 .layout {
     display: grid;
     grid-template-columns: minmax(220px, 18rem) minmax(0, 1fr);
     gap: 1.25rem 1.5rem;
-    align-items: stretch;
-    min-height: calc(100vh - #{$profile-header-h} - #{$profile-above-layout});
-    min-height: calc(100dvh - #{$profile-header-h} - #{$profile-above-layout});
+    align-items: start;
 
     @media (min-width: 1200px) {
         grid-template-columns: minmax(240px, 19rem) minmax(0, 1fr);
@@ -199,9 +191,6 @@ $profile-above-layout-mobile: 15.25rem;
 
     @media (max-width: 900px) {
         grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        min-height: calc(100vh - #{$profile-header-h-mobile} - #{$profile-above-layout-mobile});
-        min-height: calc(100dvh - #{$profile-header-h-mobile} - #{$profile-above-layout-mobile});
     }
 }
 
@@ -214,17 +203,10 @@ $profile-above-layout-mobile: 15.25rem;
     text-align: left;
     position: sticky;
     top: calc(6rem + 0.75rem);
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    box-sizing: border-box;
-    align-self: stretch;
 
     @media (max-width: 900px) {
         position: static;
         padding: 0.75rem;
-        min-height: 0;
-        align-self: start;
     }
 }
 
@@ -314,17 +296,9 @@ $profile-above-layout-mobile: 15.25rem;
     color: var(--background-blue);
 }
 
-/* Main card — flex column fills grid cell so short tabs don’t shrink the page */
+/* Main card */
 .main {
     min-width: 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-
-    @media (max-width: 900px) {
-        flex: 1;
-    }
 }
 
 .card {
@@ -334,15 +308,10 @@ $profile-above-layout-mobile: 15.25rem;
     box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
     overflow: hidden;
     text-align: left;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    box-sizing: border-box;
+    padding-left: 3%;
 }
 
 .cardHead {
-    flex-shrink: 0;
     padding: 1.35rem clamp(1.25rem, 2.5vw, 2rem) 1rem;
     border-bottom: 1px solid var(--primary-border);
     background: linear-gradient(180deg, #fafbfd 0%, var(--background-white) 100%);
@@ -368,15 +337,17 @@ $profile-above-layout-mobile: 15.25rem;
 }
 
 /* One grid for all rows → labels & values align in clean columns */
+/* Basic Details only — min height keeps the field block a stable size (other tabs unchanged) */
 .detailsList {
     margin: 0;
     padding: 0.25rem 0 0.35rem;
-    flex: 1;
     display: grid;
     grid-template-columns: minmax(10rem, 28%) minmax(0, 1fr);
     column-gap: 2.5rem;
     align-items: start;
     text-align: left;
+    min-height: 28rem;
+    box-sizing: border-box;
 
     @media (min-width: 1100px) {
         grid-template-columns: minmax(12rem, 24%) minmax(0, 1fr);
@@ -388,6 +359,7 @@ $profile-above-layout-mobile: 15.25rem;
         flex-direction: column;
         gap: 0;
         padding: 0;
+        min-height: 22rem;
     }
 }
 
@@ -487,17 +459,11 @@ $profile-above-layout-mobile: 15.25rem;
 
 /* Placeholder sections */
 .placeholder {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1.5rem 2.5rem;
+    padding: 3rem 1.5rem 3.5rem;
     text-align: center;
-    min-height: 12rem;
 
     @media (max-width: 768px) {
-        padding: 1.5rem 1.25rem 2rem;
+        padding: 2.5rem 1.25rem;
     }
 }
 
