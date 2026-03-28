@@ -1,14 +1,25 @@
-import { useEffect, useState, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styles from "./MutualFundWidgetDetails.module.scss";
-import Headers from "../../layout/header/Header.tsx";
-import Footer from "../../layout/footer/Footer.tsx";
-import { formatNumber, formateString, formatDate } from "../../../helpers/StringTransform.ts";
-import axiosInstance from "../../../helpers/axiosInstance.ts";
-import { Routers } from "../../../constants/AppConstants.ts";
-import Pagination from "../../global/pagination/Pagination.tsx";
+import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from './MutualFundWidgetDetails.module.scss';
+import Headers from '../../layout/header/Header.tsx';
+import Footer from '../../layout/footer/Footer.tsx';
+import {
+    formatNumber,
+    formateString,
+    formatDate,
+    getColoredStyle,
+} from '../../../helpers/StringTransform.ts';
+import axiosInstance from '../../../helpers/axiosInstance.ts';
+import { Routers } from '../../../constants/AppConstants.ts';
+import Pagination from '../../global/pagination/Pagination.tsx';
+import {
+    MdSavings,
+    MdArrowBack,
+    MdAssessment,
+    MdPieChart,
+    MdInfoOutline,
+} from 'react-icons/md';
 
-// Types
 interface ReturnStats {
     return1w?: number;
     return1y?: number;
@@ -23,7 +34,7 @@ interface StockHoldingItem {
     instrument_name: string;
     market_value: number;
     corpus_per: number;
-    portfolio_date: Date;
+    portfolio_date: string | Date;
 }
 
 interface MutualFundItem {
@@ -57,230 +68,413 @@ interface MutualFundItem {
     lockIn: object;
 }
 
+const PAGE_SIZE = 10;
+
+type MetricAccent = 'primary' | 'default' | 'bull' | 'bear';
+
+interface MetricCardDef {
+    label: string;
+    value: string;
+    accent: MetricAccent;
+    returnVal?: number;
+}
+
+function FundLogo({ url, label }: { url: string; label: string }) {
+    const [broken, setBroken] = useState(false);
+    if (broken || !url?.trim()) {
+        return (
+            <span className={styles.logoFallbackHero} aria-hidden>
+                {label.trim().slice(0, 2).toUpperCase() || 'MF'}
+            </span>
+        );
+    }
+    return (
+        <img
+            src={url}
+            alt=""
+            className={styles.logoImgHero}
+            width={52}
+            height={52}
+            loading="lazy"
+            onError={() => setBroken(true)}
+        />
+    );
+}
+
 function MutualFundWidgetDetails() {
     const { mutualFundId } = useParams<{ mutualFundId: string }>();
     const navigate = useNavigate();
     const [mutualFund, setMutualFund] = useState<MutualFundItem | null>(null);
     const [loading, setLoading] = useState(true);
-    const [stockHoldings, setStockHoldings] = useState<StockHoldingItem[]>([]);
-    
-    // Pagination state
+    const [fetchError, setFetchError] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize] = useState(10);
 
-    // API call to fetch mutual fund details
-    const fetchMutualFundDetails = async (id: string | undefined) => {
-        if (!id) return;
-        
+    const fetchMutualFundDetails = useCallback(async (id: string | undefined) => {
+        if (!id) {
+            setFetchError('Missing fund id.');
+            setMutualFund(null);
+            setLoading(false);
+            return;
+        }
+        setLoading(true);
+        setFetchError(null);
         try {
-            const response = await axiosInstance.get(`/v1/api/mutual-fund/widget-details/${id}`);
-            const mutualFundWidget: MutualFundItem = response.data.data;
-            setMutualFund(mutualFundWidget);
-            setStockHoldings(mutualFundWidget.holdings);
-        } catch (error) {
-            console.error("Error fetching mutual fund details:", error);
+            const response = await axiosInstance.get(
+                `/v1/api/mutual-fund/widget-details/${encodeURIComponent(id)}`
+            );
+            const raw = response?.data?.data;
+            if (raw && typeof raw === 'object' && String(raw.mutualFundId ?? '').length > 0) {
+                setMutualFund(raw as MutualFundItem);
+            } else {
+                setMutualFund(null);
+                setFetchError('Fund not found.');
+            }
+        } catch (err) {
+            console.error('Error fetching mutual fund details:', err);
+            setMutualFund(null);
+            setFetchError('Could not load fund details.');
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [mutualFundId]);
 
     useEffect(() => {
         fetchMutualFundDetails(mutualFundId);
-    }, [mutualFundId]);
+    }, [mutualFundId, fetchMutualFundDetails]);
 
-    // Calculate paginated data
+    const holdings = useMemo(() => {
+        const h = mutualFund?.holdings;
+        return Array.isArray(h) ? h : [];
+    }, [mutualFund?.holdings]);
+
+    const firstStats = useMemo(() => {
+        const rs = mutualFund?.returnStats;
+        if (!Array.isArray(rs) || rs.length === 0) return null;
+        return rs[0] ?? null;
+    }, [mutualFund?.returnStats]);
+
     const paginatedHoldings = useMemo(() => {
-        const startIndex = (currentPage - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
-        return stockHoldings.slice(startIndex, endIndex);
-    }, [stockHoldings, currentPage, pageSize]);
+        const start = (currentPage - 1) * PAGE_SIZE;
+        return holdings.slice(start, start + PAGE_SIZE);
+    }, [holdings, currentPage]);
 
-    const handleStockClick = (stockId: string) => {
-        navigate(Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stockId)));
-    };
-
-    // Loading state
-    if (loading) {
-        return (
-            <>
-                <Headers />
-                <div className={styles['index-title']}>Loading...</div>
-                <Footer />
-            </>
+    const metricCards = useMemo((): MetricCardDef[] => {
+        if (!mutualFund) return [];
+        const retCard = (label: string, v: number): MetricCardDef => ({
+            label,
+            value: `${formatNumber(v)}%`,
+            accent: 'default',
+            returnVal: v,
+        });
+        const cards: MetricCardDef[] = [
+            {
+                label: 'NAV',
+                value: `${formatNumber(mutualFund.nav)} · ${formateString(mutualFund.navDate)}`,
+                accent: 'primary',
+            },
+            { label: 'AUM (Cr)', value: formatNumber(mutualFund.aum), accent: 'default' },
+            { label: 'Rank', value: formateString(mutualFund.rank), accent: 'default' },
+            { label: 'Category', value: formateString(mutualFund.category), accent: 'default' },
+            { label: 'Cap / style', value: formateString(mutualFund.subCategory), accent: 'default' },
+            {
+                label: 'Risk',
+                value: `${formateString(mutualFund.risk)} · ${Number.isFinite(mutualFund.riskRating) ? mutualFund.riskRating : '—'}`,
+                accent: 'default',
+            },
+        ];
+        if (
+            firstStats?.return1w != null &&
+            Number.isFinite(Number(firstStats.return1w))
+        ) {
+            cards.push(retCard('1W return', Number(firstStats.return1w)));
+        }
+        cards.push(
+            retCard('1D return', mutualFund.return1d),
+            retCard('1Y return', mutualFund.return1y),
+            retCard('3Y return', mutualFund.return3y),
+            retCard('5Y return', mutualFund.return5y)
         );
-    }
+        return cards;
+    }, [mutualFund, firstStats]);
 
-    // Error state
-    if (!mutualFund || !mutualFund.mutualFundId) {
-        return (
-            <>
-                <Headers />
-                <div className={styles['main-div']}>
-                    <div className={styles['index-details']}>
-                        <div className={styles['not-found-div']}>
-                            Mutual fund data not found.
-                        </div>
-                    </div>
-                    <Footer />
-                </div>
-            </>
-        );
-    }
+    const costRows = useMemo(() => {
+        if (!mutualFund) return [];
+        return [
+            { label: 'Expense ratio', value: `${formatNumber(mutualFund.expenseRatio)}%` },
+            { label: 'Stamp duty', value: formateString(mutualFund.stampDuty) },
+            { label: 'Exit load', value: formateString(mutualFund.exitLoadMessage) },
+            { label: 'Dividend', value: formatNumber(mutualFund.dividend) },
+            { label: 'Launch', value: formateString(mutualFund.launchDate) },
+            { label: 'Benchmark', value: formateString(mutualFund.benchmarkName) },
+        ];
+    }, [mutualFund]);
+
+    const handleStockClick = useCallback(
+        (stockId: string) => {
+            if (!stockId) return;
+            navigate(
+                Routers.StockWidgetDetails.replace(':stockId', encodeURIComponent(stockId))
+            );
+        },
+        [navigate]
+    );
+
+    const showHoldingsPagination = holdings.length > PAGE_SIZE;
 
     return (
         <>
             <Headers />
-            <div className={styles['main-div']}>
-                {/* Mutual Fund Overview Section */}
-                <div className={styles['index-details']}>
-                    <div className={styles['index-title']}>
-                        <h3>{mutualFund.name}</h3>
-                    </div>
-                    
-                    <div className={styles['index-info-div']}>
-                        {/* Basic Info Row */}
-                        <div className={styles.row}>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Current Value</span>
-                                    <span className={styles.value}>
-                                        {formateString(mutualFund.nav)} ({formateString(mutualFund.navDate)})
-                                    </span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Rank</span>
-                                    <span className={styles.value}>{formateString(mutualFund.rank)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Aum</span>
-                                    <span className={styles.value}>{formatNumber(mutualFund.aum)}</span>
-                                </div>
-                            </div>
-
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Category</span>
-                                    <span className={styles.value}>{formateString(mutualFund.category)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Cap</span>
-                                    <span className={styles.value}>{formateString(mutualFund.subCategory)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Risk</span>
-                                    <span className={styles.value}>{formateString(mutualFund.risk)} ({formateString(mutualFund.riskRating)})</span>
-                                </div>
-                            </div>
-                        
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Return 1M</span>
-                                    <span className={styles.value}>
-                                        {formatNumber(mutualFund.returnStats[0]?.return1w || 0)} %
-                                    </span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Return 1y</span>
-                                    <span className={styles.value}>
-                                        {formatNumber(mutualFund.returnStats[0]?.return1y || 0)}  %
-                                    </span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Return 3y</span>
-                                    <span className={styles.value}>
-                                        {formatNumber(mutualFund.returnStats[0]?.return3y || 0)}  %
-                                    </span>
-                                </div>
-                            </div>
-                        
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Stamp Duty</span>
-                                    <span className={styles.value}>{formateString(mutualFund.stampDuty)}</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Expense Ratio</span>
-                                    <span className={styles.value}>{formatNumber(mutualFund.expenseRatio)} %</span>
-                                </div>
-                            </div>
-                            <div className={styles.card}>
-                                <div className={styles.flexRow}>
-                                    <span className={styles.label}>Exit Load Message</span>
-                                    <span className={styles.value}>{formateString(mutualFund.exitLoadMessage)}</span>
-                                </div>
-                            </div>
+            <div className={styles.mainDiv}>
+                <div className={styles.shell}>
+                    {loading ? (
+                        <div className={styles.loadingBlock}>
+                            <span className={styles.loadingDot} aria-hidden />
+                            Loading fund details…
                         </div>
-                    </div>
-                </div>
-
-                {/* Holdings Section */}
-                <div className={styles['index-details']}>
-                    <div className={styles['index-title']}>
-                        <h3>Holdings</h3>
-                    </div>
-                    <div className={styles['stock-table']}>
-                        <div className={styles['stock-table-head']}>
-                            <span className={styles['span-150']}><strong>Company</strong></span>
-                            <span className={styles['hide-mobile']}><strong>Sector</strong></span>
-                            <span><strong>Portfolio Date</strong></span>
-                            <span className={styles['hide-mobile']}><strong>Instrument Name</strong></span>
-                            <span><strong>Market Price</strong></span>
-                            <span className={styles['span-50']}><strong>Corpus %</strong></span>
-                        </div>
-
-                        {paginatedHoldings.map((stock, index) => (
-                            <div
-                                className={styles['stock-table-row']}
-                                key={index}
-                                onClick={() => handleStockClick(stock.stock_id)}
+                    ) : !mutualFund ? (
+                        <div className={styles.emptyBlock}>
+                            <MdInfoOutline className={styles.emptyIcon} aria-hidden />
+                            <p className={styles.emptyTitle}>
+                                {fetchError || 'Mutual fund not found'}
+                            </p>
+                            <p className={styles.emptyHint}>
+                                Check the link or return to the fund list.
+                            </p>
+                            <button
+                                type="button"
+                                className={styles.backBtnSolid}
+                                onClick={() => navigate(Routers.MutualFundWidgets)}
                             >
-                                <div className={styles['row-items-150']}>
-                                    <div>{formateString(stock.company_name)}</div>
-                                </div>
-                                <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
-                                    <div>{formateString(stock.sector_name)}</div>
-                                </div>
-                                <div className={styles['row-text']}>
-                                    <div>{formatDate(stock.portfolio_date)}</div>
-                                </div>
-                                <div className={`${styles['row-text']} ${styles['hide-mobile']}`}>
-                                    <div>{formateString(stock.instrument_name)}</div>
-                                </div>
-                                <div className={styles['row-text']}>
-                                    <div>{formatNumber(stock.market_value)}</div>
-                                </div>
-                                <div className={styles['row-items-50']}>
-                                    <div>{formatNumber(stock.corpus_per)}</div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                                <MdArrowBack aria-hidden />
+                                All mutual funds
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <button
+                                type="button"
+                                className={styles.backLink}
+                                onClick={() => navigate(Routers.MutualFundWidgets)}
+                            >
+                                <MdArrowBack aria-hidden />
+                                All mutual funds
+                            </button>
 
-                    {/* Pagination */}
-                    <div className={styles['pagination_container']}>
-                        <Pagination
-                            className="pagination-bar"
-                            siblingCount={1}
-                            currentPage={currentPage}
-                            totalCount={stockHoldings.length}
-                            pageSize={pageSize}
-                            onPageChange={setCurrentPage}
-                        />
-                    </div>
+                            <section className={styles.hero} aria-label="Fund overview">
+                                <div className={styles.heroGlow} aria-hidden />
+                                <div className={styles.heroInner}>
+                                    <div className={styles.heroLogoRing}>
+                                        <FundLogo
+                                            url={mutualFund.logoUrl}
+                                            label={mutualFund.fundHouse || mutualFund.name}
+                                        />
+                                    </div>
+                                    <div className={styles.heroText}>
+                                        <p className={styles.heroEyebrow}>
+                                            {formateString(mutualFund.fundHouse)}
+                                        </p>
+                                        <h1 className={styles.heroTitle}>{mutualFund.name}</h1>
+                                        {mutualFund.metaDesc ? (
+                                            <p className={styles.heroSub}>{mutualFund.metaDesc}</p>
+                                        ) : null}
+                                        <p className={styles.heroChips}>
+                                            {mutualFund.benchmarkName ? (
+                                                <span className={styles.chip}>
+                                                    {mutualFund.benchmarkName}
+                                                </span>
+                                            ) : null}
+                                            <span className={styles.chip}>
+                                                {formateString(mutualFund.category)}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div className={styles.heroValueBlock}>
+                                        <span className={styles.heroValueLabel}>NAV</span>
+                                        <span className={styles.heroValueMain}>
+                                            {formatNumber(mutualFund.nav)}
+                                        </span>
+                                        <span className={styles.heroValueMeta}>
+                                            {formateString(mutualFund.navDate)}
+                                        </span>
+                                        <span
+                                            className={getColoredStyle(
+                                                mutualFund.return1y ?? 0,
+                                                styles
+                                            )}
+                                        >
+                                            1Y: {formatNumber(mutualFund.return1y)}%
+                                        </span>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section className={styles.section} aria-labelledby="mf-metrics-heading">
+                                <div className={styles.sectionHead}>
+                                    <span className={styles.sectionIcon} aria-hidden>
+                                        <MdAssessment />
+                                    </span>
+                                    <h2 id="mf-metrics-heading" className={styles.sectionTitle}>
+                                        Key metrics
+                                    </h2>
+                                </div>
+                                <div className={styles.metricsGrid}>
+                                    {metricCards.map((card) => (
+                                        <div
+                                            key={card.label}
+                                            className={`${styles.metricCard} ${styles[`metricAccent_${card.accent}`]}`}
+                                        >
+                                            <span className={styles.metricLabel}>{card.label}</span>
+                                            <span
+                                                className={
+                                                    card.returnVal !== undefined
+                                                        ? `${styles.metricValue} ${getColoredStyle(card.returnVal, styles)}`
+                                                        : styles.metricValue
+                                                }
+                                            >
+                                                {card.value}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section className={styles.section} aria-labelledby="mf-costs-heading">
+                                <div className={styles.sectionHead}>
+                                    <span className={styles.sectionIcon} aria-hidden>
+                                        <MdSavings />
+                                    </span>
+                                    <h2 id="mf-costs-heading" className={styles.sectionTitle}>
+                                        Costs & reference
+                                    </h2>
+                                </div>
+                                <div className={styles.costCard}>
+                                    <dl className={styles.costGrid}>
+                                        {costRows.map(({ label, value }) => (
+                                            <div key={label} className={styles.costRow}>
+                                                <dt>{label}</dt>
+                                                <dd>{value}</dd>
+                                            </div>
+                                        ))}
+                                    </dl>
+                                </div>
+                            </section>
+
+                            <section className={styles.section} aria-labelledby="mf-holdings-heading">
+                                <div className={styles.sectionHead}>
+                                    <span className={styles.sectionIcon} aria-hidden>
+                                        <MdPieChart />
+                                    </span>
+                                    <div className={styles.sectionTitleRow}>
+                                        <h2 id="mf-holdings-heading" className={styles.sectionTitle}>
+                                            Holdings
+                                        </h2>
+                                        {holdings.length > 0 ? (
+                                            <span className={styles.sectionCount}>
+                                                {holdings.length} positions
+                                            </span>
+                                        ) : null}
+                                    </div>
+                                </div>
+
+                                {holdings.length === 0 ? (
+                                    <div className={styles.holdingsEmpty}>
+                                        No holding data available for this fund.
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className={styles.tableCard}>
+                                            <div className={styles.tableScroll}>
+                                                <div className={styles.tableInner}>
+                                                    <div
+                                                        className={styles.tableHead}
+                                                        role="row"
+                                                        aria-label="Holdings columns"
+                                                    >
+                                                        <span>Company</span>
+                                                        <span>Sector</span>
+                                                        <span>As of</span>
+                                                        <span>Instrument</span>
+                                                        <span className={styles.colNum}>
+                                                            Mkt. value
+                                                        </span>
+                                                        <span className={styles.colNum}>Corpus %</span>
+                                                    </div>
+                                                    <ul className={styles.tableBody}>
+                                                        {paginatedHoldings.map((stock) => (
+                                                            <li
+                                                                key={
+                                                                    stock.stock_id ||
+                                                                    `${stock.company_name}-${stock.instrument_name}`
+                                                                }
+                                                            >
+                                                                <button
+                                                                    type="button"
+                                                                    className={styles.tableRow}
+                                                                    onClick={() =>
+                                                                        handleStockClick(
+                                                                            stock.stock_id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <span className={styles.colCompany}>
+                                                                        {formateString(
+                                                                            stock.company_name
+                                                                        )}
+                                                                    </span>
+                                                                    <span className={styles.colMuted}>
+                                                                        {formateString(
+                                                                            stock.sector_name
+                                                                        )}
+                                                                    </span>
+                                                                    <span className={styles.colMuted}>
+                                                                        {formatDate(
+                                                                            stock.portfolio_date
+                                                                        )}
+                                                                    </span>
+                                                                    <span className={styles.colMuted}>
+                                                                        {formateString(
+                                                                            stock.instrument_name
+                                                                        )}
+                                                                    </span>
+                                                                    <span className={styles.colNum}>
+                                                                        {formatNumber(
+                                                                            stock.market_value
+                                                                        )}
+                                                                    </span>
+                                                                    <span className={styles.colNum}>
+                                                                        {formatNumber(
+                                                                            stock.corpus_per
+                                                                        )}
+                                                                    </span>
+                                                                </button>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {showHoldingsPagination && (
+                                            <div className={styles.paginationWrap}>
+                                                <Pagination
+                                                    className="pagination-bar"
+                                                    siblingCount={1}
+                                                    currentPage={currentPage}
+                                                    totalCount={holdings.length}
+                                                    pageSize={PAGE_SIZE}
+                                                    onPageChange={setCurrentPage}
+                                                />
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </section>
+                        </>
+                    )}
                 </div>
                 <Footer />
             </div>
