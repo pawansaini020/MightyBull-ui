@@ -125,7 +125,7 @@ function Header({ currentTab }: { currentTab?: string | null }) {
                     )}
                 </div>
 
-                {loggedInUser && (
+                {/*{loggedInUser && (*/}
                     <div className={styles.center}>
                         <div className={styles.tabsWrap}>
                             {activeTab && (
@@ -140,7 +140,7 @@ function Header({ currentTab }: { currentTab?: string | null }) {
                             <StockSearch onSearch={handleStockSearch} />
                         </div>
                     </div>
-                )}
+                {/*)}*/}
 
                 {loggedInUser && (
                     <div className={styles.actions}>

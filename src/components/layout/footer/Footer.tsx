@@ -41,16 +41,16 @@ function Footer() {
                         <h3 className={styles.colTitle}>Markets</h3>
                         <ul className={styles.linkList}>
                             <li>
-                                <Link to={Routers.Indices}>Share market</Link>
+                                <Link to={Routers.Dashboard}>Share market</Link>
                             </li>
                             <li>
                                 <Link to={Routers.Indices}>Stock indices</Link>
                             </li>
                             <li>
-                                <Link to={Routers.Indices}>NSE</Link>
+                                <Link to={Routers.StockWidgets}>NSE</Link>
                             </li>
                             <li>
-                                <Link to={Routers.Indices}>BSE</Link>
+                                <Link to={Routers.StockWidgets}>BSE</Link>
                             </li>
                         </ul>
                     </div>

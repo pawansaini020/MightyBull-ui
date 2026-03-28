@@ -43,6 +43,13 @@ function Home() {
                                 <button
                                     type="button"
                                     className={styles.btnPrimary}
+                                    onClick={() => navigate(Routers.Dashboard)}
+                                >
+                                    Explore market
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.btnPrimary}
                                     onClick={() => navigate(Routers.Signup)}
                                 >
                                     Open free account
@@ -77,7 +84,7 @@ function Home() {
                                     <span className={styles.mockDot} />
                                     <span className={styles.mockDot} />
                                 </div>
-                                <div className={styles.mockBody}>
+                                <div className={styles.mockBody} onClick={() => navigate(Routers.Dashboard)}>
                                     <div className={styles.mockRow}>
                                         <span className={styles.mockLabel}>NIFTY 50</span>
                                         <span className={styles.mockUp}>+1.24%</span>
@@ -102,11 +109,11 @@ function Home() {
                     <section className={styles.exchanges} aria-label="Supported exchanges">
                         <p className={styles.exchangeIntro}>Trade where India invests</p>
                         <div className={styles.exchangeBadges}>
-                            <div className={styles.badge}>
+                            <div className={styles.badge} onClick={() => navigate(Routers.Dashboard)}>
                                 <span className={styles.badgeMark}>NSE</span>
                                 <span className={styles.badgeText}>National Stock Exchange</span>
                             </div>
-                            <div className={styles.badge}>
+                            <div className={styles.badge} onClick={() => navigate(Routers.Dashboard)}>
                                 <span className={styles.badgeMark}>BSE</span>
                                 <span className={styles.badgeText}>Bombay Stock Exchange</span>
                             </div>
@@ -123,7 +130,7 @@ function Home() {
                             </p>
                         </div>
                         <div className={styles.featureGrid}>
-                            <article className={styles.featureCard}>
+                            <article className={styles.featureCard} onClick={() => navigate(Routers.Dashboard)}>
                                 <div className={`${styles.featureIcon} ${styles.iconStocks}`}>
                                     <MdTrendingUp aria-hidden />
                                 </div>
@@ -133,7 +140,7 @@ function Home() {
                                     intuitive lists.
                                 </p>
                             </article>
-                            <article className={styles.featureCard}>
+                            <article className={styles.featureCard} onClick={() => navigate(Routers.MutualFundDashboard)}>
                                 <div className={`${styles.featureIcon} ${styles.iconMf}`}>
                                     <MdSavings aria-hidden />
                                 </div>
@@ -143,7 +150,7 @@ function Home() {
                                     risk appetite.
                                 </p>
                             </article>
-                            <article className={styles.featureCard}>
+                            <article className={styles.featureCard} onClick={() => navigate(Routers.Dashboard)}>
                                 <div className={`${styles.featureIcon} ${styles.iconEtf}`}>
                                     <MdStackedBarChart aria-hidden />
                                 </div>

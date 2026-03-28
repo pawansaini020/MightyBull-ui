@@ -8,7 +8,7 @@ import Login from "./components/user/login/Login";
 import ForgotPassword from "./components/user/forgot-password/ForgotPassword";
 import NotFound from "./routes/NotFound.tsx";
 import Dashboard from "./components/dashboard/stocks/Dashboard.tsx";
-import ProtectedRoute from "./routes/ProtectedRoute";
+// import ProtectedRoute from "./routes/ProtectedRoute";
 import StockWidgets from "./components/stock/widget/StockWidgets.tsx";
 import StockWidgetDetails from "./components/stock/widget-details/StockWidgetDetails.tsx";
 import Index from "./components/index/Index.tsx";
@@ -29,18 +29,18 @@ function App() {
                 <Route path={Routers.Login} element={<Login />} />
                 <Route path={Routers.ForgotPassword} element={<ForgotPassword />} />
                 {/* Protected Routes */}
-                <Route element={<ProtectedRoute />}>
-                    {/* Add other protected pages here */}
-                    <Route path={Routers.Dashboard} element={<Dashboard />} />
-                    <Route path={Routers.StockWidgets} element={<StockWidgets />}></Route>
-                    <Route path={Routers.StockWidgetDetails} element={<StockWidgetDetails />}></Route>
-                    <Route path={Routers.Indices} element={<Index />}></Route>
-                    <Route path={Routers.IndexDetails} element={<IndexWidgetDetails />}></Route>
-                    <Route path={Routers.MutualFundDashboard} element={<MutualFundDashboard />}></Route>
-                    <Route path={Routers.MutualFundWidgets} element={<MutualFundWidgets />}></Route>
-                    <Route path={Routers.MutualFundWidgetDetails} element={<MutualFundWidgetDetails />}></Route>
-                    <Route path={Routers.UserProfilePage} element={<UserProfilePage />}></Route>
-                </Route>
+                {/*<Route element={<ProtectedRoute />}>*/}
+                {/* Add other protected pages here */}
+                <Route path={Routers.Dashboard} element={<Dashboard />} />
+                <Route path={Routers.StockWidgets} element={<StockWidgets />}></Route>
+                <Route path={Routers.StockWidgetDetails} element={<StockWidgetDetails />}></Route>
+                <Route path={Routers.Indices} element={<Index />}></Route>
+                <Route path={Routers.IndexDetails} element={<IndexWidgetDetails />}></Route>
+                <Route path={Routers.MutualFundDashboard} element={<MutualFundDashboard />}></Route>
+                <Route path={Routers.MutualFundWidgets} element={<MutualFundWidgets />}></Route>
+                <Route path={Routers.MutualFundWidgetDetails} element={<MutualFundWidgetDetails />}></Route>
+                <Route path={Routers.UserProfilePage} element={<UserProfilePage />}></Route>
+                {/*</Route>*/}
 
                 {/* Redirect unknown routes to login */}
                 <Route path="*" element={<NotFound />} />
