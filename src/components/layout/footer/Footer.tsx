@@ -13,7 +13,9 @@ function Footer() {
                         <span className={styles.brandName}>MightyBull</span>
                         <p className={styles.brandText}>
                             Your companion for investing in India—stocks, mutual funds, and ETFs on
-                            NSE &amp; BSE, with a simple, transparent experience.
+                            NSE &amp; BSE, with a simple, transparent experience. 
+                            Access stocks, mutual funds, and ETFs across the NSE and BSE with a platform designed to be your long-term investment companion. 
+                            No hidden agendas, no complex hurdles—just a powerful tool to help you own a piece of India’s growth.
                         </p>
                     </div>
 

@@ -15,12 +15,12 @@
 }
 
 .inner {
-    max-width: 1120px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 clamp(1rem, 3vw, 1.75rem);
 
-    @media (min-width: 768px) {
-        padding: 0 1.75rem;
+    @media (max-width: 768px) {
+        padding: 0 clamp(0.75rem, 3vw, 1.25rem);
     }
 }
 
